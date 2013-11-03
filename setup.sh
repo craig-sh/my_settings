@@ -29,3 +29,17 @@ for file in $files; do
     echo "Creating symlink to $file in home directory."
     ln -s $dir/.$file ~/.$file
 done
+
+#setting up bundles in pathogen
+mkdir $dir/.vim/bundle/
+cd $dir/.vim/bundle/
+git clone git://github.com/kien/ctrlp.vim.git
+git clone git://github.com/scrooloose/syntastic.git
+git clone git://github.com/Lokaltog/vim-easymotion.git
+git clone git://github.com/Lokaltog/vim-powerline.git
+git clone git://github.com/scrooloose/nerdtree.git
+git clone git://github.com/altercation/vim-colors-solarized.git
+git clone git://github.com/tpope/vim-fugitive.git
+git clone git://github.com/tpope/vim-sleuth.git
+
+
