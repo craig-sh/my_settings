@@ -42,4 +42,8 @@ git clone git://github.com/altercation/vim-colors-solarized.git
 git clone git://github.com/tpope/vim-fugitive.git
 git clone git://github.com/tpope/vim-sleuth.git
 
-
+#location for kde's color scheme
+# cd ~/.kde/share/apps/konsole
+# git clone git://github.com/phiggins/konsole-colors-solarized.git
+# touch  Solardark.colorscheme  
+# cat konsole-colors-solarized/Solarized\ Dark.colorscheme >> Solardark.colorscheme
