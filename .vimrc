@@ -65,6 +65,8 @@ if &t_Co > 2 || has("gui_running")
   colorscheme solarized
   "colorscheme default
   set hlsearch
+  "set my font
+  set guifont=Bitstream\ Vera\ Sans\ Mono\ Bold\ 9
 
 endif
 
