@@ -61,7 +61,7 @@ if &t_Co > 2 || has("gui_running")
   set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
   "let g:solarized_termcolors=16
   syntax on
-  "set background=dark
+  set background=dark
   colorscheme solarized
   "colorscheme default
   set hlsearch
@@ -167,5 +167,11 @@ if has("autocmd")
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
+"""""""""""""""""""""Manual Tab setting""""""""""""""""""""""
+function SetTab(width)
+  echom "Setting tab width to: "
+  echom a:width
+  set shiftwidth=2
+  set tabstop=2
+  set expandtab
+endfunction
