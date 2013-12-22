@@ -137,6 +137,8 @@ PROMPT_COMMAND=__prompt_command
 ############Git#################################
 git config --global user.email "craig.henriques@mail.utoronto.com"
 git config --global user.name "craig-sh"
+git config --global format.pretty oneline
+git config --global color.ui true
 ##################################
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
