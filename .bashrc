@@ -133,3 +133,10 @@ PROMPT_COMMAND=__prompt_command
 #    PS1+="\$ "
 #}
 #PROMPT_COMMAND=__prompt_command
+
+############Git#################################
+git config --global user.email "craig.henriques@mail.utoronto.com"
+git config --global user.name "craig-sh"
+##################################
+
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
