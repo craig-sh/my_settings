@@ -29,7 +29,7 @@ let g:ctrlp_cmd = 'CtrlP'
 """""""""""""""""""""""""""""""""""""
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
-
+set backupdir=~/vimtmp
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
@@ -58,7 +58,7 @@ endif
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
-  set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
+  "set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
   "let g:solarized_termcolors=16
   syntax on
   set background=dark
@@ -115,39 +115,8 @@ endif
 
 "Add numbers 
 set nu
-"Set folding 
-"set foldmethod=syntax
-"set foldcolumn=1
 
-
-
-"Use two spaces for indentation
-"set tabstop=2
-"set softtabstop=2
-"set shiftwidth=2
-"set expandtab
-
-""first, enable status line always
 set laststatus=2
-"
-"" now set it up to change the status line based on mode
-"if version >= 700
-"  au InsertEnter * hi StatusLine ctermbg=5 gui=undercurl  guisp=Green
-"  au InsertLeave * hi StatusLine ctermfg=0 ctermbg=2 gui=bold
-"endif
-
-"set statusline=
-"set statusline+=%<\                       " cut at start
-"set statusline+=%2*[%n%H%M%R%W]%*\        " flags and buf no
-"set statusline+=%-40f\                    " path
-"set statusline+=%=%1*%y%*%*\              " file type
-"set statusline+=%10((%l,%c)%)\            " line and column
-"set statusline+=%P                        " percentage of file
-"
-"
-
-
-set statusline=
 set statusline +=%3*%y%*                "file type
 set statusline +=%4*\ %<%F%*            "full path
 set statusline +=%2*%m%*                "modified flag
