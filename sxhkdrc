@@ -43,6 +43,10 @@ super + {_,shift + }c
 super + {comma,period}
 	bspc desktop -C {backward,forward}
 
+# Rotate leaves of tree
+alt + shift + {comma,period}
+	bspc desktop -R {90,270}
+
 super + bracket{left,right}
 	bspc desktop -f {prev,next}
 

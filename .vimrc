@@ -30,6 +30,7 @@ let g:ctrlp_cmd = 'CtrlP'
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 set backupdir=~/vimtmp
+set directory=~/vimtmp
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
@@ -66,7 +67,7 @@ if &t_Co > 2 || has("gui_running")
   "colorscheme default
   set hlsearch
   "set my font
-  set guifont=Bitstream\ Vera\ Sans\ Mono\ Bold\ 9
+  set guifont=Bitstream\ Vera\ Sans\ Mono\ Bold\ 12
 
 endif
 

@@ -95,9 +95,9 @@ Xft.rgba:       rgb
 
  URxvt.xftAntialias:     	true
  Urxvt*transparent:		true
- URxvt*shading:          	12
+ URxvt*shading:          	35
  URxvt*inheritPixmap:    	true
- URxvt*depth:                32
+! URxvt*depth:                32
  URxvt*saveLines:        	12000
  URxvt*visualBell:       	true
  URxvt*urgentOnBell:     	true
