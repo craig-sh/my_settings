@@ -8,7 +8,7 @@
 
 dir=~/my_settings                    # dotfiles directory
 olddir=~/my_settings_old             # old dotfiles backup directory
-files="bashrc vimrc vim"    # list of files/folders to symlink in homedir
+files="zshrc bashrc vimrc vim"    # list of files/folders to symlink in homedir
 
 ##########
 
