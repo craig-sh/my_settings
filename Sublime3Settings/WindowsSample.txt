@@ -1,0 +1,13 @@
+C:\Users\Craig\AppData\Roaming\Sublime Text 3>mklink /D Packages G:\Documents\Gi
+t_projects\my_settings\Sublime3Settings\Packages
+
+
+symbolic link created for Packages <<===>> G:\Documents\Git_projects\my_settings
+\Sublime3Settings\Packages
+
+C:\Users\Craig\AppData\Roaming\Sublime Text 3>mklink /D "Installed Packages" "G:
+\Documents\Git_projects\my_settings\Sublime3Settings\Installed Packages"
+
+
+symbolic link created for Installed Packages <<===>> G:\Documents\Git_projects\m
+y_settings\Sublime3Settings\Installed Packages

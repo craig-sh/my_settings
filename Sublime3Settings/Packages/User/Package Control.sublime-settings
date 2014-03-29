@@ -2,11 +2,9 @@
 	"installed_packages":
 	[
 		"All Autocomplete",
+		"Anaconda",
 		"GitGutter",
 		"SideBarEnhancements",
-		"SublimeCodeIntel",
-		"SublimeLinter-pylint",
-		"SublimeREPL",
-		"Vintageous"
+		"SublimeREPL"
 	]
 }
