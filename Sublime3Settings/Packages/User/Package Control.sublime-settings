@@ -1,0 +1,12 @@
+{
+	"installed_packages":
+	[
+		"All Autocomplete",
+		"GitGutter",
+		"SideBarEnhancements",
+		"SublimeCodeIntel",
+		"SublimeLinter-pylint",
+		"SublimeREPL",
+		"Vintageous"
+	]
+}
