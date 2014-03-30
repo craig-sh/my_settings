@@ -9,7 +9,7 @@ Xcursor.size:  22
 
 Xft.antialias:  1
 Xft.autohint:   0
-Xft.dpi:        96 
+Xft.dpi:        128
 Xft.hinting:    1
 Xft.hintstyle:  hintfull
 Xft.lcdfilter:  lcddefault
@@ -87,7 +87,7 @@ Xft.rgba:       rgb
 ! xterm*font: xft:DejaVu Sans Mono:pixelsize=26
 ! URxvt.boldFont: xft:DejaVu Sans Mono:bold:pixelsize=12
 ! xterm*boldFont: xft:DejaVu Sans Mono:bold:pixelsize=26
- URxvt.font: xft:Inconsolata:bold:pixelsize=14
+ URxvt.font: xft:Inconsolata:bold:pixelsize=12
 ! URxvt.boldFont: xft:Inconsolata:bold:pixelsize=16
 
 ! URxvt.font: xft:DejaVu Sans Mono:pixelsize=11
