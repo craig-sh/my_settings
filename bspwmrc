@@ -25,11 +25,11 @@ bspc config top_padding 15
 ##bspc config normal_private_border_color   "#627a92"
 
 #### Fonts set here
-##      /etc/profile.d/infinality-settings.sh
+/etc/profile.d/infinality-settings.sh
 ####
 bspc config split_ratio         0.50
 bspc config border_width        1
-bspc config window_gap          30
+bspc config window_gap          10
 bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
