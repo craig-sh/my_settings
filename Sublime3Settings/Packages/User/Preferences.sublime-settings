@@ -4,8 +4,8 @@
 	[
 		"Vintage"
 	],
-	"vintageous_reset_mode_when_switching_tabs": false,
-	"vintageous_use_sys_clipboard": true,
 	"vintageous_hlsearch": true,
-	"vintageous_use_ctrl_keys": true
+	"vintageous_reset_mode_when_switching_tabs": false,
+	"vintageous_use_ctrl_keys": true,
+	"vintageous_use_sys_clipboard": true
 }

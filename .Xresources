@@ -83,11 +83,11 @@ Xft.rgba:       rgb
 
 ! URxvt.font: -misc-tamzenforpowerline-medium-r-normal--12-87-100-100-c-60-iso10646-1
 ! URxvt.boldFont: -misc-tamzenforpowerline-medium-r-normal--12-87-100-100-c-60-iso10646-1
-! URxvt.font: xft:DejaVu Sans Mono:pixelsize=12
+URxvt.font: xft:DejaVu Sans Mono:bold:pixelsize=14
 ! xterm*font: xft:DejaVu Sans Mono:pixelsize=26
 ! URxvt.boldFont: xft:DejaVu Sans Mono:bold:pixelsize=12
 ! xterm*boldFont: xft:DejaVu Sans Mono:bold:pixelsize=26
- URxvt.font: xft:Inconsolata:bold:pixelsize=12
+! URxvt.font: xft:Inconsolata:bold:pixelsize=12
 ! URxvt.boldFont: xft:Inconsolata:bold:pixelsize=16
 
 ! URxvt.font: xft:DejaVu Sans Mono:pixelsize=11
