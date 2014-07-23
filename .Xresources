@@ -66,7 +66,7 @@ Xft.rgba:       rgb
 
 *color0:                  S_base02
 *color1:                  S_red
-*color2:                  S_green
+*color2:                  S_base02
 *color3:                  S_yellow
 *color4:                  S_blue
 *color5:                  S_magenta
@@ -81,6 +81,7 @@ Xft.rgba:       rgb
 *color14:                 S_base1
 *color15:                 S_base3
 
+URxvt.intensityStyles: false
 ! URxvt.font: -misc-tamzenforpowerline-medium-r-normal--12-87-100-100-c-60-iso10646-1
 ! URxvt.boldFont: -misc-tamzenforpowerline-medium-r-normal--12-87-100-100-c-60-iso10646-1
 URxvt.font: xft:DejaVu Sans Mono:bold:pixelsize=14

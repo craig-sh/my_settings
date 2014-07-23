@@ -76,7 +76,7 @@ fi
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-setopt appendhistory extendedglob nomatch notify
+setopt appendhistory extendedglob nomatch notify hist_ignore_dups
 bindkey -v
 bindkey '^P' up-history
 bindkey '^N' down-history
@@ -152,6 +152,9 @@ compinit
 REPORTTIME=10
 
 
+git config --global core.editor "~/Downloads/sublime_text_3/sublime_text -w"
+git config --global user.email "craig.henriques@mail.utoronto.com"
+git config --global user.name "craig-sh"
 
 ###################PROMPT
 #PROMPT=$'%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%I:%M:%S]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)'
