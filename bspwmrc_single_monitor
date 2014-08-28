@@ -1,11 +1,10 @@
 #! /bin/sh
 
-bspc monitor VBOX0 -d I II III IV V
-bspc monitor VBOX1 -d VI VII VIII IX X
+bspc monitor -d I II III IV V
 
 
-bspc config -m ^2 top_padding 15 
-bspc config -m ^2 bottom_padding 15 
+bspc config top_padding 15 
+bspc config bottom_padding 15 
 
 #bspc config border_width           2
 #bspc config window_gap             10
