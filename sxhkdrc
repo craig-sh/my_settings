@@ -5,6 +5,7 @@
 super + alt + Escape
 	bspc quit
 
+#close window
 super + w
 	bspc window -c
 
@@ -17,9 +18,11 @@ super + b
 super + {s,f,p}
 	bspc window -t {floating,fullscreen,pseudo_tiled}
 
+#previous window
 super + {grave,Tab}
 	bspc {window,desktop} -f last
 
+#swap position with last window
 super + apostrophe
 	bspc window -s last
 
@@ -31,12 +34,15 @@ super + {o,i}
 super + y
 	bspc window -w last.manual
 
+#make current window the biggest
 super + m
 	bspc window -s biggest
 
+#swap window towards direction hijk
 super + {_,shift + }{h,j,k,l}
 	bspc window -{f,s} {left,down,up,right}
 
+#cycle between windows
 super + {_,shift + }c
 	bspc window -f {next,prev}
 
@@ -65,6 +71,7 @@ super + alt + shift + {h,j,k,l}
 super + ctrl + {1-9}
 	bspc window -r 0.{1-9}
 
+#send window to desktop n
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,window -d} ^{1-9,10}
 
