@@ -2,6 +2,7 @@
 	"font_size": 11,
 	"ignored_packages":
 	[
+		"GitGutter",
 		"Vintage"
 	],
 	"translate_tabs_to_spaces": false,
