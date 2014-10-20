@@ -180,6 +180,8 @@ git_custom_status() {
 PROMPT='%{$fg[yellow]%}%n@%{$fg[red]%}%m%{$fg[blue]%}%{$fg[cyan]%}[%.]%{$reset_color%}$(git_custom_status)%B$%b '
 RPROMPT='[%*]'
 
+path+=/home/craig/workspace/repo/Sandbox/Tools
+
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
 fi

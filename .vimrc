@@ -24,8 +24,17 @@ call pathogen#infect()
 "call pathogen#runtime_append_all_bundles()
 call pathogen#helptags() " generate helptags for everything in 'runtimepath'
 filetype plugin indent on
+
+""""""""""Mappings""""""""
 let g:ctrlp_map = '<c-l>'
 let g:ctrlp_cmd = 'CtrlP'
+
+imap jj <Esc>
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+" Don't use Ex mode, use Q for formatting
+map Q gq
 """""""""""""""""""""""""""""""""""""
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
@@ -43,13 +52,6 @@ set incsearch		" do incremental searching
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" Don't use Ex mode, use Q for formatting
-map Q gq
-
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -133,6 +135,9 @@ hi User4 guifg=#a0ee40 guibg=#222222
 hi User5 guifg=#eeee40 guibg=#222222
 """""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""Access System Clipboard"""""""""
+"set clipboard=unnamed
+"""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""Changing cursor based on mode""""""""""""""""""
 if has("autocmd")
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
