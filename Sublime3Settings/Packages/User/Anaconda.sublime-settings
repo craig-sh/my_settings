@@ -1,0 +1,5 @@
+{
+	"pep8": true,
+	"pep8_max_line_length": 279,
+	"auto_complete_triggers": [{"selector": "source.python - string - comment - constant.numeric", "characters": "."}]
+}
