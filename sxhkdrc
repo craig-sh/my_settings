@@ -105,6 +105,9 @@ super + space
 super + alt + c
 	chromium 
 
+super + alt + m
+	clementine 
+
 super + alt + s
 	skype
 

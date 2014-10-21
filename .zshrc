@@ -76,7 +76,7 @@ fi
 HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
-setopt appendhistory extendedglob nomatch notify hist_ignore_dups
+setopt appendhistory extendedglob nomatch notify hist_ignore_all_dups
 bindkey -v
 bindkey '^P' up-history
 bindkey '^N' down-history
@@ -155,6 +155,7 @@ REPORTTIME=10
 git config --global core.editor "~/Downloads/sublime_text_3/sublime_text -w"
 git config --global user.email "craig.henriques@mail.utoronto.com"
 git config --global user.name "craig-sh"
+git config --global color.ui true
 
 ###################PROMPT
 #PROMPT=$'%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%I:%M:%S]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)'
@@ -175,9 +176,11 @@ git_custom_status() {
     echo "$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
   fi
 }
-
+# export PANEL_FIFO="/tmp/panel-fifo"
 PROMPT='%{$fg[yellow]%}%n@%{$fg[red]%}%m%{$fg[blue]%}%{$fg[cyan]%}[%.]%{$reset_color%}$(git_custom_status)%B$%b '
 RPROMPT='[%*]'
+
+path+=/home/craig/workspace/repo/Sandbox/Tools
 
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
