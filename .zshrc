@@ -148,7 +148,7 @@ compinit
 REPORTTIME=10
 
 
-git config --global core.editor "~/Downloads/sublime_text_3/sublime_text -w"
+git config --global core.editor "subl -w"
 git config --global user.email "craig.henriques@mail.utoronto.com"
 git config --global user.name "craig-sh"
 git config --global color.ui true
