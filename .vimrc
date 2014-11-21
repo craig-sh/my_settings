@@ -118,7 +118,7 @@ endif
 
 "Add numbers 
 set nu
-
+"let g:Powerline_symbols = 'fancy'
 set laststatus=2
 set statusline +=%3*%y%*                "file type
 set statusline +=%4*\ %<%F%*            "full path
