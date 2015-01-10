@@ -1,1 +1,18 @@
-alias subl="~/Downloads/sublime_text_3/sublime_text --new-window"
+alias subl="~/Downloads/sublime_text_3/sublime_text"
+
+function rpan (){
+    panel_pid=`ps x|grep "/home/craig/wm/panels/panel$"|awk '{print $1}'`
+    sudo kill ${panel_pid}
+}
+
+function init_music(){
+     mpc ls Local\ media|mpc add ;
+     mpc random on;
+     mpc play;
+}
+
+function init_mouse(){
+    sudo razerd &;
+    razercfg -r 1:1800;
+    razercfg -R;
+}

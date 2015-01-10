@@ -181,7 +181,7 @@ PROMPT='%{$fg[yellow]%}%n@%{$fg[red]%}%m%{$fg[blue]%}%{$fg[cyan]%}[%.]%{$reset_c
 RPROMPT='[%*]'
 
 path+=/home/craig/workspace/repo/Sandbox/Tools
-
+unset GREP_OPTIONS
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
 fi

@@ -14,7 +14,7 @@
 		79
 	],
 	"tab_size": 4,
-	"translate_tabs_to_spaces": false,
+	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
 	"vintageous_hlsearch": true,
 	"vintageous_reset_mode_when_switching_tabs": false,

@@ -5,10 +5,10 @@
 # Monitor Settings
 # Switch monitors
 super + backslash
-	bspc monitor -f last
+	bspc monitor -f next
 
 super + shift + backslash
-	bspc window -m last
+	bspc window -m next
 
 
 super + alt + Escape
@@ -52,7 +52,7 @@ super + {_,shift + }{h,j,k,l}
 	bspc window -{f,s} {left,down,up,right}
 
 #cycle between windows
-super + {_,shift + }c
+super + {_,shift + }
 	bspc window -f {next,prev}
 
 super + {comma,period}
@@ -104,6 +104,29 @@ super + @button{1-3}
 #
 # wm independent hotkeys
 #
+XF86AudioMute
+	amixer sset Master toggle
+
+XF86AudioNext
+	mpc -q next
+
+XF86AudioPrev
+	mpc -q prev
+
+XF86AudioStop
+	mpc -q stop
+
+XF86AudioPlay
+	mpc -q toggle
+
+XF86AudioRaiseVolume
+    amixer set Master 2%+ unmute
+
+XF86AudioLowerVolume
+    amixer set Master 2%-
+
+XF86Sleep
+	sudo systemctl suspend
 
 super + Return
 	urxvt

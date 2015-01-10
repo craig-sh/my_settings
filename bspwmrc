@@ -1,12 +1,12 @@
 #! /bin/sh
 
-bspc monitor VBOX0 -d I II III IV V
-bspc monitor VBOX1 -d VI VII VIII IX X
-
-
-bspc config -m ^2 top_padding 15 
-bspc config -m ^2 bottom_padding 15 
-
+bspc monitor DVI-I-1 -d I II III IV V
+bspc monitor DVI-D-0 -d VI VII VIII IX X
+#
+#
+bspc config -m ^2 top_padding 24
+#bspc config -m ^2 bottom_padding 24
+#
 #bspc config border_width           2
 #bspc config window_gap             10
 #bspc config split_ratio            0.50
@@ -28,11 +28,11 @@ bspc config -m ^2 bottom_padding 15
 ##bspc config normal_private_border_color   "#627a92"
 
 #### Fonts set here
-/etc/profile.d/infinality-settings.sh
+#/etc/profile.d/infinality-settings.sh
 ####
 bspc config split_ratio         0.50
-bspc config border_width        1
-bspc config window_gap          10
+bspc config border_width        4
+bspc config window_gap          20
 bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
@@ -46,5 +46,11 @@ bspc config urgent_border_color "#504339"
 bspc config normal_frame_opacity 0.0
 bspc config focused_frame_opacity 0.1
 
+bspc rule -a Skype desktop=X follow=on
+bspc rule -a keepass floating=on
+
+compton --config /home/craig/.config/compton.conf &
 panel &
-tint2 &
+chromium &
+mopidy &
+#tint2 &
