@@ -28,8 +28,12 @@ super + {s,f,p}
 	bspc window -t {floating,fullscreen,pseudo_tiled}
 
 #previous window
-super + {grave,Tab}
-	bspc {window,desktop} -f last
+super + grave
+	bspc window -f last
+
+#previous desktop on current monitor
+super + Tab
+	bspc desktop -f last.local
 
 #swap position with last window
 super + apostrophe
@@ -107,6 +111,12 @@ super + @button{1-3}
 XF86AudioMute
 	amixer sset Master toggle
 
+button8
+	amixer sset 'Front Mic' unmute
+
+@button8
+	amixer sset 'Front Mic' mute
+
 XF86AudioNext
 	mpc -q next
 
@@ -141,7 +151,7 @@ super + alt + m
 	clementine
 
 super + alt + s
-	skype
+	apulse32 skype
 
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text --new-window

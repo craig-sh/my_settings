@@ -48,6 +48,7 @@ bspc config focused_frame_opacity 0.1
 
 bspc rule -a Skype desktop=X follow=on
 bspc rule -a keepass floating=on
+bspc rule -a Steam desktop=V follow=on floating=on
 
 compton --config /home/craig/.config/compton.conf &
 panel &
