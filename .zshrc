@@ -36,7 +36,7 @@ export ZSH=$HOME/.oh-my-zsh
 # much faster.
 # DISABLE_UNTRACKED_FILES_DIRTY="true"
 
-# Uncomment following line if you want to the command execution time stamp shown 
+# Uncomment following line if you want to the command execution time stamp shown
 # in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # HIST_STAMPS="mm/dd/yyyy"
@@ -155,6 +155,7 @@ REPORTTIME=10
 git config --global core.editor "~/Downloads/sublime_text_3/sublime_text -w"
 git config --global user.email "craig.henriques@mail.utoronto.ca"
 git config --global user.name "craig-sh"
+git config --global format.pretty oneline
 git config --global color.ui true
 
 ###################PROMPT

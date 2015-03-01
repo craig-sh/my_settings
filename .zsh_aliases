@@ -1,4 +1,6 @@
 alias subl="~/Downloads/sublime_text_3/sublime_text"
+alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
+alias startgains="cd /home/craig/my_gits/gains; source venv/bin/activate; cd dj_gains; python manage.py runserver"
 
 function rpan (){
     panel_pid=`ps x|grep "/home/craig/wm/panels/panel$"|awk '{print $1}'`
