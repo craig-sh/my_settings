@@ -91,7 +91,7 @@ super + {_,shift + }{1-9,0}
 ~button1
 	bspc pointer -g focus
 
-super + button{1-3}
+; super + button{1-3}
 	bspc pointer -g {move,resize_side,resize_corner}
 
 super + !button{1-3}
@@ -145,16 +145,19 @@ super + space
 	dmenu_run
 
 super + alt + c
-	chromium
+	chromium --disk-cache-dir=/tmp/chromium/cache
 
 super + alt + w
-	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" &
+	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" --disk-cache-dir=/tmp/chromium/cache &
 
 super + alt + m
 	clementine
 
 super + alt + s
 	apulse32 skype
+
+super + alt + p
+	wmname LG3D; source /home/craig/Downloads/pycharm-4.0.6/bin/pycharm.sh
 
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text --new-window

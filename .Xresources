@@ -17,10 +17,15 @@ URxvt.matcher.button: 1
 URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
 URxvt.url-select.launcher:  chromium
 URxvt.url-select.underline: true
-URxvt.keysym.C-u:           perl:url-select:select_next
-URxvt.keysym.C-Escape:      perl:keyboard-select:activate
+URxvt.keysym.C-o:           perl:url-select:select_next
+URxvt.keysym.C-a:           perl:keyboard-select:activate
 URxvt.keysym.C-s:           perl:keyboard-select:search
 
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+
+URxvt.clipboard.copycmd:  xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
 
 !! drop in Solarized colorscheme for Xresources/Xdefaults
 

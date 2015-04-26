@@ -5,8 +5,8 @@
 	"highlight_line": true,
 	"ignored_packages":
 	[
-		"GitGutter",
-		"Vintage"
+		"Vintage",
+		"GitGutter"
 	],
 	"rulers":
 	[
