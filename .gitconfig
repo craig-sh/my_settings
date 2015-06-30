@@ -1,0 +1,9 @@
+[user]
+	email = craig.henriques@mail.utoronto.com
+	name = craig-sh
+[format]
+	pretty = oneline
+[color]
+	ui = true
+[core]
+	editor = subl -w

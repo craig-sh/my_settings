@@ -147,12 +147,6 @@ compinit
 #Display info for processses that take longer than 10 secs
 REPORTTIME=10
 
-
-git config --global core.editor "subl -w"
-git config --global user.email "craig.henriques@mail.utoronto.com"
-git config --global user.name "craig-sh"
-git config --global color.ui true
-
 ###################PROMPT
 #PROMPT=$'%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%I:%M:%S]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)'
 #RPROMPT='[%*]'
@@ -177,6 +171,7 @@ PROMPT='%{$fg[yellow]%}%n@%{$fg[red]%}%m%{$fg[blue]%}%{$fg[cyan]%}[%.]%{$reset_c
 RPROMPT='[%*]'
 
 path+=/home/craig/workspace/repo/Sandbox/Tools
+path+=/home/craig/.local/bin
 
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases

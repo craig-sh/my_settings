@@ -73,9 +73,15 @@ if &t_Co > 2 || has("gui_running")
 
 endif
 
+set relativenumber
+
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
-
+  autocmd InsertEnter * :set number
+  autocmd InsertLeave * :set relativenumber
+"""""""""""""""Changing cursor based on mode""""""""""""""""""
+  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
   " Enable file type detection.
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
   " 'cindent' is on in C files, etc.
@@ -119,6 +125,7 @@ endif
 "Add numbers 
 set nu
 
+"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
 set laststatus=2
 set statusline +=%3*%y%*                "file type
 set statusline +=%4*\ %<%F%*            "full path
@@ -138,17 +145,11 @@ hi User5 guifg=#eeee40 guibg=#222222
 """""""""""""""Access System Clipboard"""""""""
 "set clipboard=unnamed
 """""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""Changing cursor based on mode""""""""""""""""""
-if has("autocmd")
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""Manual Tab setting""""""""""""""""""""""
 function SetTab(width)
   echom "Setting tab width to: "
   echom a:width
-  set shiftwidth=2
-  set tabstop=2
+  set shiftwidth=4
+  set tabstop=4
   set expandtab
 endfunction
