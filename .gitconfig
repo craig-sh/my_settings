@@ -1,0 +1,11 @@
+[core]
+	editor = ~/Downloads/sublime_text_3/sublime_text -w
+[user]
+	email = craig.henriques@mail.utoronto.ca
+	name = craig-sh
+[color]
+	ui = true
+[format]
+	pretty = oneline
+[push]
+	default = simple
