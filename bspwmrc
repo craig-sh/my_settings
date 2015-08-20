@@ -16,8 +16,8 @@ bspc config auto_cancel true
 
 bspc config normal_border_color "#504339"   # grey
 bspc config active_border_color "#2aa198"   # cyan
-bspc config focused_border_color "#268bd2"  # blue
-bspc config presel_border_color "#859900"   # green
+bspc config focused_border_color "#859900"   # green
+bspc config presel_border_color "#268bd2"  # blue
 bspc config urgent_border_color "#dc322f"   # red
 
 # Only set desktops after running configs, so that the ones that
