@@ -3,12 +3,15 @@
 #
 
 # Monitor Settings
+# Only works for 2 monitors
 # Switch monitors
 super + backslash
 	bspc monitor -f next
 
+# Send window to other monitor
 super + shift + backslash
-	bspc window -m next
+	bspc window -m next; \
+	bspc monitor -f next
 
 
 super + alt + Escape
@@ -151,13 +154,14 @@ super + alt + w
 	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" --disk-cache-dir=/tmp/chromium/cache &
 
 super + alt + m
-	clementine
+	source /usr/local/bin/init_music
 
 super + alt + s
 	apulse32 skype
 
 super + alt + p
-	wmname LG3D; source /home/craig/Downloads/pycharm-4.0.6/bin/pycharm.sh
+	wmname LG3D; \
+	source /usr/local/bin/pycharm
 
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text --new-window
