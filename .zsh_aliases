@@ -11,12 +11,6 @@ function rpan (){
     sudo kill ${panel_pid}
 }
 
-function init_music(){
-     mpc ls Local\ media|mpc add ;
-     mpc random on;
-     mpc play;
-}
-
 function init_mouse(){
     sudo razerd &;
     razercfg -r 1:1800;
