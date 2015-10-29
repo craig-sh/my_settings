@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME="eastwood"
+# ZSH_THEME="agnoster"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -53,17 +53,17 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/craig/wm/panels"
+export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/craig/wm/panels:/home/craig/.local/bin/"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 export EDITOR='vim'
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch x86_64"
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
@@ -129,10 +129,14 @@ bindkey -s "^[Oo" "/"
 # Finally, make sure the terminal is in application mode, when zle is
 # active. Only then are the values from $terminfo valid.
 function zle-line-init () {
-    echoti smkx
+    if (( ${+terminfo[smkx]} )); then
+        echoti smkx
+    fi
 }
 function zle-line-finish () {
-    echoti rmkx
+    if (( ${+terminfo[rmkx]} )); then
+        echoti rmkx
+    fi
 }
 zle -N zle-line-init
 zle -N zle-line-finish
@@ -148,19 +152,12 @@ compinit
 REPORTTIME=10
 
 
-git config --global core.editor "~/Downloads/sublime_text_3/sublime_text -w"
-git config --global user.email "craig.henriques@mail.utoronto.ca"
-git config --global user.name "craig-sh"
-git config --global format.pretty oneline
-git config --global color.ui true
-
 ###################PROMPT
 #PROMPT=$'%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%I:%M:%S]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)'
 #RPROMPT='[%*]'
 #ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}["
 #ZSH_THEME_GIT_PROMPT_SUFFIX="]%{$reset_color%}"
 #ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}*%{$fg[green]%}"
-#ZSH_THEME_GIT_PROMPT_CLEAN=""
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["
 ZSH_THEME_GIT_PROMPT_SUFFIX="]%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$reset_color%}"
@@ -173,12 +170,9 @@ git_custom_status() {
     echo "$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
   fi
 }
-# export PANEL_FIFO="/tmp/panel-fifo"
 PROMPT='%{$fg[yellow]%}%n@%{$fg[red]%}%m%{$fg[blue]%}%{$fg[cyan]%}[%.]%{$reset_color%}$(git_custom_status)%B$%b '
 RPROMPT='[%*]'
 
-path+=/home/craig/workspace/repo/Sandbox/Tools
-unset GREP_OPTIONS
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
 fi

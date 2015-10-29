@@ -68,8 +68,7 @@ if &t_Co > 2 || has("gui_running")
   colorscheme solarized
   "colorscheme default
   set hlsearch
-  "set my font
-  "set guifont=Bitstream\ Vera\ Sans\ Mono\ Bold\ 12
+  "set guifont=Inconsolatazi4
 
 endif
 
@@ -117,16 +116,18 @@ if !exists(":DiffOrig")
 endif
 
 "Add numbers
-set nu
+set relativenumber
+set number
+set rtp+=$HOME/.local/lib/python3.4/site-packages/powerline/bindings/vim/
 "let g:Powerline_symbols = 'fancy'
 set laststatus=2
-set statusline +=%3*%y%*                "file type
-set statusline +=%4*\ %<%F%*            "full path
-set statusline +=%2*%m%*                "modified flag
-set statusline +=%1*%=%5l%*             "current line
-set statusline +=%2*/%L%*               "total lines
-set statusline +=%1*%4v\ %*             "virtual column number
-set statusline +=%2*0x%04B\ %*          "character under curso
+"set statusline +=%3*%y%*                "file type
+"set statusline +=%4*\ %<%F%*            "full path
+"set statusline +=%2*%m%*                "modified flag
+"set statusline +=%1*%=%5l%*             "current line
+"set statusline +=%2*/%L%*               "total lines
+"set statusline +=%1*%4v\ %*             "virtual column number
+"set statusline +=%2*0x%04B\ %*          "character under curso
 
 "hi User1 guifg=#eea040 guibg=#222222
 "hi User2 guifg=#dd3333 guibg=#222222

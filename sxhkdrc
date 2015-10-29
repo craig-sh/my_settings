@@ -10,9 +10,7 @@ super + backslash
 
 # Send window to other monitor
 super + shift + backslash
-	bspc window -m next; \
-	bspc monitor -f next
-
+	bspc window -m next -f
 
 super + alt + Escape
 	bspc quit
@@ -121,16 +119,16 @@ button9
 	amixer sset 'Front Mic' mute
 
 XF86AudioNext
-	mpc -q next
+	/home/craig/my_settings/send_to_wine_spotify.sh 'Control_L+Right'
 
 XF86AudioPrev
-	mpc -q prev
+	/home/craig/my_settings/send_to_wine_spotify.sh 'Control_L+Left'
 
 XF86AudioStop
-	mpc -q stop
+	/home/craig/my_settings/send_to_wine_spotify.sh 'space'
 
 XF86AudioPlay
-	mpc -q toggle
+	/home/craig/my_settings/send_to_wine_spotify.sh 'space'
 
 XF86AudioRaiseVolume
     amixer set Master 2%+ unmute
@@ -154,14 +152,13 @@ super + alt + w
 	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" --disk-cache-dir=/tmp/chromium/cache &
 
 super + alt + m
-	source /usr/local/bin/init_music
+	playonlinux --run "Spotify"
 
 super + alt + s
 	apulse32 skype
 
 super + alt + p
-	wmname LG3D; \
-	source /usr/local/bin/pycharm
+	wmname LG3D && LD_PRELOAD=/lib64/libglib-2.0.so /usr/local/bin/pycharm
 
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text --new-window

@@ -2,13 +2,14 @@ alias subl="~/Downloads/sublime_text_3/sublime_text"
 alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
 alias gohearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate"
 alias golol="cd /home/craig/my_gits/WinrateForFamiliarChamps"
+alias goai="cd /home/craig/my_gits/ai_block_battle && source .venv/bin/activate && export PYTHONPATH=/home/craig/my_gits/ai_block_battle/src:$PYTHONPATH"
+alias mess="source ~/pyvenvs/messy/bin/activate"
 alias startgains="cd /home/craig/my_gits/gains; source venv/bin/activate; cd dj_gains; python manage.py runserver"
 alias starthearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate && python run.py -d;"
 alias pycharm="wmname LG3D; source /home/craig/Downloads/pycharm.sh"
 
 function rpan (){
-    panel_pid=`ps x|grep "/home/craig/wm/panels/panel$"|awk '{print $1}'`
-    sudo kill ${panel_pid}
+    pkill -f "panel"
 }
 
 function init_mouse(){
