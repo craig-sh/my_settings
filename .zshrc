@@ -53,7 +53,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/craig/wm/panels:/home/craig/.local/bin/"
+export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/craig/wm/panels:/home/craig/.local/bin/:/home/craig/my_settings/my_scripts"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
