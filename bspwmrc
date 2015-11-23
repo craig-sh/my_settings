@@ -29,6 +29,9 @@ bspc monitor DVI-D-0 -d VI VII VIII IX X
 bspc config -m ^2 top_padding 20
 bspc rule -a Skype desktop=X follow=off
 bspc rule -a keepass floating=on
+bspc rule -a "LoL Patcher" floating=on
+bspc rule -a "LoLClient.exe" floating=on
+
 bspc rule -a Steam desktop=V follow=off floating=on
 bspc rule -a spotify.exe desktop=X follow=off
 
