@@ -3,6 +3,7 @@ alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
 alias gohearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate"
 alias golol="cd /home/craig/my_gits/WinrateForFamiliarChamps"
 alias goai="cd /home/craig/my_gits/ai_block_battle && source .venv/bin/activate && export PYTHONPATH=/home/craig/my_gits/ai_block_battle/src:$PYTHONPATH"
+alias goansi="cd /home/craig/Documents/ansible && source ~/pyvenvs/ansible/bin/activate"
 alias mess="source ~/pyvenvs/messy/bin/activate"
 alias startgains="cd /home/craig/my_gits/gains; source venv/bin/activate; cd dj_gains; python manage.py runserver"
 alias starthearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate && python run.py -d;"
@@ -10,10 +11,4 @@ alias pycharm="wmname LG3D; source /home/craig/Downloads/pycharm.sh"
 
 function rpan (){
     pkill -f "panel"
-}
-
-function init_mouse(){
-    sudo razerd &;
-    razercfg -r 1:1800;
-    razercfg -R;
 }
