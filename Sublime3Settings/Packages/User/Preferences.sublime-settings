@@ -1,11 +1,17 @@
 {
+	"color_scheme": "Packages/User/Monokai Soda.tmTheme",
 	"ensure_newline_at_eof_on_save": true,
 	"font_face": "Inconsolata",
+	"font_options":
+	[
+		"bold"
+	],
 	"font_size": 15,
 	"highlight_line": true,
 	"ignored_packages":
 	[
 		"GitGutter",
+		"SublimeREPL",
 		"Vintage"
 	],
 	"rulers":
@@ -14,10 +20,12 @@
 		79
 	],
 	"tab_size": 4,
-	"translate_tabs_to_spaces": true,
+	"theme": "Soda Dark 3.sublime-theme",
+	"translate_tabs_to_spaces": false,
 	"trim_trailing_white_space_on_save": true,
 	"vintageous_hlsearch": true,
-	"vintageous_reset_mode_when_switching_tabs": false,
+	"vintageous_log_level": "info",
+	"vintageous_reset_mode_when_switching_tabs": true,
 	"vintageous_use_ctrl_keys": true,
 	"vintageous_use_sys_clipboard": true,
 	"vintageous_vintageous_ignorecase": false

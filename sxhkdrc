@@ -89,8 +89,8 @@ super + {Left,Down,Up,Right}
     xdo move {-x -20,-y +20,-y -20,-x +20}
 
 #send window to desktop n
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,window -d} '^{1-9,10}'
+super + {_,shift + }{1,2,3,4,5,6,7,8,9,0}
+	bspc {desktop -f,window -d} '{I,II,III,IV,V,VI,VII,VIII,IX,X}'
 
 ~button1
 	bspc pointer -g focus
@@ -105,14 +105,26 @@ super + @button{1-3}
 #
 # wm independent hotkeys
 #
-XF86AudioMute
-	amixer sset Master toggle
 
 button9
 	amixer sset 'Front Mic' unmute
 
 @button9
 	amixer sset 'Front Mic' mute
+
+# These audio controls only work if ONE pulse audio device is active
+	#amixer sset PCM toggle
+	#pactl set-sink-mute $(pactl list sinks short | awk "{print \$1}") toggle
+XF86AudioMute
+	pactl set-sink-mute $(cat /tmp/audio_sink) toggle
+
+  	#amixer set PCM 2%+ unmute
+XF86AudioRaiseVolume
+	pactl set-sink-volume $(cat /tmp/audio_sink) +2%
+
+  	#amixer set PCM 2%-
+XF86AudioLowerVolume
+	pactl set-sink-volume $(cat /tmp/audio_sink) -2%
 
 XF86AudioNext
 	/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'Control_L+Right'
@@ -126,12 +138,6 @@ XF86AudioStop
 XF86AudioPlay
 	/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'space'
 
-XF86AudioRaiseVolume
-    amixer set Master 2%+ unmute
-
-XF86AudioLowerVolume
-    amixer set Master 2%-
-
 XF86Sleep
 	sudo systemctl suspend
 
@@ -142,22 +148,35 @@ super + space
 	dmenu_run
 
 super + alt + c
-	chromium --disk-cache-dir=/tmp/chromium/cache
+	chromium
 
 super + alt + w
-	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" --disk-cache-dir=/tmp/chromium/cache &
+	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/"
 
 super + alt + m
+	pkill spotify.exe;\
 	playonlinux --run "Spotify"
 
+super + alt + n
+	nautilus
+
 super + alt + s
-	apulse32 skype
+	skype
 
 super + alt + p
 	wmname LG3D && LD_PRELOAD=/lib64/libglib-2.0.so /usr/local/bin/pycharm
 
+super + alt + i
+	wmname LG3D && LD_PRELOAD=/lib64/libglib-2.0.so /usr/local/bin/idea
+
+super + alt + a
+	wmname LG3D &&  LD_PRELOAD=/lib64/libglib-2.0.so /usr/local/bin/studio
+
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text --new-window
+
+super + alt + backslash
+	xset dpms force off
 
 # make sxhkd reload its configuration files:
 super + Escape

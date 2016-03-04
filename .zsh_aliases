@@ -1,4 +1,4 @@
-alias subl="~/Downloads/sublime_text_3/sublime_text"
+alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
 alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
 alias gohearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate"
 alias golol="cd /home/craig/my_gits/WinrateForFamiliarChamps"
@@ -8,7 +8,7 @@ alias mess="source ~/pyvenvs/messy/bin/activate"
 alias startgains="cd /home/craig/my_gits/gains; source venv/bin/activate; cd dj_gains; python manage.py runserver"
 alias starthearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate && python run.py -d;"
 alias pycharm="wmname LG3D; source /home/craig/Downloads/pycharm.sh"
-
+alias set_audio_sink="pactl list sinks short | awk '{print \$1}' > /tmp/audio_sink"
 function rpan (){
     pkill -f "panel"
 }

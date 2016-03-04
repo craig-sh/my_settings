@@ -65,10 +65,11 @@ if &t_Co > 2 || has("gui_running")
   "let g:solarized_termcolors=16
   syntax on
   set background=dark
-  colorscheme solarized
+  "colorscheme solarized
+  colorscheme gruvbox
   "colorscheme default
   set hlsearch
-  "set guifont=Inconsolatazi4
+  set guifont=Inconsolatazi4
 
 endif
 
@@ -118,7 +119,7 @@ endif
 "Add numbers
 set relativenumber
 set number
-set rtp+=$HOME/.local/lib/python3.4/site-packages/powerline/bindings/vim/
+set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
 "let g:Powerline_symbols = 'fancy'
 set laststatus=2
 "set statusline +=%3*%y%*                "file type
@@ -134,7 +135,7 @@ set laststatus=2
 "hi User3 guifg=#ff66ff guibg=#222222
 "hi User4 guifg=#a0ee40 guibg=#222222
 "hi User5 guifg=#eeee40 guibg=#222222
-hi Normal  ctermbg=none
+"hi Normal  ctermbg=none
 """""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""Access System Clipboard"""""""""
@@ -146,11 +147,21 @@ if has("autocmd")
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set tabstop=4       " The width of a TAB is set to 4.
+                    " Still it is a \t. It is just that
+                    " Vim will interpret it to be having
+                    " a width of 4.
+
+set shiftwidth=4    " Indents will have a width of 4
+
+set softtabstop=4   " Sets the number of columns for a TAB
+
+set expandtab       " always uses spaces instead of tab characters
 """""""""""""""""""""Manual Tab setting""""""""""""""""""""""
 function SetTab(width)
   echom "Setting tab width to: "
   echom a:width
-  set shiftwidth=2
-  set tabstop=2
+  set shiftwidth=4
+  set tabstop=4
   set expandtab
 endfunction

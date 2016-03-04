@@ -23,20 +23,26 @@ bspc config urgent_border_color "#dc322f"   # red
 # Only set desktops after running configs, so that the ones that
 # set defaults (ex. border_width and window gap) get applied
 
-bspc monitor DVI-I-1 -d I II III IV V
-bspc monitor DVI-D-0 -d VI VII VIII IX X
+bspc monitor -f left
+bspc monitor -n '<--'
+bspc monitor -d VI VII VIII IX X
+bspc config -m focused top_padding 20
 
-bspc config -m ^2 top_padding 20
+bspc monitor -f right
+bspc monitor -n '-->'
+bspc monitor -d I II III IV V
+
 bspc rule -a Skype desktop=X follow=off
-bspc rule -a keepass floating=on
-bspc rule -a "LoL Patcher" floating=on
-bspc rule -a "LoLClient.exe" floating=on
-
-bspc rule -a Steam desktop=V follow=off floating=on
+bspc rule -a keepass2 state=floating
+bspc rule -a Gimp state=floating
+bspc rule -a "LoL Patcher" state=floating
+bspc rule -a "LoLClient.exe" state=floating
+bspc rule -a "nautilus" state=floating
+bspc rule -a Steam desktop=V follow=off state=floating
 bspc rule -a spotify.exe desktop=X follow=off
 
 compton --config /home/craig/.config/compton.conf &
 panel &
-#stalonetray --icon-gravity E --grow-gravity E  -p true -i 18 --geometry 1x1+1450+0  --max-geometry 100x0 --transparent true &
+#stalonetray --icon-gravity E --grow-gravity E  -p true\
+# -i 18 --geometry 1x1+1450+0  --max-geometry 100x0 --transparent true &
 stalonetray &
-chromium --disk-cache-dir=/tmp/chromium/cache &

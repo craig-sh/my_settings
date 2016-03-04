@@ -1,0 +1,26 @@
+/dev/*
+/proc/*
+/sys/*
+/tmp/*
+/run/*
+/mnt/*
+/media/*
+/lost+found
+/home/craig/VirtualBox\ VMs
+/home/craig/VirtualBox VMs/
+/home/craig/PlayOnLinux\'s\ virtual\ drives
+/home/craig/Steam
+/home/craig/Desktop
+/home/craig/windrive
+/home/craig/.gvfs
+/home/craig/.cache
+/home/craig/.PlayOnLinux
+/home/craig/.local/share/Steam
+/home/craig/Downloads
+/home/craig/.vagrant.d
+/home/craig/.oh-my-zsh
+/home/craig/.cache
+/home/craig/.PyCharm*
+/home/craig/.config/chromium
+
+

@@ -7,16 +7,29 @@
 # Not sure why the xdotool key --window doesn't work for this which
 # is why it activates the spotify window before sending the command
 
+function get_mon {
+    echo `bspc query -M -m focused`
+}
+function get_desk {
+    echo `bspc query -D -d focused`
+}
 
-cur=`xdotool getactivewindow`
-# switch too the left monitor
-bspc monitor -f DVI-I-1
-left_cur=`xdotool getactivewindow`
+cur_mon=$(get_mon)
+bspc monitor -f left
+
+left_desk=$(get_desk)
 spot=`xdotool search --classname "spotify.exe"|head -n1`
 xdotool windowactivate $spot
+
 # Doesn't work w/o sleeping for some reason
 sleep 0.1
 xdotool key $1
 sleep 0.1
-xdotool windowactivate $left_cur
-xdotool windowactivate $cur
+
+if [ "$left_desk" != $(get_desk) ]; then
+    bspc desktop -f last.local
+fi
+
+if [ "$cur_mon" != $(get_mon) ]; then
+    bspc monitor -f last
+fi
