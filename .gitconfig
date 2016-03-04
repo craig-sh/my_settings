@@ -1,11 +1,17 @@
 [core]
-	editor = ~/Downloads/sublime_text_3/sublime_text -w
+	editor = vim
 [user]
-	email = craig.henriques@mail.utoronto.ca
-	name = craig-sh
+	#email = craig.s.henriques@gmail.com
+	#name = craig-sh
+	#email = craig.henriques@mail.utoronto.com
+	#name = craig-sh
+	name = chenriques3
+	email = craig.henriques@gatech.edu
 [color]
 	ui = true
 [format]
 	pretty = oneline
 [push]
 	default = simple
+[credential]
+	helper = cache --timeout=1440
