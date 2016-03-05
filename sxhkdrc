@@ -8,16 +8,16 @@
 super + backslash
 	bspc monitor -f next
 
-# Send window to other monitor
+# Send node to other monitor
 super + shift + backslash
-	bspc window -m next -f
+	bspc node -m next -f
 
 super + alt + Escape
 	bspc quit
 
-#close window
+#close node
 super + w
-	bspc window -c
+	bspc node -c
 
 super + n
 	bspc desktop -l next
@@ -26,39 +26,39 @@ super + b
 	bspc desktop -B
 
 super + {t,p,s,f}
-	bspc window -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -t {tiled,pseudo_tiled,~floating,fullscreen}
 
-#previous window
+#previous node
 super + grave
-	bspc window -f last
+	bspc node -f last
 
 #previous desktop on current monitor
 super + Tab
 	bspc desktop -f last.local
 
-#swap position with last window
+#swap position with last node
 super + apostrophe
-	bspc window -s last
+	bspc node -s last
 
 super + {o,i}
 	bspc control --record-history off; \
-	bspc window {older,newer} -f; \
+	bspc node {older,newer} -f; \
 	bspc control --record-history on
 
 super + y
-	bspc window -w last.!automatic
+	bspc node -w last.!automatic
 
-#make current window the biggest
+#make current node the biggest
 super + m
-	bspc window -s biggest
+	bspc node -s biggest
 
-#swap window towards direction hijk
+#swap node towards direction hijk
 super + {_,shift + }{h,j,k,l}
-	bspc window -{f,s} {left,down,up,right}
+	bspc node -{f,s} {west,south,north,east}
 
-#cycle between windows
+#cycle between nodes
 super + {_,shift + }c
-	bspc window -f {next,prev}
+	bspc node -f {next,prev}
 
 super + {comma,period}
 	bspc desktop -C {backward,forward}
@@ -71,16 +71,16 @@ super + bracket{left,right}
 	bspc desktop -f {prev,next}
 
 super + ctrl + {h,j,k,l}
-	bspc window -p {left,down,up,right}
+	bspc node -p {west,south,north,east}
 
 super + ctrl + {_,shift + }space
-	bspc {window -p cancel,desktop -c}
+	bspc {node -p cancel,desktop -c}
 
 super + alt + {h,j,k,l}
-	bspc window -e {left -10,down +10,up -10,right +10}
+	bspc node @{left,south,north,east} -r {10,+10,-10, +10}
 
 super + alt + shift + {h,j,k,l}
-	bspc window -e {right -10,up +10,down -10,left +10}
+	bspc nocde @{east,north,south,west } -r {-10,+10,-10,+10}
 
 super + ctrl + {1-9}
 	bspc window -r 0.{1-9}
@@ -88,9 +88,9 @@ super + ctrl + {1-9}
 super + {Left,Down,Up,Right}
     xdo move {-x -20,-y +20,-y -20,-x +20}
 
-#send window to desktop n
+#send node to desktop n
 super + {_,shift + }{1,2,3,4,5,6,7,8,9,0}
-	bspc {desktop -f,window -d} '{I,II,III,IV,V,VI,VII,VIII,IX,X}'
+	bspc {desktop -f,node -d} '{I,II,III,IV,V,VI,VII,VIII,IX,X}'
 
 ~button1
 	bspc pointer -g focus

@@ -11,8 +11,6 @@ bspc config window_gap          8
 bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
-bspc config auto_alternate true
-bspc config auto_cancel true
 
 bspc config normal_border_color "#504339"   # grey
 bspc config active_border_color "#2aa198"   # cyan
@@ -23,26 +21,24 @@ bspc config urgent_border_color "#dc322f"   # red
 # Only set desktops after running configs, so that the ones that
 # set defaults (ex. border_width and window gap) get applied
 
-bspc monitor -f left
+bspc monitor -f west
 bspc monitor -n '<--'
 bspc monitor -d VI VII VIII IX X
 bspc config -m focused top_padding 20
 
-bspc monitor -f right
+bspc monitor -f east
 bspc monitor -n '-->'
 bspc monitor -d I II III IV V
 
-bspc rule -a Skype desktop=X follow=off
-bspc rule -a keepass2 state=floating
-bspc rule -a Gimp state=floating
-bspc rule -a "LoL Patcher" state=floating
-bspc rule -a "LoLClient.exe" state=floating
-bspc rule -a "nautilus" state=floating
-bspc rule -a Steam desktop=V follow=off state=floating
-bspc rule -a spotify.exe desktop=X follow=off
+bspc rule -a "*:Skype" desktop=X follow=off
+bspc rule -a "*:keepass2" state=floating
+bspc rule -a "*:Gimp" state=floating
+bspc rule -a "*:LoL Patcher" state=floating
+bspc rule -a "*:LoLClient.exe" state=floating
+bspc rule -a "*:nautilus" state=floating
+bspc rule -a "*:Steam" desktop=V follow=off state=floating
+bspc rule -a "*:spotify.exe" desktop=X follow=off
 
 compton --config /home/craig/.config/compton.conf &
 panel &
-#stalonetray --icon-gravity E --grow-gravity E  -p true\
-# -i 18 --geometry 1x1+1450+0  --max-geometry 100x0 --transparent true &
 stalonetray &
