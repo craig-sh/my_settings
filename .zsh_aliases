@@ -1,4 +1,6 @@
-alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
+#alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
+#alias gos="source /home/craig/Documents/GeorgiaTech/7637KBAI/kbai/bin/activate && cd /home/craig/Documents/GeorgiaTech/7637KBAI/Project-Code-Python"
+alias gos="cd /home/craig/Documents/GeorgiaTech/6250Networks"
 alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
 alias gohearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate"
 alias golol="cd /home/craig/my_gits/WinrateForFamiliarChamps"

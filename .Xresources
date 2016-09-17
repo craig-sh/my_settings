@@ -12,7 +12,7 @@ URxvt*cursorBlink: true
 URxvt*underlineColor: yellow
 URxvt*font: xft:Inconsolata::Bold:size=13,xft:Inconsolata\ for\ Powerline
 !!URxvt*font: xft:Inconsolata::Bold:size=13,xft:DejaVu\ Sans\ Mono\ Bold\ for\ Powerline:size=13
-#URxvt*font: xft:Inconsolata::Bold:size=13,xft:PowerlineSymbols
+!!#URxvt*font: xft:Inconsolata::Bold:size=13,xft:PowerlineSymbols
 !!URxvt*.transparent: true
 !!URxvt*.shading: 25
 URxvt.depth: 32
@@ -22,14 +22,15 @@ URxvt*scrollBar: false
 URxvt*loginShell: true
 Urxvt*secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
 URxvt*saveLines: 5000
-URxvt*termName: rxvt-unicode
+URxvt*termName: rxvt-unicode-256color
+URxvt.256-color: true
 URxvt.matcher.button: 1
 URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
 URxvt.url-select.launcher:  chromium
 URxvt.url-select.underline: true
-URxvt.keysym.C-o:           perl:url-select:select_next
-URxvt.keysym.C-a:           perl:keyboard-select:activate
-URxvt.keysym.C-s:           perl:keyboard-select:search
+URxvt.keysym.Shift-Alt-O:           perl:url-select:select_next
+URxvt.keysym.Shift-Alt-A:           perl:keyboard-select:activate
+URxvt.keysym.Shift-Alt-S:           perl:keyboard-select:search
 
 URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste
@@ -115,3 +116,19 @@ URxvt.clipboard.pastecmd: xsel -ob
 !! white dark/light
 *color7:                S_base2
 *color15:               S_base3
+
+! ------------------------------------------------------------------------------
+! ROFI Color theme
+! ------------------------------------------------------------------------------
+! Use extended color scheme
+rofi.color-enabled:                  true
+! Color scheme for normal row
+rofi.color-normal:                   argb:00000000,  #D8DEE9 , argb:00000000,  #FAC863 ,  #1B2B34
+! Color scheme for urgent row
+rofi.color-urgent:                   argb:00000000,  #F99157 , argb:00000000,  #F99157 ,  #1B2B34
+! Color scheme for active row
+rofi.color-active:                   argb:00000000,  #6699CC , argb:00000000,  #6699CC ,  #1B2B34
+! Color scheme window
+rofi.color-window:                   argb:ee222222,  #FAC863 ,  #FAC863
+! Separator style (none, dash, solid)
+rofi.separator-style:                solid

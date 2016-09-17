@@ -6,6 +6,6 @@ xset dpms force off
 xrdb -merge  ~/.Xresources
 feh --bg-scale ~/my_settings/background.jpg
 numlockx &
-sxhkd -f 100 &
+sxhkd &
 exec bspwm
 ##exec /opt/kf5/bin/startkde

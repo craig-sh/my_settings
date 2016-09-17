@@ -18,7 +18,8 @@ cur_mon=$(get_mon)
 bspc monitor -f left
 
 left_desk=$(get_desk)
-spot=`xdotool search --classname "spotify.exe"|head -n1`
+#spot=`xdotool search --classname "spotify.exe"|head -n1`
+spot=`xdotool search --classname "spotify"|head -n1`
 xdotool windowactivate $spot
 
 # Doesn't work w/o sleeping for some reason

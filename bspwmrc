@@ -11,6 +11,7 @@ bspc config window_gap          8
 bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
+bspc config click_to_focus true
 
 bspc config normal_border_color "#504339"   # grey
 bspc config active_border_color "#2aa198"   # cyan
@@ -36,9 +37,10 @@ bspc rule -a "*:Gimp" state=floating
 bspc rule -a "*:LoL Patcher" state=floating
 bspc rule -a "*:LoLClient.exe" state=floating
 bspc rule -a "*:nautilus" state=floating
-bspc rule -a "*:Steam" desktop=V follow=off state=floating
-bspc rule -a "*:spotify.exe" desktop=X follow=off
+bspc rule -a "Steam" desktop=V follow=off state=floating
+bspc rule -a "*:Spotify" desktop=X follow=off
 
-compton --config /home/craig/.config/compton.conf &
+#compton --config /home/craig/.config/compton.conf &
 panel &
 stalonetray &
+echo "0" > /tmp/audio_sink
