@@ -31,18 +31,9 @@ for file in $files; do
 done
 
 #setting up bundles in pathogen
-mkdir $dir/.vim/bundle/
-cd $dir/.vim/bundle/
-git clone git://github.com/kien/ctrlp.vim.git
-git clone git://github.com/scrooloose/syntastic.git
-git clone git://github.com/Lokaltog/vim-easymotion.git
-git clone git://github.com/Lokaltog/vim-powerline.git
-git clone git://github.com/scrooloose/nerdtree.git
-#git clone git://github.com/altercation/vim-colors-solarized.git
-git clone git://github.com/morhetz/gruvbox.git
-git clone git://github.com/tpope/vim-fugitive.git
-git clone git://github.com/tpope/vim-sleuth.git
-
+#mkdir $dir/.vim/bundle/
+#cd $dir/.vim/bundle/
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 #location for kde's color scheme
 # cd ~/.kde/share/apps/konsole
 # git clone git://github.com/phiggins/konsole-colors-solarized.git

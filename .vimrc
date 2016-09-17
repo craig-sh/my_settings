@@ -18,16 +18,25 @@ endif
 " This must be first, because it changes other options as a side effect.
 set nocompatible
 
-""""""""""""""""""""""""""""" Pathogen
-filetype off " Pathogen needs to run before plugin indent on
-call pathogen#infect()
-"call pathogen#runtime_append_all_bundles()
-call pathogen#helptags() " generate helptags for everything in 'runtimepath'
-filetype plugin indent on
+""""""""""""""""""""""""""""" vim-plug
+call plug#begin()
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-powerline'
+Plug 'morhetz/gruvbox'
+Plug 'scrooloose/syntastic'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sleuth'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" On-demand loading
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+call plug#end()
 
 """"""""""Mappings""""""""
 let g:ctrlp_map = '<c-l>'
-let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_cmd = 'CtrlPMixed'
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
 
 imap jj <Esc>
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
@@ -69,7 +78,10 @@ if &t_Co > 2 || has("gui_running")
   colorscheme gruvbox
   "colorscheme default
   set hlsearch
-  set guifont=Inconsolatazi4
+  set guifont=Inconsolata\ for\ Powerline\ 14
+  set guioptions-=m  "menu bar
+  set guioptions-=T  "toolbar
+  set guioptions-=r  "scrollbar
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -156,7 +168,13 @@ set shiftwidth=4    " Indents will have a width of 4
 set softtabstop=4   " Sets the number of columns for a TAB
 
 set expandtab       " always uses spaces instead of tab characters
-"""""""""""""""""""""Manual Tab setting""""""""""""""""""""""
+
+""""""""""""""""""JEDI""""""""""""""""""
+let g:jedi#use_tabs_not_buffers = 1
+let g:jedi#goto_definitions_command = "<leader>r"
+
+
+"""""""""""""""""""""Manual Tab function""""""""""""""""""""""
 function SetTab(width)
   echom "Setting tab width to: "
   echom a:width
