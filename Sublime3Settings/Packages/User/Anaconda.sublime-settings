@@ -1,6 +1,14 @@
 {
 	"pep8": true,
 	"pep8_max_line_length": 279,
+    "pep8_ignore": 
+        [
+         "E402", /* Module imports not at top of file */ 
+         "E302"  /* 2 newlines above class definition */
+        ],
 	"auto_complete_triggers": [{"selector": "source.python - string - comment - constant.numeric", "characters": "."}],
-	"python_interpreter": "/usr/bin/python2"
+    "anaconda_gutter_theme": "dark",
+    "anaconda_linter_mark_style": "none",
+    "anaconda_linting_behaviour": "save-only",
+    "auto_formatting_timeout": 3
 }

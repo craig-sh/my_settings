@@ -65,7 +65,7 @@ if &t_Co > 2 || has("gui_running")
   "let g:solarized_termcolors=16
   syntax on
   set background=dark
-  colorscheme solarized
+  colorscheme gruvbox
   "colorscheme default
   set hlsearch
   "set my font
@@ -125,7 +125,7 @@ endif
 "Add numbers 
 set nu
 
-"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
 set laststatus=2
 set statusline +=%3*%y%*                "file type
 set statusline +=%4*\ %<%F%*            "full path

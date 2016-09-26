@@ -1,22 +1,77 @@
 {
-    // Whitespace - no tabs, trimming, end files with \n
-    "tab_size": 4,
-    "translate_tabs_to_spaces": true,
-    "trim_trailing_white_space_on_save": true,
-    "ensure_newline_at_eof_on_save": true,
-    "rulers": [ 72, 79 ],
-    "highlight_line": true,
-    "font_size": 11,
-    "ignored_packages":
-    [
-        "Vintage",
-        "GitGutter"
-    ],
-    "translate_tabs_to_spaces": false,
-    "vintageous_hlsearch": true,
-    "vintageous_reset_mode_when_switching_tabs": false,
-    "vintageous_use_ctrl_keys": true,
-    "vintageous_use_sys_clipboard": true,
-    "vintageous_vintageous_ignorecase": false
-
+	"auto_complete_triggers":
+	[
+		{
+			"characters": ".",
+			"selector": "source.python - string - comment - constant.numeric"
+		}
+	],
+	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Soft).tmTheme",
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
+		"*.sublime-workspace",
+		"*.min.js",
+		"*.~1~",
+		"*.~2~"
+	],
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		".bzr"
+	],
+	"font_face": "Ubuntu Mono",
+	"font_options":
+	[
+		"bold"
+	],
+	"font_size": 13,
+	"gruvbox_panel_xxs": true,
+	"gruvbox_scrollbar_width_xs": true,
+	"gruvbox_statusbar_xxs": true,
+	"gruvbox_tabs_xxs": true,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"All Autocomplete",
+		"GitGutter",
+		"PlainTasks",
+		"Vintage"
+	],
+	"rulers":
+	[
+		72,
+		79
+	],
+	"show_tab_close_buttons": false,
+	"tab_size": 4,
+	"theme": "Default.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"trim_trailing_white_space_on_save": false,
+	"vintageous_hlsearch": true,
+	"vintageous_reset_mode_when_switching_tabs": false,
+	"vintageous_use_ctrl_keys": true,
+	"vintageous_use_sys_clipboard": true,
+	"vintageous_vintageous_ignorecase": false
 }
