@@ -43,4 +43,5 @@ bspc rule -a "*:Spotify" desktop=X follow=off
 #compton --config /home/craig/.config/compton.conf &
 panel &
 stalonetray &
+dunst &
 echo "0" > /tmp/audio_sink
