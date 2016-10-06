@@ -1,10 +1,5 @@
 {
-	"theme": "gruvbox (Dark) (Medium).sublime-theme",
-	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Medium).tmTheme",
-	"gruvbox_panel_xxs": true,
-	"gruvbox_scrollbar_width_xs": true,
-	"gruvbox_statusbar_xxs": true,
-	"gruvbox_tabs_xxs": true,
+	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).tmTheme",
 	"ensure_newline_at_eof_on_save": true,
 	"font_face": "Inconsolata",
 	"font_options":
@@ -12,6 +7,10 @@
 		"bold"
 	],
 	"font_size": 15,
+	"gruvbox_panel_xxs": true,
+	"gruvbox_scrollbar_width_xs": true,
+	"gruvbox_statusbar_xxs": true,
+	"gruvbox_tabs_xxs": true,
 	"highlight_line": true,
 	"ignored_packages":
 	[
@@ -25,6 +24,7 @@
 		79
 	],
 	"tab_size": 4,
+	"theme": "gruvbox (Dark) (Medium).sublime-theme",
 	"translate_tabs_to_spaces": false,
 	"trim_trailing_white_space_on_save": true,
 	"vintageous_hlsearch": true,
