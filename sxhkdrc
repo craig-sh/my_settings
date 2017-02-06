@@ -85,7 +85,7 @@ alt + shift + {comma,period}
 	bspc node @/ -R {90,270}
 
 super + bracket{left,right}
-	bspc desktop -f {prev,next}
+	bspc desktop -f {prev,next}.local
 
 super + ctrl + {h,j,k,l}
 	bspc node -p {west,south,north,east}
@@ -113,30 +113,16 @@ super + alt + shift + {h,j,k,l}
 # move a floating window
 super + {Left,Down,Up,Right}
 	xdo move {-x -20,-y +20,-y -20,-x +20}
+
+# move a floating window
+super + shift + {Left,Down,Up,Right}
+	xdo move {-x -100,-y +100,-y -100,-x +100}
+
 ###################################################################
 
 #send node to desktop n
 super + {_,shift + }{1,2,3,4,5,6,7,8,9,0}
 	bspc {desktop -f,node -d} '{I,II,III,IV,V,VI,VII,VIII,IX,X}'
-
-###################################################################
-#
-# pointer focus/move/resize
-#
-###################################################################
-
-# focus
-#~button1
-#	bspc pointer -g focus
-
-# start move/resize
-super + button{1-3}
-	; bspc pointer -g {move,resize_side,resize_corner}
-
-# end move/resize
-super + @button{1-3}
-	bspc pointer -u
-###################################################################
 
 
 ###################################################################
@@ -197,7 +183,7 @@ super + alt + c
 	chromium
 
 super + alt + w
-	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/"
+	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" --force-device-scale-factor=1.75
 
 super + alt + m
 	spotify
@@ -220,8 +206,9 @@ super + alt + a
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text
 
+#	xset dpms force off
 super + alt + backslash
-	xset dpms force off
+	xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0
 
 # make sxhkd reload its configuration files:
 super + Escape

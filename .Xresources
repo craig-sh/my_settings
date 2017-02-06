@@ -2,7 +2,7 @@
 Xft.autohint: 0
 Xft.lcdfilter:  lcddefault
 Xft.hintstyle:  hintfull
-Xft.hinting: 1
+Xft.hinting: true
 Xft.antialias: 1
 Xft.rgba: rgb
 
@@ -28,9 +28,9 @@ URxvt.matcher.button: 1
 URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
 URxvt.url-select.launcher:  chromium
 URxvt.url-select.underline: true
-URxvt.keysym.Shift-Alt-O:           perl:url-select:select_next
-URxvt.keysym.Shift-Alt-A:           perl:keyboard-select:activate
-URxvt.keysym.Shift-Alt-S:           perl:keyboard-select:search
+URxvt.keysym.Shift-Control-J:           perl:url-select:select_next
+URxvt.keysym.Shift-Control-K:           perl:keyboard-select:activate
+URxvt.keysym.Shift-Control-L:       perl:keyboard-select:search
 
 URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste

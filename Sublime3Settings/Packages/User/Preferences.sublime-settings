@@ -1,6 +1,6 @@
 {
 	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).tmTheme",
-	"ensure_newline_at_eof_on_save": true,
+	"ensure_newline_at_eof_on_save": false,
 	"font_face": "Inconsolata",
 	"font_options":
 	[
@@ -24,8 +24,8 @@
 		79
 	],
 	"tab_size": 4,
-	"theme": "gruvbox (Dark) (Medium).sublime-theme",
-	"translate_tabs_to_spaces": false,
+	"theme": "gruvbox (Dark) (Hard).sublime-theme",
+	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
 	"vintageous_hlsearch": true,
 	"vintageous_reset_mode_when_switching_tabs": false,

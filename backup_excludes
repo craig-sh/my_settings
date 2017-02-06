@@ -6,6 +6,8 @@
 /mnt/*
 /media/*
 /lost+found
+/var/tmp
+/var/cache
 /home/craig/VirtualBox\ VMs
 /home/craig/VirtualBox VMs/
 /home/craig/PlayOnLinux\'s\ virtual\ drives

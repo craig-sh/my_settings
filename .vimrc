@@ -28,7 +28,7 @@ Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 call plug#end()
@@ -75,6 +75,7 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set background=dark
   "colorscheme solarized
+  let g:gruvbox_contrast_dark = 'hard'
   colorscheme gruvbox
   "colorscheme default
   set hlsearch
