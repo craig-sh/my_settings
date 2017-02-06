@@ -171,7 +171,7 @@ XF86Sleep
 	sudo systemctl suspend
 
 super + Return
-	urxvt
+	tabbed urxvt -embed
 
 super + space
 	rofi -show run

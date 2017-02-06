@@ -54,5 +54,5 @@ panel &
 stalonetray &
 dunst &
 /usr/lib/kdeconnectd &
-xautolock -time 15 -locker '/usr/local/bin/lock' &
+#xautolock -time 15 -locker '/usr/local/bin/lock' &
 echo "0" > /tmp/audio_sink
