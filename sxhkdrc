@@ -75,7 +75,7 @@ super + {_,shift + }{h,j,k,l}
 
 #cycle between nodes
 super + {_,shift + }c
-	bspc node -f {next,prev}
+	bspc node -f {next,prev}.local
 
 super + {comma,period}
 	bspc desktop -C {backward,forward}

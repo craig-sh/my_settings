@@ -12,7 +12,7 @@ bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
 bspc config click_to_focus true
-bspc config swallow_first_click true
+bspc config swallow_first_click false
 bspc config initial_polarity "second_child"
 
 bspc config pointer_modifier mod1
@@ -32,7 +32,6 @@ bspc config urgent_border_color "#dc322f"   # red
 bspc monitor -f west
 bspc monitor -n '<--'
 bspc monitor -d VI VII VIII IX X
-bspc config -m '<--' top_padding 20
 
 bspc monitor -f east
 bspc monitor -n '-->'
@@ -50,9 +49,9 @@ bspc rule -a "*:Spotify" desktop=X follow=off
 bspc rule -a "*:feh" state=floating
 
 #compton --config /home/craig/.config/compton.conf &
-panel &
-stalonetray &
 dunst &
+$HOME/.config/polybar/launch.sh &
+#stalonetray &
 /usr/lib/kdeconnectd &
 #xautolock -time 15 -locker '/usr/local/bin/lock' &
 echo "0" > /tmp/audio_sink
