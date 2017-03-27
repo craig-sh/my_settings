@@ -1,0 +1,17 @@
+" Timeout
+set ttimeout
+set ttimeoutlen=100    " Time to wait for a command (after leader for example).
+set history=768        " Number of things to remember in history.
+
+" Keymaps
+inoremap jj <Esc>
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
+
+
+" Settings
+set nu
+set relativenumber
+

@@ -199,7 +199,7 @@ super + alt + s
 	skype
 
 super + alt + p
-	wmname LG3D &&  /usr/local/bin/pycharm
+	wmname LG3D && pycharm
 
 super + alt + i
 	wmname LG3D &&  /usr/local/bin/idea
