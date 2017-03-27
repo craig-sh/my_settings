@@ -171,7 +171,11 @@ XF86Sleep
 	sudo systemctl suspend
 
 super + Return
-	tabbed urxvt -embed
+	termite
+	#tabbed urxvt -embed
+
+super + shift + Return
+	termite -e tmux
 
 super + space
 	rofi -show run
@@ -183,7 +187,7 @@ super + alt + c
 	chromium
 
 super + alt + w
-	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/" --force-device-scale-factor=1.75
+	bspc rule -a Chromium --one-shot desktop=V follow=on;chromium --app="https://web.whatsapp.com/" --force-device-scale-factor=1.75
 
 super + alt + m
 	spotify

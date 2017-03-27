@@ -24,6 +24,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'Lokaltog/vim-powerline'
 Plug 'morhetz/gruvbox'
+Plug 'dracula/vim'
 Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
@@ -73,10 +74,11 @@ if &t_Co > 2 || has("gui_running")
   "set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
   "let g:solarized_termcolors=16
   syntax on
-  set background=dark
+  "set background=dark
   "colorscheme solarized
   let g:gruvbox_contrast_dark = 'hard'
-  colorscheme gruvbox
+  "colorscheme gruvbox
+  color dracula
   "colorscheme default
   set hlsearch
   set guifont=Inconsolata\ for\ Powerline\ 14
