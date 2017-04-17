@@ -176,3 +176,7 @@ RPROMPT='[%*]'
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
 fi
+
+if [ -x /usr/bin/cowsay -a -x /usr/bin/fortune ]; then
+      fortune -s | cowsay
+fi

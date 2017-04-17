@@ -22,10 +22,13 @@ set nocompatible
 call plug#begin()
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Lokaltog/vim-easymotion'
-Plug 'Lokaltog/vim-powerline'
-Plug 'morhetz/gruvbox'
+" Plug 'Lokaltog/vim-powerline'
+Plug 'vim-airline/vim-airline'
+" Plug 'morhetz/gruvbox'
+Plug 'python-mode/python-mode'
+Plug 'davidhalter/jedi-vim'
 Plug 'dracula/vim'
-Plug 'scrooloose/syntastic'
+" Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
@@ -60,6 +63,9 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 
+set relativenumber
+set number
+
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
 
@@ -67,16 +73,29 @@ set incsearch		" do incremental searching
 if has('mouse')
   set mouse=a
 endif
+"""""" Python mode settings 
+" let g:pymode = 0
+let g:pymode_options = 0
+let g:pymode_indent = 1
+let g:pymode_folding = 0
+let g:pymode_motion = 1
+let g:pymode_doc = 0
+let g:pymode_lint = 0
+let g:pymode_rope = 0
+let g:pymode_rope_completion = 0
+let g:pymode_python = 'python3'
+
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
   "set t_Co=256 " Explicitly tell Vim that the terminal supports 256 colors
   "let g:solarized_termcolors=16
+  let python_highlight_all=1
   syntax on
-  "set background=dark
+  set background=dark
   "colorscheme solarized
-  let g:gruvbox_contrast_dark = 'hard'
+  "let g:gruvbox_contrast_dark = 'hard'
   "colorscheme gruvbox
   color dracula
   "colorscheme default
@@ -130,11 +149,9 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-"Add numbers
-set relativenumber
-set number
 set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
 "let g:Powerline_symbols = 'fancy'
+let g:airline_powerline_fonts = 1
 set laststatus=2
 "set statusline +=%3*%y%*                "file type
 "set statusline +=%4*\ %<%F%*            "full path
@@ -153,7 +170,7 @@ set laststatus=2
 """""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""Access System Clipboard"""""""""
-"set clipboard=unnamed
+set clipboard=unnamed
 """""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""Changing cursor based on mode""""""""""""""""""
 if has("autocmd")
