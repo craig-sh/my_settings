@@ -210,6 +210,9 @@ super + alt + a
 super + alt + z
 	~/Downloads/sublime_text_3/sublime_text
 
+super + alt + t
+	env GTK_THEME="Arc-Darker" thunderbird
+
 #	xset dpms force off
 super + alt + backslash
 	xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0

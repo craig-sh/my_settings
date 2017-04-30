@@ -40,10 +40,12 @@ bspc monitor -d VI VII VIII IX X
 
 bspc rule -a "*:Skype" desktop=V follow=off
 bspc rule -a "*:keepassx2" state=floating
+bspc rule -a "Thunderbird" state=floating
 bspc rule -a "*:Gimp" state=floating
 bspc rule -a "*:LoL Patcher" state=floating
 bspc rule -a "*:LoLClient.exe" state=floating
 bspc rule -a "*:nautilus" state=floating
+bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "*:Spotify" desktop=V follow=off
 bspc rule -a "*:feh" state=floating
