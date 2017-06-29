@@ -12,11 +12,13 @@
 		"Jinja2",
 		"MarkdownEditing",
 		"Modific",
+		"NeoVintageous",
 		"Origami",
 		"Package Control",
 		"PostgreSQL Syntax Highlighting",
 		"SideBarEnhancements",
 		"SublimeREPL",
+		"UnitTesting",
 		"Vintageous"
 	]
 }

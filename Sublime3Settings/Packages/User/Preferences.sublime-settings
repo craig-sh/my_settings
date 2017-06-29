@@ -15,8 +15,10 @@
 	"ignored_packages":
 	[
 		"GitGutter",
+		"Six",
 		"SublimeREPL",
-		"Vintage"
+		"Vintage",
+		"Vintageous"
 	],
 	"rulers":
 	[

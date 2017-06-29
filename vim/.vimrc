@@ -121,7 +121,7 @@ if has("autocmd")
   au!
 
   " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+  " autocmd FileType text setlocal textwidth=78
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -149,9 +149,9 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
+"set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
 "let g:Powerline_symbols = 'fancy'
-let g:airline_powerline_fonts = 1
+"let g:airline_powerline_fonts = 1
 set laststatus=2
 "set statusline +=%3*%y%*                "file type
 "set statusline +=%4*\ %<%F%*            "full path
@@ -170,7 +170,7 @@ set laststatus=2
 """""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""Access System Clipboard"""""""""
-set clipboard=unnamed
+set clipboard=unnamedplus
 """""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""Changing cursor based on mode""""""""""""""""""
 if has("autocmd")
