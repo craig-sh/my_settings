@@ -5,20 +5,24 @@
 	],
 	"installed_packages":
 	[
+		"AceJump",
 		"All Autocomplete",
 		"Anaconda",
+		"BetterFindBuffer",
+		"CursorRuler",
+		"Dracula Color Scheme",
 		"GitGutter",
 		"gruvbox",
 		"Jinja2",
-		"MarkdownEditing",
 		"Modific",
+		"MoveTab",
 		"NeoVintageous",
 		"Origami",
 		"Package Control",
+		"PlainTasks",
 		"PostgreSQL Syntax Highlighting",
+		"ProjectManager",
 		"SideBarEnhancements",
-		"SublimeREPL",
-		"UnitTesting",
-		"Vintageous"
+		"SublimeREPL"
 	]
 }

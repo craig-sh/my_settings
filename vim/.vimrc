@@ -24,22 +24,37 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'Lokaltog/vim-powerline'
 Plug 'vim-airline/vim-airline'
-" Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'python-mode/python-mode'
 Plug 'davidhalter/jedi-vim'
 Plug 'dracula/vim'
 " Plug 'scrooloose/syntastic'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
+" Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-session'
+Plug 'mileszs/ack.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 call plug#end()
 
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.exe,*.dll,*.obj,*.o,*.a,*.lib,*.so,*.dylib,*.ncb,*.sdf,*.suo,*.pdb,*.idb,.DS_Store,*.class,*.psd,*.db,*.sublime-workspace,*.min.js,*.~1~,*.~2~,*.~3~,*.~4~,*.~5~,tags
+
+""" Searching
+let g:ackprg = 'ag --vimgrep -p=/home/craig/.agignore'
+
+"""Saving sessions"""
+let g:session_autosave = 'yes'
+let g:session_autosave_periodic = 1
+
 """"""""""Mappings""""""""
 let g:ctrlp_map = '<c-l>'
-let g:ctrlp_cmd = 'CtrlPMixed'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
 nnoremap <leader>jd :YcmCompleter GoTo<CR>
 
 imap jj <Esc>
@@ -63,8 +78,9 @@ set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 
-set relativenumber
+" set relativenumber
 set number
+set cursorline
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -83,7 +99,7 @@ let g:pymode_doc = 0
 let g:pymode_lint = 0
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
-let g:pymode_python = 'python3'
+let g:pymode_trim_whitespaces = 0
 
 
 " Switch syntax highlighting on, when the terminal has colors
@@ -95,12 +111,14 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set background=dark
   "colorscheme solarized
-  "let g:gruvbox_contrast_dark = 'hard'
-  "colorscheme gruvbox
-  color dracula
+  let g:gruvbox_contrast_dark = 'hard'
+  colorscheme gruvbox
+  "color dracula
   "colorscheme default
   set hlsearch
-  set guifont=Inconsolata\ for\ Powerline\ 14
+  " set guifont=Inconsolata\ for\ Powerline\ 14
+  " set guifont=Source\ Code\ Pro\ Semibold\ 12
+  set guifont=Fira\ Code\ Medium\ 12
   set guioptions-=m  "menu bar
   set guioptions-=T  "toolbar
   set guioptions-=r  "scrollbar
@@ -149,9 +167,9 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-"set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
+set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
 "let g:Powerline_symbols = 'fancy'
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 set laststatus=2
 "set statusline +=%3*%y%*                "file type
 "set statusline +=%4*\ %<%F%*            "full path
@@ -193,12 +211,3 @@ set expandtab       " always uses spaces instead of tab characters
 let g:jedi#use_tabs_not_buffers = 1
 let g:jedi#goto_definitions_command = "<leader>r"
 
-
-"""""""""""""""""""""Manual Tab function""""""""""""""""""""""
-function SetTab(width)
-  echom "Setting tab width to: "
-  echom a:width
-  set shiftwidth=4
-  set tabstop=4
-  set expandtab
-endfunction

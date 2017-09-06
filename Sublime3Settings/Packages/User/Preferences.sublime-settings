@@ -1,12 +1,58 @@
 {
+	"auto_complete_triggers":
+	[
+		{
+			"characters": ".",
+			"selector": "source.python - string - comment - constant.numeric"
+		}
+	],
+	"close_windows_when_empty": false,
 	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).tmTheme",
-	"ensure_newline_at_eof_on_save": false,
-	"font_face": "Inconsolata",
+	"file_exclude_patterns":
+	[
+		"*.pyc",
+		"*.pyo",
+		"*.exe",
+		"*.dll",
+		"*.obj",
+		"*.o",
+		"*.a",
+		"*.lib",
+		"*.so",
+		"*.dylib",
+		"*.ncb",
+		"*.sdf",
+		"*.suo",
+		"*.pdb",
+		"*.idb",
+		".DS_Store",
+		"*.class",
+		"*.psd",
+		"*.db",
+		"*.sublime-workspace",
+		"*.min.js",
+		"*.~1~",
+		"*.~2~",
+		"*.~3~",
+		"*.~4~",
+		"*.~5~",
+		"tags",
+		"*.diff"
+	],
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		".bzr"
+	],
+	"font_face": "Ubuntu Mono",
 	"font_options":
 	[
 		"bold"
 	],
-	"font_size": 15,
+	"font_size": 13,
 	"gruvbox_panel_xxs": true,
 	"gruvbox_scrollbar_width_xs": true,
 	"gruvbox_statusbar_xxs": true,
@@ -14,9 +60,12 @@
 	"highlight_line": true,
 	"ignored_packages":
 	[
+		"actualvim",
+		"All Autocomplete",
+		"CursorRuler",
 		"GitGutter",
+		"PlainTasks",
 		"Six",
-		"SublimeREPL",
 		"Vintage",
 		"Vintageous"
 	],
@@ -25,10 +74,11 @@
 		72,
 		79
 	],
+	"show_tab_close_buttons": false,
 	"tab_size": 4,
-	"theme": "gruvbox (Dark) (Hard).sublime-theme",
+	"theme": "Default.sublime-theme",
 	"translate_tabs_to_spaces": true,
-	"trim_trailing_white_space_on_save": true,
+	"trim_trailing_white_space_on_save": false,
 	"vintageous_hlsearch": true,
 	"vintageous_reset_mode_when_switching_tabs": false,
 	"vintageous_use_ctrl_keys": true,
