@@ -24,23 +24,30 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'Lokaltog/vim-powerline'
 Plug 'vim-airline/vim-airline'
-" Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'python-mode/python-mode'
 Plug 'davidhalter/jedi-vim'
 Plug 'dracula/vim'
+Plug 'tomasiser/vim-code-dark'
 " Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
+Plug 'joshdick/onedark.vim'
+Plug 'mhinz/vim-startify'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 call plug#end()
 
+let g:startify_session_persistence = 1
 """"""""""Mappings""""""""
 let g:ctrlp_map = '<c-l>'
 let g:ctrlp_cmd = 'CtrlPMixed'
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
+let g:ctrlp_root_markers = ['.ctrlp']
+map <leader>t :CtrlPTag<CR>
+" nnoremap <leader>jd :YcmCompleter GoTo<CR>
+
 
 imap jj <Esc>
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
@@ -62,9 +69,10 @@ set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
-
+set cursorline
 set relativenumber
 set number
+set nowrap
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -73,7 +81,7 @@ set number
 if has('mouse')
   set mouse=a
 endif
-"""""" Python mode settings 
+"""""" Python mode settings
 " let g:pymode = 0
 let g:pymode_options = 0
 let g:pymode_indent = 1
@@ -84,6 +92,7 @@ let g:pymode_lint = 0
 let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_python = 'python3'
+let g:pymode_syntax_all = 1
 
 
 " Switch syntax highlighting on, when the terminal has colors
@@ -94,16 +103,20 @@ if &t_Co > 2 || has("gui_running")
   let python_highlight_all=1
   syntax on
   set background=dark
+  let g:onedark_termcolors=256
   "colorscheme solarized
-  "let g:gruvbox_contrast_dark = 'hard'
-  "colorscheme gruvbox
+  let g:gruvbox_contrast_dark='hard'
   color dracula
   "colorscheme default
+  "colorscheme onedark
+  " set guifont=Inconsolata\ for\ Powerline\ 14
+  " set guifont=Source\ Code\ Pro\ Semibold\ 14
+  set guifont=Hack\ 14
   set hlsearch
-  set guifont=Inconsolata\ for\ Powerline\ 14
   set guioptions-=m  "menu bar
   set guioptions-=T  "toolbar
   set guioptions-=r  "scrollbar
+
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -151,7 +164,7 @@ endif
 
 "set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
 "let g:Powerline_symbols = 'fancy'
-"let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 set laststatus=2
 "set statusline +=%3*%y%*                "file type
 "set statusline +=%4*\ %<%F%*            "full path
@@ -192,13 +205,3 @@ set expandtab       " always uses spaces instead of tab characters
 """"""""""""""""""JEDI""""""""""""""""""
 let g:jedi#use_tabs_not_buffers = 1
 let g:jedi#goto_definitions_command = "<leader>r"
-
-
-"""""""""""""""""""""Manual Tab function""""""""""""""""""""""
-function SetTab(width)
-  echom "Setting tab width to: "
-  echom a:width
-  set shiftwidth=4
-  set tabstop=4
-  set expandtab
-endfunction
