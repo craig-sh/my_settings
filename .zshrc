@@ -47,7 +47,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git python ubuntu vi-mode)
+plugins=(git python vi-mode)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -176,3 +176,8 @@ path+=/home/craig/.local/bin
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
 fi
+
+if [ -x /usr/games/cowsay -a -x /usr/games/fortune ]; then
+      fortune | cowsay
+fi
+

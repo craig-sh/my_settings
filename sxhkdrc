@@ -3,126 +3,244 @@
 #
 
 # Monitor Settings
+# Only works for 2 monitors
 # Switch monitors
 super + backslash
-	bspc monitor -f last
+	bspc monitor -f next
 
+# Send node to other monitor
 super + shift + backslash
-	bspc window -m last
-
+	bspc node -m next -f
 
 super + alt + Escape
 	bspc quit
 
-#close window
+#close node
 super + w
-	bspc window -c
+	bspc node -c
 
-super + t
+super + n
 	bspc desktop -l next
 
 super + b
 	bspc desktop -B
 
-super + {s,f,p}
-	bspc window -t {floating,fullscreen,pseudo_tiled}
+###################################################################
+#
+# state/flags
+#
+###################################################################
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
-#previous window
-super + {grave,Tab}
-	bspc {window,desktop} -f last
+# set the node flags
+super + ctrl + {x,y,z}
+	bspc node -g {locked,sticky,private}
+###################################################################
 
-#swap position with last window
+#previous node
+super + grave
+	bspc node -f last
+
+#previous desktop on current monitor
+super + Tab
+	bspc desktop -f last.local
+
+#swap position with last node
 super + apostrophe
-	bspc window -s last
+	bspc node -s last
 
+# focus the older or newer node in the focus history
 super + {o,i}
-	bspc control --record-history off; \
-	bspc window {older,newer} -f; \
-	bspc control --record-history on
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
 
-super + y
-	bspc window -w last.manual
-
-#make current window the biggest
+# alternate between the tiled and monocle layout
 super + m
-	bspc window -s biggest
+	bspc desktop -l next
 
-#swap window towards direction hijk
+# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
+super + y
+	bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
+
+# swap the current node and the biggest node
+super + g
+	bspc node -s biggest
+
+#swap node towards direction hijk
 super + {_,shift + }{h,j,k,l}
-	bspc window -{f,s} {left,down,up,right}
+	bspc node -{f,s} {west,south,north,east}
 
-#cycle between windows
+#cycle between nodes
 super + {_,shift + }c
-	bspc window -f {next,prev}
+	bspc node -f {next,prev}.local
 
 super + {comma,period}
 	bspc desktop -C {backward,forward}
 
 # Rotate leaves of tree
 alt + shift + {comma,period}
-	bspc desktop -R {90,270}
+	bspc node @/ -R {90,270}
 
 super + bracket{left,right}
-	bspc desktop -f {prev,next}
+	bspc desktop -f {prev,next}.local
 
 super + ctrl + {h,j,k,l}
-	bspc window -p {left,down,up,right}
+	bspc node -p {west,south,north,east}
 
 super + ctrl + {_,shift + }space
-	bspc {window -p cancel,desktop -c}
+	bspc {node -p cancel,desktop -c}
 
+# set layer of current node
+super + alt + {Up,Down,Right,Left}
+	bspc node --layer {above,below,normal,normal}
+
+###################################################################
+#
+# resize tiled/floating
+#
+###################################################################
+# expand the tiled space in the given direction
 super + alt + {h,j,k,l}
-	bspc window -e {left -10,down +10,up -10,right +10}
+	bspc node {@west -r -10,@south -r +10,@north -r -10,@east -r +10}
 
+# contract the tiled space in the given direction
 super + alt + shift + {h,j,k,l}
-	bspc window -e {right -10,up +10,down -10,left +10}
+	bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
 
-super + ctrl + {1-9}
-	bspc window -r 0.{1-9}
+# move a floating window
+super + {Left,Down,Up,Right}
+	xdo move {-x -20,-y +20,-y -20,-x +20}
+###################################################################
 
-#send window to desktop n
-super + {_,shift + }{1-9,0}
-	bspc {desktop -f,window -d} ^{1-9,10}
+#send node to desktop n
+super + {_,shift + }{1,2,3,4,5,6,7,8,9,0}
+	bspc {desktop -f,node -d} '{I,II,III,IV,V,VI,VII,VIII,IX,X}'
 
-~button1
-	bspc pointer -g focus
+###################################################################
+#
+# pointer focus/move/resize
+#
+###################################################################
 
+# focus
+#~button1
+#	bspc pointer -g focus
+
+# start move/resize
 super + button{1-3}
-	bspc pointer -g {move,resize_side,resize_corner}
+	; bspc pointer -g {move,resize_side,resize_corner}
 
-super + !button{1-3}
-	bspc pointer -t %i %i
-
+# end move/resize
 super + @button{1-3}
 	bspc pointer -u
+###################################################################
 
-##################Snapping
 
-
-######################
-
+###################################################################
 #
 # wm independent hotkeys
 #
+###################################################################
+
+button9
+	amixer sset 'Front Mic' unmute
+
+@button9
+	amixer sset 'Front Mic' mute
+
+# These audio controls only work if ONE pulse audio device is active
+	#amixer sset PCM toggle
+	#pactl set-sink-mute $(pactl list sinks short | awk "{print \$1}") toggle
+
+XF86AudioMute
+	amixer set Master toggle
+	#pactl set-sink-mute $(cat /tmp/audio_sink) toggle
+  	#amixer set PCM 2%+ unmute
+
+XF86AudioRaiseVolume
+	amixer -D pulse sset Master 5%+
+	#pactl set-sink-volume $(cat /tmp/audio_sink) +2%
+  	#amixer set PCM 2%-
+
+XF86AudioLowerVolume
+	amixer -D pulse sset Master 5%-
+	#pactl set-sink-volume $(cat /tmp/audio_sink) -2%
+
+#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'Control_L+Right'
+XF86AudioNext
+	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+
+#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'Control_L+Left'
+XF86AudioPrev
+	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+
+#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'space'
+XF86AudioStop
+	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop
+
+#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'space'
+XF86AudioPlay
+	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+
+XF86Sleep
+	sudo systemctl suspend
 
 super + Return
-	urxvt
+	gnome-terminal
+	#tabbed urxvt -embed
 
 super + space
-	dmenu_run
+	rofi -show run
+
+ctrl + space
+	rofi -show window
 
 super + alt + c
-	chromium
+	firefox
 
+super + alt + w
+	bspc rule -a Chromium --one-shot desktop=X follow=off;chromium --app="https://web.whatsapp.com/"
+
+# maxdevsrv
 super + alt + m
-	clementine
+	firefox --new-tab "http://maxdevsrv:8000/issues/`xsel|sed 's/#//g'`"
+
+super + d
+	# reserved for tdrop
+
+super + alt + n
+	nautilus
 
 super + alt + s
 	skype
 
-super + alt + z
-	~/Downloads/sublime_text_3/sublime_text --new-window
+super + alt + p
+	wmname LG3D &&  /usr/local/bin/pycharm
 
+super + alt + i
+	wmname LG3D &&  /usr/local/bin/idea
+
+super + alt + a
+	wmname LG3D &&  /usr/local/bin/studio
+
+super + alt + z
+	subl
+
+# Workarounds
+
+# Never disable numlock
+@Num_Lock
+	numlockx on
+
+super + alt + backslash
+	xset dpms force off
+
+super + p
+	echo 'x' > /dev/null
+ 
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
