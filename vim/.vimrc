@@ -28,6 +28,8 @@ Plug 'morhetz/gruvbox'
 Plug 'python-mode/python-mode'
 Plug 'davidhalter/jedi-vim'
 Plug 'dracula/vim'
+Plug 'joshdick/onedark.vim'
+Plug 'ervandew/supertab'
 " Plug 'scrooloose/syntastic'
 " Plug 'tpope/vim-fugitive'
 " Plug 'airblade/vim-gitgutter'
@@ -35,7 +37,9 @@ Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
 Plug 'xolox/vim-misc'
-Plug 'xolox/vim-session'
+Plug 'majutsushi/tagbar'
+" Plug 'xolox/vim-session'
+Plug 'mhinz/vim-startify'
 Plug 'mileszs/ack.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " On-demand loading
@@ -46,49 +50,8 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.ex
 
 """ Searching
 let g:ackprg = 'ag --vimgrep -p=/home/craig/.agignore'
+" let g:ackpreview = 0
 
-"""Saving sessions"""
-let g:session_autosave = 'yes'
-let g:session_autosave_periodic = 1
-
-""""""""""Mappings""""""""
-let g:ctrlp_map = '<c-l>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-nnoremap <leader>jd :YcmCompleter GoTo<CR>
-
-imap jj <Esc>
-" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
-" so that you can undo CTRL-U after inserting a line break.
-inoremap <C-U> <C-G>u<C-U>
-" Don't use Ex mode, use Q for formatting
-map Q gq
-"""""""""""""""""""""""""""""""""""""
-" allow backspacing over everything in insert mode
-set backspace=indent,eol,start
-set backupdir=~/vimtmp
-set directory=~/vimtmp
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
-
-" set relativenumber
-set number
-set cursorline
-
-" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
-" let &guioptions = substitute(&guioptions, "t", "", "g")
-
-" In many terminal emulators the mouse works just fine, thus enable it.
-if has('mouse')
-  set mouse=a
-endif
 """""" Python mode settings 
 " let g:pymode = 0
 let g:pymode_options = 0
@@ -101,6 +64,60 @@ let g:pymode_rope = 0
 let g:pymode_rope_completion = 0
 let g:pymode_trim_whitespaces = 0
 
+""""""""""""""""""JEDI""""""""""""""""""
+let g:jedi#use_tabs_not_buffers = 0
+" let g:jedi#goto_definitions_command = "<leader>R"
+" let g:pymode_rope_goto_definition_bind = "<C-]>"
+
+
+"""Saving sessions"""
+let g:startify_session_persistence = 1
+" let g:session_autosave = 'yes'
+" let g:session_autosave_periodic = 1
+" let g:session_autoload = 'no'
+
+""""""""""Mappings""""""""
+let g:ctrlp_map = '<c-l>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+nnoremap <leader>jd :YcmCompleter GoTo<CR>
+noremap <Leader>f :Ack! 
+noremap <Leader>t :CtrlPTag<CR>
+nmap <F8> :TagbarToggle<CR>
+imap jj <Esc>
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
+" Don't use Ex mode, use Q for formatting
+map Q gq
+"""""""""""""""""""""""""""""""""""""
+" allow backspacing over everything in insert mode
+set backspace=indent,eol,start
+set backupdir=~/vimtmp
+set directory=~/vimtmp
+set undofile
+set undodir=~/.vimundo
+if has("vms")
+  set nobackup		" do not keep a backup file, use versions instead
+else
+  set backup		" keep a backup file
+endif
+set history=500		" keep 50 lines of command line history
+set ruler		" show the cursor position all the time
+set showcmd		" display incomplete commands
+set incsearch		" do incremental searching
+
+set relativenumber
+set number
+set cursorline
+
+" For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
+" let &guioptions = substitute(&guioptions, "t", "", "g")
+
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -113,15 +130,23 @@ if &t_Co > 2 || has("gui_running")
   "colorscheme solarized
   let g:gruvbox_contrast_dark = 'hard'
   colorscheme gruvbox
+  "colorscheme onedark
   "color dracula
   "colorscheme default
   set hlsearch
   " set guifont=Inconsolata\ for\ Powerline\ 14
-  " set guifont=Source\ Code\ Pro\ Semibold\ 12
-  set guifont=Fira\ Code\ Medium\ 12
+  " set guifont=Inconsolata\ Bold\ 14
+  " set guifont=Source\ Code\ Pro\ 12
+  "set guifont=Source\ Code\ Pro\ Medium\ 12
+  " set guifont=Hack\ Bold\ 11
+  set guifont=Hack\ 11
+  "set guifont=Fira\ Code\ Medium\ 12
+  "set guifont=Ubuntu\ Mono\ Bold\ 13
   set guioptions-=m  "menu bar
   set guioptions-=T  "toolbar
   set guioptions-=r  "scrollbar
+  set guioptions-=R  "scrollbar when in vsplit
+  set guioptions-=e  "GUI tabs
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -207,7 +232,4 @@ set softtabstop=4   " Sets the number of columns for a TAB
 
 set expandtab       " always uses spaces instead of tab characters
 
-""""""""""""""""""JEDI""""""""""""""""""
-let g:jedi#use_tabs_not_buffers = 1
-let g:jedi#goto_definitions_command = "<leader>r"
-
+set nowrap
