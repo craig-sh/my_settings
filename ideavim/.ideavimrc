@@ -14,4 +14,4 @@ noremap <Right> <NOP>
 " Settings
 set nu
 set relativenumber
-
+set clipboard+=unnamed

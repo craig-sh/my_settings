@@ -1,5 +1,5 @@
 " An example for a vimrc file.
-"
+"t"
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
 " Last change:	2011 Apr 15
 "
@@ -28,27 +28,58 @@ Plug 'morhetz/gruvbox'
 Plug 'python-mode/python-mode'
 Plug 'davidhalter/jedi-vim'
 Plug 'dracula/vim'
-Plug 'tomasiser/vim-code-dark'
+Plug 'joshdick/onedark.vim'
+Plug 'ervandew/supertab'
 " Plug 'scrooloose/syntastic'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+"Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-sleuth'
-Plug 'joshdick/onedark.vim'
+Plug 'xolox/vim-misc'
+Plug 'majutsushi/tagbar'
+" Plug 'xolox/vim-session'
 Plug 'mhinz/vim-startify'
+Plug 'mileszs/ack.vim'
 " Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 " On-demand loading
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 call plug#end()
 
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.exe,*.dll,*.obj,*.o,*.a,*.lib,*.so,*.dylib,*.ncb,*.sdf,*.suo,*.pdb,*.idb,.DS_Store,*.class,*.psd,*.db,*.sublime-workspace,*.min.js,*.~1~,*.~2~,*.~3~,*.~4~,*.~5~,tags
+
+""" Searching
+let g:ackprg = 'ag --vimgrep'
+" let g:ackpreview = 0
+
+"""""" Python mode settings
+" let g:pymode = 0
+let g:pymode_options = 0
+let g:pymode_indent = 1
+let g:pymode_folding = 0
+let g:pymode_motion = 1
+let g:pymode_doc = 0
+let g:pymode_lint = 0
+let g:pymode_rope = 0
+let g:pymode_rope_completion = 0
+let g:pymode_python = 'python3'
+let g:pymode_syntax_all = 1
+
+""""""""""""""""""JEDI""""""""""""""""""
+let g:jedi#use_tabs_not_buffers = 0
+" let g:jedi#goto_definitions_command = "<leader>R"
+" let g:pymode_rope_goto_definition_bind = "<C-]>"
+
+"""Saving sessions"""
 let g:startify_session_persistence = 1
+
 """"""""""Mappings""""""""
 let g:ctrlp_map = '<c-l>'
-let g:ctrlp_cmd = 'CtrlPMixed'
-let g:ctrlp_root_markers = ['.ctrlp']
-map <leader>t :CtrlPTag<CR>
-" nnoremap <leader>jd :YcmCompleter GoTo<CR>
-
-
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 'ra'
+noremap <Leader>f :Ack! 
+noremap <Leader>t :CtrlPTag<CR>
+nmap <F8> :TagbarToggle<CR>
 imap jj <Esc>
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -56,16 +87,19 @@ inoremap <C-U> <C-G>u<C-U>
 " Don't use Ex mode, use Q for formatting
 map Q gq
 """""""""""""""""""""""""""""""""""""
+
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 set backupdir=~/vimtmp
 set directory=~/vimtmp
+set undofile
+set undodir=~/.vimundo
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
   set backup		" keep a backup file
 endif
-set history=50		" keep 50 lines of command line history
+set history=500		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
@@ -81,19 +115,6 @@ set nowrap
 if has('mouse')
   set mouse=a
 endif
-"""""" Python mode settings
-" let g:pymode = 0
-let g:pymode_options = 0
-let g:pymode_indent = 1
-let g:pymode_folding = 0
-let g:pymode_motion = 1
-let g:pymode_doc = 0
-let g:pymode_lint = 0
-let g:pymode_rope = 0
-let g:pymode_rope_completion = 0
-let g:pymode_python = 'python3'
-let g:pymode_syntax_all = 1
-
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -104,7 +125,6 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set background=dark
   let g:onedark_termcolors=256
-  "colorscheme solarized
   let g:gruvbox_contrast_dark='hard'
   color dracula
   "colorscheme default
@@ -116,7 +136,8 @@ if &t_Co > 2 || has("gui_running")
   set guioptions-=m  "menu bar
   set guioptions-=T  "toolbar
   set guioptions-=r  "scrollbar
-
+  set guioptions-=R  "scrollbar when in vsplit
+  set guioptions-=e  "GUI tabs
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -162,25 +183,8 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-"set rtp+=$HOME/.local/lib/python3.5/site-packages/powerline/bindings/vim/
-"let g:Powerline_symbols = 'fancy'
 let g:airline_powerline_fonts = 1
 set laststatus=2
-"set statusline +=%3*%y%*                "file type
-"set statusline +=%4*\ %<%F%*            "full path
-"set statusline +=%2*%m%*                "modified flag
-"set statusline +=%1*%=%5l%*             "current line
-"set statusline +=%2*/%L%*               "total lines
-"set statusline +=%1*%4v\ %*             "virtual column number
-"set statusline +=%2*0x%04B\ %*          "character under curso
-
-"hi User1 guifg=#eea040 guibg=#222222
-"hi User2 guifg=#dd3333 guibg=#222222
-"hi User3 guifg=#ff66ff guibg=#222222
-"hi User4 guifg=#a0ee40 guibg=#222222
-"hi User5 guifg=#eeee40 guibg=#222222
-"hi Normal  ctermbg=none
-"""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""Access System Clipboard"""""""""
 set clipboard=unnamedplus
@@ -202,6 +206,3 @@ set softtabstop=4   " Sets the number of columns for a TAB
 
 set expandtab       " always uses spaces instead of tab characters
 
-""""""""""""""""""JEDI""""""""""""""""""
-let g:jedi#use_tabs_not_buffers = 1
-let g:jedi#goto_definitions_command = "<leader>r"
