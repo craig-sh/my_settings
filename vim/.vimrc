@@ -20,7 +20,9 @@ set nocompatible
 
 """"""""""""""""""""""""""""" vim-plug
 call plug#begin()
-Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'Lokaltog/vim-easymotion'
 " Plug 'Lokaltog/vim-powerline'
 Plug 'vim-airline/vim-airline'
@@ -49,6 +51,16 @@ call plug#end()
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.exe,*.dll,*.obj,*.o,*.a,*.lib,*.so,*.dylib,*.ncb,*.sdf,*.suo,*.pdb,*.idb,.DS_Store,*.class,*.psd,*.db,*.sublime-workspace,*.min.js,*.~1~,*.~2~,*.~3~,*.~4~,*.~5~,tags
 
 """ Searching
+let g:fzf_command_prefix = 'Fzf'
+noremap <Leader>f :Ack! 
+" noremap <Leader><Leader>f :Ack! 
+noremap <Leader><Leader>f :FzfAg 
+noremap <Leader>t :FzfTags<CR>
+noremap <c-l> :FzfFiles<CR>
+noremap <Leader>l :FzfFiles<CR>
+noremap <Leader>b :FzfBuffers<CR>
+" [Tags] Command to generate tags file
+" let g:fzf_tags_command = 'ctags `cat ~/.ctags | tr "\n" " "` -R'
 let g:ackprg = 'ag --vimgrep'
 " let g:ackpreview = 0
 
@@ -74,12 +86,13 @@ let g:jedi#use_tabs_not_buffers = 0
 let g:startify_session_persistence = 1
 
 """"""""""Mappings""""""""
-let g:ctrlp_map = '<c-l>'
-let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_working_path_mode = 'ra'
-noremap <Leader>f :Ack! 
-noremap <Leader>t :CtrlPTag<CR>
+" let g:ctrlp_map = '<c-l>'
+" let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_working_path_mode = 'ra'
+" noremap <Leader>f :Ack! 
+" noremap <Leader>t :CtrlPTag<CR>
 nmap <F8> :TagbarToggle<CR>
+nmap <F3> :NERDTreeToggle<CR>
 imap jj <Esc>
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
