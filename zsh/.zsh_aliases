@@ -1,6 +1,8 @@
 #alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
 #alias gos="source /home/craig/Documents/GeorgiaTech/7637KBAI/kbai/bin/activate && cd /home/craig/Documents/GeorgiaTech/7637KBAI/Project-Code-Python"
-alias gos="cd /home/craig/Documents/GeorgiaTech/"
+alias yy="xclip -selection clipboard"
+alias yi=" tr -d '\n' | xclip -selection clipboard"
+alias gos="cd /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML && source activate ~/con/CS7641"
 alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
 alias gohearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate"
 alias golol="cd /home/craig/my_gits/WinrateForFamiliarChamps"
@@ -14,6 +16,7 @@ alias pycharm="wmname LG3D; source /home/craig/Downloads/pycharm.sh"
 alias send_to_phone="kdeconnect-cli --device ddb2c5878488731a --share"
 alias set_audio_sink="pactl list sinks short | awk '{print \$1}' > /tmp/audio_sink"
 alias powux="powerline-config tmux setup"
+alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
 function rpan (){
     pkill -f "panel"
 }

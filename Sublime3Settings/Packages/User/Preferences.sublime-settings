@@ -1,4 +1,5 @@
 {
+	"close_windows_when_empty": false,
 	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).tmTheme",
 	"ensure_newline_at_eof_on_save": false,
 	"font_face": "Inconsolata",

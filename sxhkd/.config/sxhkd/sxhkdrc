@@ -132,38 +132,29 @@ super + {_,shift + }{1,2,3,4,5,6,7,8,9,0}
 ###################################################################
 
 button9
-	amixer sset 'Front Mic' unmute
+	pactl set-source-mute @DEFAULT_SOURCE@ 0
 
 @button9
-	amixer sset 'Front Mic' mute
+	pactl set-source-mute @DEFAULT_SOURCE@ 1
 
-# These audio controls only work if ONE pulse audio device is active
-	#amixer sset PCM toggle
-	#pactl set-sink-mute $(pactl list sinks short | awk "{print \$1}") toggle
 XF86AudioMute
-	pactl set-sink-mute $(cat /tmp/audio_sink) toggle
+	pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-  	#amixer set PCM 2%+ unmute
 XF86AudioRaiseVolume
-	pactl set-sink-volume $(cat /tmp/audio_sink) +2%
+	pactl set-sink-volume @DEFAULT_SINK@ +2%
 
-  	#amixer set PCM 2%-
 XF86AudioLowerVolume
-	pactl set-sink-volume $(cat /tmp/audio_sink) -2%
+	pactl set-sink-volume @DEFAULT_SINK@ -2%
 
-#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'Control_L+Right'
 XF86AudioNext
 	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
 
-#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'Control_L+Left'
 XF86AudioPrev
 	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
 
-#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'space'
 XF86AudioStop
 	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop
 
-#/home/craig/my_settings/my_scripts/send_to_wine_spotify.sh 'space'
 XF86AudioPlay
 	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
 
@@ -208,7 +199,7 @@ super + alt + a
 	wmname LG3D &&  /usr/local/bin/studio
 
 super + alt + z
-	~/Downloads/sublime_text_3/sublime_text
+	/usr/bin/subl
 
 super + alt + t
 	env GTK_THEME="Arc-Darker" thunderbird
