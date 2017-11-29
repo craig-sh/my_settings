@@ -6,12 +6,18 @@
 call plug#begin()
 " TODO Only use ctlp for windows
 " File searching
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'mileszs/ack.vim'
-" TODO make sure this path exists,
-" use Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } otherwise
-Plug '/usr/bin/fzf'
-Plug 'junegunn/fzf.vim'
+if has('unix')
+  Plug 'mileszs/ack.vim'
+  " TODO make sure this path exists,
+  " use Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } otherwise
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+else
+  Plug 'ctrlpvim/ctrlp.vim'
+endif
+if has('nvim')
+  Plug 'roxma/nvim-completion-manager'
+endif
 " Movement
 Plug 'Lokaltog/vim-easymotion'
 Plug 'ervandew/supertab'
@@ -20,6 +26,7 @@ Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
+Plug 'vim-python/python-syntax'
 " Utilities
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-sensible' " Super common settings
@@ -96,10 +103,17 @@ imap jj <Esc>
 nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
 """ General Settings
-set backupdir=~/vimtmp
-set directory=~/vimtmp
 set undofile
-set undodir=~/.vimundo
+if has('nvim')
+  set termguicolors
+  set backupdir=~/vimtmp
+  set directory=~/vimtmp
+  set undodir=~/.vimundo
+else
+  set backupdir=~/nvimtmp
+  set directory=~/nvimtmp
+  set undodir=~/.nvimundo
+endif
 set clipboard=unnamedplus
 if has("vms")
   set nobackup " do not keep a backup file, use versions instead
@@ -122,14 +136,18 @@ endif
 
 " Also switch on highlighting the last used search pattern.
 if &t_Co > 2 || has("gui_running")
+  let g:python_highlight_space_errors=0
   let python_highlight_all=1
   syntax on
   set background=dark
-  let g:onedark_termcolors=256
-  let g:gruvbox_contrast_dark='hard'
-  colorscheme onedark
-  "colorscheme dracula
-  "colorscheme default
+  if !has('nvim')
+    set t_Co=256
+    let g:onedark_termcolors=256
+    let g:gruvbox_contrast_dark='hard'
+    colorscheme dracula
+  else
+    colorscheme onedark
+  endif
   " set guifont=Inconsolata\ for\ Powerline\ 14
   " set guifont=Source\ Code\ Pro\ Semibold\ 14
   set guifont=Hack\ 14
