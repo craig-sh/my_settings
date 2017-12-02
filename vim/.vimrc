@@ -42,27 +42,29 @@ call plug#end()
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.exe,*.dll,*.obj,*.o,*.a,*.lib,*.so,*.dylib,*.ncb,*.sdf,*.suo,*.pdb,*.idb,.DS_Store,*.class,*.psd,*.db,*.sublime-workspace,*.min.js,*.~1~,*.~2~,*.~3~,*.~4~,*.~5~,tags
 
-""" ctrp.vim
-" TODO Restrict to windows
-" let g:ctrlp_map = '<c-l>'
-" let g:ctrlp_cmd = 'CtrlP'
-" let g:ctrlp_working_path_mode = 'ra'
-" let g:ctrlp_root_markers = ['.ctrlp']
+if has('unix')
+  """ fzf.vim
+  let g:fzf_command_prefix = 'Fzf'
+  let g:fzf_tags_command = 'ctags -R'
+  noremap <Leader>t :FzfTags<CR>
+  noremap <Leader>r :FzfBTags<CR>
+  noremap <Leader>l :FzfFiles<CR>
+  noremap <c-l> :FzfFiles<CR>
+else
+  """ ctrp.vim
+   let g:ctrlp_map = '<c-l>'
+   let g:ctrlp_cmd = 'CtrlP'
+   let g:ctrlp_working_path_mode = 'ra'
+   let g:ctrlp_root_markers = ['.ctrlp']
+endif
 
 """ ack.vim
-let grepprg = 'rg --vimgrep'
 nnoremap <Leader>f :Ack!<Space>
 if executable('rg')
+  let grepprg = 'rg --vimgrep'
   let g:ackprg = 'rg --vimgrep'
 endif
 
-""" fzf.vim
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_tags_command = 'ctags -R'
-noremap <Leader>t :FzfTags<CR>
-noremap <Leader>r :FzfBTags<CR>
-noremap <Leader>l :FzfFiles<CR>
-noremap <c-l> :FzfFiles<CR>
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
@@ -106,13 +108,13 @@ nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :noh
 set undofile
 if has('nvim')
   set termguicolors
-  set backupdir=~/vimtmp
-  set directory=~/vimtmp
-  set undodir=~/.vimundo
-else
   set backupdir=~/nvimtmp
   set directory=~/nvimtmp
   set undodir=~/.nvimundo
+else
+  set backupdir=~/vimtmp
+  set directory=~/vimtmp
+  set undodir=~/.vimundo
 endif
 set clipboard=unnamedplus
 if has("vms")
@@ -128,6 +130,7 @@ set cursorline
 set relativenumber
 set number
 set nowrap
+set hlsearch
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -145,18 +148,17 @@ if &t_Co > 2 || has("gui_running")
     let g:onedark_termcolors=256
     let g:gruvbox_contrast_dark='hard'
     colorscheme dracula
+    set guioptions-=m  "menu bar
+    set guioptions-=T  "toolbar
+    set guioptions-=r  "scrollbar
+    set guioptions-=R  "scrollbar when in vsplit
+    set guioptions-=e  "GUI tabs
+    " set guifont=Inconsolata\ for\ Powerline\ 14
+    " set guifont=Source\ Code\ Pro\ Semibold\ 14
+    set guifont=Hack\ 14
   else
     colorscheme onedark
   endif
-  " set guifont=Inconsolata\ for\ Powerline\ 14
-  " set guifont=Source\ Code\ Pro\ Semibold\ 14
-  set guifont=Hack\ 14
-  set hlsearch
-  set guioptions-=m  "menu bar
-  set guioptions-=T  "toolbar
-  set guioptions-=r  "scrollbar
-  set guioptions-=R  "scrollbar when in vsplit
-  set guioptions-=e  "GUI tabs
 endif
 
 " Only do this part when compiled with support for autocommands.
