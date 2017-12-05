@@ -85,7 +85,7 @@ nnoremap <Leader>f :Ack!<Space>
 if executable('rg')
   let grepprg = 'rg --vimgrep'
   let g:ackprg = 'rg --vimgrep'
-else executable('ag')
+elseif executable('ag')
   let grepprg = 'ag --vimgrep'
   let g:ackprg = 'ag --vimgrep'
 endif
