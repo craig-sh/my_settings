@@ -189,6 +189,9 @@ super + alt + n
 super + alt + s
 	skype
 
+super + alt + v
+	termite -c ~/.config/termite/nvim_config -e nvim
+
 super + alt + p
 	wmname LG3D && pycharm
 

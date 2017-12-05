@@ -1,7 +1,9 @@
 """ External prorams to install
 " 1. exuberant ctags
 " 2. ack
-" 3. ripgrep
+" 3. ripgrep or ag
+" 4. pyls for Python help pip install --user python-language-server
+"    Optionally install pip install --user pyls-mypy
 """ Plugins
 call plug#begin()
 " TODO Only use ctlp for windows
@@ -16,21 +18,24 @@ else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
 if has('nvim')
-  Plug 'roxma/nvim-completion-manager'
+  Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'w0rp/ale'
+  Plug 'davidhalter/jedi-vim'
+  Plug 'ervandew/supertab'
 endif
 " Movement
 Plug 'Lokaltog/vim-easymotion'
-Plug 'ervandew/supertab'
 " Code feedback
-Plug 'davidhalter/jedi-vim'
 Plug 'tpope/vim-fugitive'
-Plug 'w0rp/ale'
 Plug 'majutsushi/tagbar'
 Plug 'vim-python/python-syntax'
 " Utilities
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-sensible' " Super common settings
 Plug 'tpope/vim-sleuth'  " Indentation settings
+Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 " Visuals
 Plug 'airblade/vim-gitgutter'
@@ -47,9 +52,26 @@ if has('unix')
   let g:fzf_command_prefix = 'Fzf'
   let g:fzf_tags_command = 'ctags -R'
   noremap <Leader>t :FzfTags<CR>
-  noremap <Leader>r :FzfBTags<CR>
+  noremap <Leader>b :FzfBTags<CR>
   noremap <Leader>l :FzfFiles<CR>
   noremap <c-l> :FzfFiles<CR>
+  nmap <leader><tab> <Plug>(fzf-maps-n)
+  " Customize fzf colors to match your color scheme
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
 else
   """ ctrp.vim
    let g:ctrlp_map = '<c-l>'
@@ -63,30 +85,39 @@ nnoremap <Leader>f :Ack!<Space>
 if executable('rg')
   let grepprg = 'rg --vimgrep'
   let g:ackprg = 'rg --vimgrep'
+else executable('ag')
+  let grepprg = 'ag --vimgrep'
+  let g:ackprg = 'ag --vimgrep'
 endif
 
+if has('nvim')
+" Required for operations modifying multiple buffers like rename.
+  set hidden
+  let g:LanguageClient_serverCommands = {
+      \ 'python': ['pyls']
+      \ }
 
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+  " Automatically start language servers.
+  let g:LanguageClient_autoStart = 1
 
+  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <Leader>d :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> <Leader>r :call LanguageClient_textDocument_rename()<CR>
+  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  " Use deoplete.
+  let g:deoplete#enable_at_startup = 1
+  " Auto - Close deoplete preview window
+  autocmd CompleteDone * silent! pclose!
+  " deoplete tab-complete
+  inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+else
 """ ale
-let g:airline#extensions#ale#enabled = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+  let g:airline#extensions#ale#enabled = 1
+  let g:ale_echo_msg_error_str = 'E'
+  let g:ale_echo_msg_warning_str = 'W'
+  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+endif
 
 """ vim-startify
 let g:startify_session_persistence = 1
@@ -189,7 +220,7 @@ if !exists(":DiffOrig")
 endif
 
 " Changing cursor based on mode
-if has("autocmd")
+if !has("nvim") && has("autocmd")
   let &t_SI = "\<Esc>]50;CursorShape=1\x7"
   let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 endif
