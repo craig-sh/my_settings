@@ -52,7 +52,7 @@ if has('unix')
   let g:fzf_command_prefix = 'Fzf'
   let g:fzf_tags_command = 'ctags -R'
   noremap <Leader>t :FzfTags<CR>
-  noremap <Leader>b :FzfBTags<CR>
+  noremap <Leader>b :FzfBuffers<CR>
   noremap <Leader>l :FzfFiles<CR>
   noremap <c-l> :FzfFiles<CR>
   nmap <leader><tab> <Plug>(fzf-maps-n)
