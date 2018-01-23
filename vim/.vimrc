@@ -139,12 +139,12 @@ nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :noh
 set undofile
 if has('nvim')
   set termguicolors
-  set backupdir=~/nvimtmp
-  set directory=~/nvimtmp
+  set backupdir=~/nvimtmp//
+  set directory=~/nvimtmp//
   set undodir=~/.nvimundo
 else
-  set backupdir=~/vimtmp
-  set directory=~/vimtmp
+  set backupdir=~/vimtmp//
+  set directory=~/vimtmp//
   set undodir=~/.vimundo
 endif
 set clipboard=unnamedplus
