@@ -11,7 +11,7 @@ bspc config window_gap          8
 bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
-bspc config click_to_focus true
+bspc config click_to_focus any
 bspc config swallow_first_click false
 bspc config initial_polarity "second_child"
 
@@ -50,10 +50,11 @@ bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "*:Spotify" desktop=V follow=off
 bspc rule -a "*:feh" state=floating
 
-#compton --config /home/craig/.config/compton.conf &
+#compton --config /home/craig/my_settings/compton/compton.conf -b
 dunst &
 $HOME/.config/polybar/launch.sh &
 #stalonetray &
 /usr/lib/kdeconnectd &
 #xautolock -time 15 -locker '/usr/local/bin/lock' &
+env GTK_THEME="Arc-Darker" thunderbird
 echo "0" > /tmp/audio_sink

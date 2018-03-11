@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Open a floating window running nvim,  paste text  wherever the cursor is on quitting nvim
+# if a non-empty argument is passed, the nvim buffer will hold the contents of the cipboard on start
+# Script adapted from i3 version at https://www.reddit.com/r/vim/comments/7pmv3d/workflows_that_work/dsnrrv1/
+
+_INPUT_FILE=$(mktemp)
+bspc rule --add "my_tmp_window" --one-shot state=floating monitor=last.!focused follow=on
+CURNODE=`bspc query -N -n`
+if [[ ! -z "${1}" ]]
+then
+    xclip -selection c -o >> $_INPUT_FILE
+fi
+termite --class "my_tmp_window" -c ~/.config/termite/nvim_config -e "nvim -c \"set noswapfile\" \"$_INPUT_FILE\""
+bspc node -f $CURNODE
+sleep 0.2
+# strip last byte, the newline. https://stackoverflow.com/a/12579554
+head -c -1 $_INPUT_FILE | xdotool type --clearmodifiers --delay 0 --file -
+rm $_INPUT_FILE

@@ -96,7 +96,8 @@ if has('nvim')
   let g:LanguageClient_serverCommands = {
       \ 'python': ['pyls']
       \ }
-
+  "  let g:LanguageClient_loadSettings = 1
+  "  let g:LanguageClient_settingsPath = '/home/craig/.config/nvim/langserver_settings.json'
   " Automatically start language servers.
   let g:LanguageClient_autoStart = 1
 
@@ -175,7 +176,6 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set background=dark
   if !has('nvim')
-    set t_Co=256
     let g:onedark_termcolors=256
     let g:gruvbox_contrast_dark='hard'
     colorscheme dracula

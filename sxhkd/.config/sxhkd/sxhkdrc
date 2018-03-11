@@ -174,37 +174,46 @@ super + space
 ctrl + space
 	rofi -show window
 
-super + alt + c
+super + e ; c
 	chromium
 
-super + alt + w
+super + e ; w
 	bspc rule -a Chromium --one-shot desktop=V follow=on;chromium --app="https://web.whatsapp.com/" --force-device-scale-factor=1.75
 
-super + alt + m
+super + e ; m
 	spotify
 
-super + alt + n
+super + e ; n
 	nautilus
 
-super + alt + s
+super + e ; s
 	skype
 
-super + alt + v
+super + e ; v
 	termite -c ~/.config/termite/nvim_config -e nvim
 
-super + alt + p
+super + e ; Return
+	termite -c ~/.config/termite/nvim_config
+
+super + e ; y
 	wmname LG3D && pycharm
 
-super + alt + i
+super + e ; j
 	wmname LG3D &&  /usr/local/bin/idea
 
-super + alt + a
+super + e ; a
 	wmname LG3D &&  /usr/local/bin/studio
 
-super + alt + z
+super + e; z
 	/usr/bin/subl
 
-super + alt + t
+super + e ; i
+	vim-hammer
+
+super + e ; p
+	vim-hammer paste
+
+super + e ; t
 	env GTK_THEME="Arc-Darker" thunderbird
 
 #	xset dpms force off
@@ -212,6 +221,6 @@ super + alt + backslash
 	xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0
 
 # make sxhkd reload its configuration files:
-super + Escape
+super + ctrl + Escape
 	pkill -USR1 -x sxhkd
 ###################################################################
