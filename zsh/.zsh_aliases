@@ -18,6 +18,7 @@ alias send_to_phone="kdeconnect-cli --device ddb2c5878488731a --share"
 alias set_audio_sink="pactl list sinks short | awk '{print \$1}' > /tmp/audio_sink"
 alias powux="powerline-config tmux setup"
 alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
+alias vim='nvim'
 function rpan (){
     pkill -f "panel"
 }

@@ -17,13 +17,14 @@ if has('unix')
 else
   Plug 'ctrlpvim/ctrlp.vim'
 endif
+
+Plug 'w0rp/ale'
+Plug 'davidhalter/jedi-vim'
 if has('nvim')
-  Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/neosnippet'
+  Plug 'zchee/deoplete-jedi'
 else
-  Plug 'w0rp/ale'
-  Plug 'davidhalter/jedi-vim'
   Plug 'ervandew/supertab'
 endif
 " Movement
@@ -91,24 +92,17 @@ elseif executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif
 
-if has('nvim')
-" Required for operations modifying multiple buffers like rename.
-  set hidden
-  let g:LanguageClient_serverCommands = {
-      \ 'python': ['pyls']
-      \ }
-  "  let g:LanguageClient_loadSettings = 1
-  "  let g:LanguageClient_settingsPath = '/home/craig/.config/nvim/langserver_settings.json'
-  " Automatically start language servers.
-  let g:LanguageClient_autoStart = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
-  nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> <Leader>d :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> <Leader>r :call LanguageClient_textDocument_rename()<CR>
-  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+if has('nvim')
   " Use deoplete.
   let g:deoplete#enable_at_startup = 1
+  " Disable jedi-vims completions so that deoplete-jedi can do it
+  let g:jedi#completions_enabled = 0
+  let g:jedi#auto_vim_configuration = 0
   " Auto - Close deoplete preview window
   autocmd CompleteDone * silent! pclose!
   " deoplete tab-complete
@@ -137,10 +131,6 @@ if has('nvim')
   """"""""""""
 else
 """ ale
-  let g:airline#extensions#ale#enabled = 1
-  let g:ale_echo_msg_error_str = 'E'
-  let g:ale_echo_msg_warning_str = 'W'
-  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 endif
 
 """ vim-startify
