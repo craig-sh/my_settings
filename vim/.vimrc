@@ -33,6 +33,7 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'
 Plug 'vim-python/python-syntax'
+Plug 'Shougo/echodoc.vim'
 " Utilities
 Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-sensible' " Super common settings
@@ -107,7 +108,7 @@ if has('nvim')
   autocmd CompleteDone * silent! pclose!
   " deoplete tab-complete
   inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-  
+
   " Snippet Settings
   let g:neosnippet#snippets_directory = '~/my_settings/vim-snips/'
   " disables all runtime snippets
@@ -143,6 +144,10 @@ nmap <F3> :NERDTreeToggle<CR>
 """ vim-airline
 let g:airline_powerline_fonts = 1
 set laststatus=2
+
+" echodoc
+set noshowmode
+let g:echodoc_enable_at_startup = 1
 
 """ Custom shortcuts
 imap jj <Esc>
