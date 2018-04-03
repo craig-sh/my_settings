@@ -55,10 +55,16 @@ if has('unix')
   let g:fzf_command_prefix = 'Fzf'
   let g:fzf_tags_command = 'ctags -R'
   noremap <Leader>t :FzfTags<CR>
+  noremap <Leader>m :FzfBTags<CR>
   noremap <Leader>b :FzfBuffers<CR>
   noremap <Leader>l :FzfFiles<CR>
   noremap <c-l> :FzfFiles<CR>
-  nmap <leader><tab> <Plug>(fzf-maps-n)
+
+  " Mapping selecting mappings
+  nmap <leader><leader><tab> <plug>(fzf-maps-n)
+  xmap <leader><leader><tab> <plug>(fzf-maps-x)
+  omap <leader><leader><tab> <plug>(fzf-maps-o)
+
   " Customize fzf colors to match your color scheme
   let g:fzf_colors =
   \ { 'fg':      ['fg', 'Normal'],
@@ -156,6 +162,9 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+" Tags
+map <leader><leader>mt :!/usr/local/bin/ctags -R .<CR>
+set tags=tags;/
 " Trim trailing whitespace from file
 nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
