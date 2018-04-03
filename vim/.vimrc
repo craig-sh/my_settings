@@ -151,6 +151,11 @@ let g:echodoc_enable_at_startup = 1
 
 """ Custom shortcuts
 imap jj <Esc>
+" Easier window movements
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 " Trim trailing whitespace from file
 nnoremap <silent> <F5> :let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>
 
