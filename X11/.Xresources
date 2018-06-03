@@ -5,6 +5,7 @@ Xft.hintstyle:  hintfull
 Xft.hinting: true
 Xft.antialias: 1
 Xft.rgba: rgb
+Xcursor.size: 16
 
 !! urxvt
 URxvt*buffered: true

@@ -40,15 +40,15 @@ super + ctrl + {x,y,z}
 ###################################################################
 
 #previous node
-super + grave
+ctrl + grave
 	bspc node -f last
 
 #previous desktop on current monitor
-super + Tab
+ctrl + Tab
 	bspc desktop -f last.local
 
 #swap position with last node
-super + apostrophe
+ctrl + apostrophe
 	bspc node -s last
 
 # focus the older or newer node in the focus history

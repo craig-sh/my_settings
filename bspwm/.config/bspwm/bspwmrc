@@ -55,6 +55,7 @@ dunst &
 $HOME/.config/polybar/launch.sh &
 #stalonetray &
 /usr/lib/kdeconnectd &
+/usr/bin/indicator-kdeconnect &
 #xautolock -time 15 -locker '/usr/local/bin/lock' &
 env GTK_THEME="Arc-Darker" thunderbird
 echo "0" > /tmp/audio_sink

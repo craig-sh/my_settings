@@ -39,12 +39,14 @@ Plug 'mhinz/vim-startify'
 Plug 'tpope/vim-sensible' " Super common settings
 Plug 'tpope/vim-sleuth'  " Indentation settings
 Plug 'tpope/vim-surround'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'jeetsukumaran/vim-pythonsense'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 " Visuals
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'morhetz/gruvbox'
-Plug 'dracula/vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'joshdick/onedark.vim'
 call plug#end()
 
@@ -155,6 +157,9 @@ set laststatus=2
 set noshowmode
 let g:echodoc_enable_at_startup = 1
 
+" onedark colorscheme
+let g:onedark_terminal_italics=1
+
 """ Custom shortcuts
 imap jj <Esc>
 " Easier window movements
@@ -195,6 +200,7 @@ set relativenumber
 set number
 set nowrap
 set hlsearch
+set hidden " Switch buffers without saving
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
