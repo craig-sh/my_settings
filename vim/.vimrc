@@ -217,6 +217,7 @@ if has('nvim')
   set backupdir=~/nvimtmp//
   set directory=~/nvimtmp//
   set undodir=~/.nvimundo
+  set inccommand=split
 else
   set backupdir=~/vimtmp//
   set directory=~/vimtmp//
@@ -322,8 +323,6 @@ noremap <Leader><Leader>mt :! ctags -R --languages=python<CR>
 imap <Leader><Leader>dt <C-R>=strftime('%Y%m%d')<CR>
 
 let g:ackprg = 'ag --vimgrep -p=/home/craig/.agignore'
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_enter = 0
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
