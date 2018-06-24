@@ -169,7 +169,8 @@ super + shift + Return
 	termite -e tmux
 
 super + space
-	rofi -show run
+	krunner
+	# rofi -show run
 
 ctrl + space
 	rofi -show window
