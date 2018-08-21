@@ -160,7 +160,7 @@ if has('nvim')
     let g:ale_echo_msg_error_str = 'E'
     let g:ale_echo_msg_warning_str = 'W'
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-    " """ Jedi
+    """" Jedi
     let g:jedi#auto_vim_configuration = 0
     let g:jedi#use_tabs_not_buffers = 0  " current default is 1.
     let g:jedi#completions_enabled = 0
@@ -217,7 +217,10 @@ if has('nvim')
   set backupdir=~/nvimtmp//
   set directory=~/nvimtmp//
   set undodir=~/.nvimundo
-  set inccommand=split
+  set inccommand=nosplit
+  set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+    \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+    \,sm:block-blinkwait175-blinkoff150-blinkon175
 else
   set backupdir=~/vimtmp//
   set directory=~/vimtmp//
