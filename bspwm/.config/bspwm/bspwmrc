@@ -8,7 +8,7 @@
 bspc config split_ratio         0.50
 bspc config border_width        6
 bspc config window_gap          8
-bspc config borderless_monocle  true
+bspc config borderless_monocle  false
 bspc config gapless_monocle     true
 bspc config focus_follows_pointer false
 bspc config click_to_focus any
@@ -40,7 +40,7 @@ bspc monitor -d VI VII VIII IX X
 
 bspc rule -a "*:Skype" desktop=V follow=off
 bspc rule -a "*:keepassx2" state=floating
-bspc rule -a "Thunderbird" state=floating
+#bspc rule -a "Thunderbird" state=floating
 bspc rule -a "*:Gimp" state=floating
 bspc rule -a "*:LoL Patcher" state=floating
 bspc rule -a "*:LoLClient.exe" state=floating
@@ -49,8 +49,11 @@ bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "*:Spotify" desktop=V follow=off
 bspc rule -a "*:feh" state=floating
+
+# KDE
 bspc rule -a plasmashell state=floating border=off layer=normal
 bspc rule -a krunner state=floating border=off
+bspc rule -a kmail desktop=IV
 
 ### TO DELETE
 #compton --config /home/craig/my_settings/compton/compton.conf -b
@@ -61,13 +64,13 @@ bspc rule -a krunner state=floating border=off
 
 #### COMMON
 /usr/lib/kdeconnectd &
-#/usr/bin/indicator-kdeconnect &
-
+sleep 1
+/usr/bin/indicator-kdeconnect &
+#thunderbird &
 
 ###### BAREBONES###
-# dunst &
-# $HOME/.config/polybar/launch.sh &
+dunst &
+$HOME/.config/polybar/launch.sh &
+#/usr/local/bin/launch_spotify &
+/home/craig/my_gits/window_restore/window_restore.py
 
-##### KDE
-/usr/sbin/kmail &
-/usr/local/bin/launch_spotify &

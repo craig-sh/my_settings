@@ -1,5 +1,5 @@
 [global]
-    font = Monospace 8
+    font = FantasqueSansMono 13
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -11,7 +11,7 @@
     # <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
     # If markup is not allowed, those tags will be stripped out of the
     # message.
-    allow_markup = yes
+    markup = full
 
     # The format of the message.  Possible variables are:
     #   %a  appname
@@ -20,6 +20,8 @@
     #   %i  iconname (including its path)
     #   %I  iconname (without its path)
     #   %p  progress value if set ([  0%] to [100%]) or nothing
+    #   %n  progress value if set without any extra characters
+    #   %%  Literal %
     # Markup is allowed
     format = "<b>%a</b> %p\n<b>%s</b>\n%b"
 
@@ -64,7 +66,8 @@
     # the top and down respectevly.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "760x5+1800+20"
+    geometry = "0x5-1+40"
+    #geometry = "50x5+50+20"
 
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
@@ -142,10 +145,13 @@
     browser = /usr/bin/firefox
 
     # Align icons left/right/off
-    icon_position = off
+    icon_position = left
+
+    # Scale larger icons down to this size, set to 0 to disable
+    max_icon_size = 64
 
     # Paths to default icons.
-    icon_folders = /usr/share/icons/Numix/16/status/:/usr/share/icons/Numix/16/devices/:/usr/share/icons/Numix/16/apps/
+    icon_path = /usr/share/icons/breeze/status/64/:/usr/share/icons/breeze/apps/64/:/usr/share/icons/breeze/actions/64/
 
 [frame]
     width = 3
@@ -175,20 +181,19 @@
 [urgency_low]
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#222222"
+    background = "#dfdfdf"
     foreground = "#888888"
     timeout = 10
 
 [urgency_normal]
-    background = "#285577"
-    foreground = "#ffffff"
+    background = "#ffffff"
+    foreground = "#333"
     timeout = 10
 
 [urgency_critical]
     background = "#900000"
     foreground = "#ffffff"
     timeout = 0
-
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

@@ -1,5 +1,5 @@
 #!/bin/bash
 
+bspc desktop -f V
 spotify &
-sleep 1
-wmctrl -r Spotify -t 4 
+sleep 2

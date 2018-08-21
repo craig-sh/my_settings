@@ -154,7 +154,7 @@ if has('nvim')
     nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
   else
     let g:ale_linters = {
-    \   'python': ['mypy', 'prospector'],
+    \   'python': ['prospector', 'mypy'],
     \}
     let g:airline#extensions#ale#enabled = 1
     let g:ale_echo_msg_error_str = 'E'
@@ -322,7 +322,6 @@ noremap <Leader><Leader>mt :! ctags -R --languages=python<CR>
 " insert the current datetime
 imap <Leader><Leader>dt <C-R>=strftime('%Y%m%d')<CR>
 
-let g:ackprg = 'ag --vimgrep -p=/home/craig/.agignore'
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
 

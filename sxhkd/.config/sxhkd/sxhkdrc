@@ -169,8 +169,8 @@ super + shift + Return
 	termite -e tmux
 
 super + space
-	krunner
-	# rofi -show run
+	rofi -show run
+	# krunner
 
 ctrl + space
 	rofi -show window
@@ -215,7 +215,7 @@ super + e ; p
 	vim-hammer paste
 
 super + e ; t
-	env GTK_THEME="Arc-Darker" thunderbird
+	thunderbird
 
 #	xset dpms force off
 super + alt + backslash
