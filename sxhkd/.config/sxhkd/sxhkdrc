@@ -165,6 +165,9 @@ super + Return
 	termite
 	#tabbed urxvt -embed
 
+ctrl + F1
+	xautolock -locknow
+
 super + shift + Return
 	termite -e tmux
 
