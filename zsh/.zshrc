@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-# ZSH_THEME="agnoster"
+ZSH_THEME="refined"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -47,13 +47,13 @@ export ZSH=$HOME/.oh-my-zsh
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git python zsh-autosuggestions vi-mode)
+plugins=(python zsh-autosuggestions vi-mode zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH="/usr/lib/lightdm/lightdm:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/craig/wm/panels:/home/craig/.local/bin/:/home/craig/my_settings/my_scripts:/home/craig/anaconda3/bin"
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/home/craig/wm/panels:/home/craig/.local/bin/:/home/craig/my_settings/my_scripts"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -150,28 +150,6 @@ compinit
 
 #Display info for processses that take longer than 10 secs
 REPORTTIME=10
-
-
-###################PROMPT
-#PROMPT=$'%{$fg_bold[green]%}%n@%m %{$fg[blue]%}%D{[%I:%M:%S]} %{$reset_color%}%{$fg[white]%}[%~]%{$reset_color%} $(git_prompt_info)'
-#RPROMPT='[%*]'
-#ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[green]%}["
-#ZSH_THEME_GIT_PROMPT_SUFFIX="]%{$reset_color%}"
-#ZSH_THEME_GIT_PROMPT_DIRTY=" %{$fg[red]%}*%{$fg[green]%}"
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$reset_color%}%{$fg[green]%}["
-ZSH_THEME_GIT_PROMPT_SUFFIX="]%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[red]%}*%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_CLEAN=""
-
-# Customized git status, oh-my-zsh currently does not allow render dirty status before branch
-git_custom_status() {
-  local cb=$(current_branch)
-  if [ -n "$cb" ]; then
-    echo "$(parse_git_dirty)$ZSH_THEME_GIT_PROMPT_PREFIX$(current_branch)$ZSH_THEME_GIT_PROMPT_SUFFIX"
-  fi
-}
-PROMPT='%{$fg[yellow]%}%n@%{$fg[red]%}%m%{$fg[blue]%}%{$fg[cyan]%}[%.]%{$reset_color%}$(git_custom_status)%B$%b '
-RPROMPT='[%*]'
 
 if [[ -r ~/.zsh_aliases ]]; then
   source ~/.zsh_aliases
