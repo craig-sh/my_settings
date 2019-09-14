@@ -1,12 +1,8 @@
 [core]
 	editor = vim
 [user]
-	#email = craig.s.henriques@gmail.com
-	#name = craig-sh
-	#email = craig.henriques@mail.utoronto.com
-	#name = craig-sh
-	name = chenriques3
-	email = craig.henriques@gatech.edu
+	email = craig.s.henriques@gmail.com
+	name = craig-sh
 [color]
 	ui = true
 [format]

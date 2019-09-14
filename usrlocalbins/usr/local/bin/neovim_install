@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+set -e
+
+chmod u+x /home/craig/Downloads/nvim.appimage
+sudo rm -f /usr/local/bin/nvim
+sudo ln -s /home/craig/Downloads/nvim.appimage /usr/local/bin/nvim
