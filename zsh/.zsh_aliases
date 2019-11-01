@@ -22,6 +22,7 @@ alias set_audio_sink="pactl list sinks short | awk '{print \$1}' > /tmp/audio_si
 alias powux="powerline-config tmux setup"
 alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
 alias vim='nvim'
+alias diskspace='sudo ncdu -x /'
 function rpan (){
     pkill -f "panel"
 }

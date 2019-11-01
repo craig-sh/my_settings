@@ -7,9 +7,10 @@
 call plug#begin()
 if has('nvim')
   Plug 'Shougo/neosnippet'
-  Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
   " Need to run :CocInstall coc-neosnippet coc-python coc-tag coc-syntax coc-highlight coc-lists
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'voldikss/vim-floaterm'
 endif
 
 " Movement
@@ -25,6 +26,9 @@ Plug 'lifepillar/pgsql.vim'
 Plug 'ambv/black'
 
 " Utilities
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sensible' " Super common settings
 Plug 'tpope/vim-sleuth'  " Indentation settings
 Plug 'tpope/vim-surround'
@@ -130,52 +134,68 @@ nnoremap <silent> <A-j> :wincmd j<CR>
 nnoremap <silent> <A-h> :wincmd h<CR>
 nnoremap <silent> <A-l> :wincmd l<CR>
 
-" File navigation mappings
 if has('nvim')
-  " Define mappings
-  autocmd FileType denite call s:denite_my_settings()
-  function! s:denite_my_settings() abort
-    nnoremap <silent><buffer><expr> <CR>
-    \ denite#do_map('do_action')
-    nnoremap <silent><buffer><expr> d
-    \ denite#do_map('do_action', 'delete')
-    nnoremap <silent><buffer><expr> p
-    \ denite#do_map('do_action', 'preview')
-    nnoremap <silent><buffer><expr> q
-    \ denite#do_map('quit')
-    nnoremap <silent><buffer><expr> i
-    \ denite#do_map('open_filter_buffer')
-    nnoremap <silent><buffer><expr> <Space>
-    \ denite#do_map('toggle_select').'j'
-  endfunction
-  call denite#custom#option('default', 'prompt', '❯')
-  "call denite#custom#option('default', 'wincol', '0')
-  "call denite#custom#option('default', 'winrow', &lines)
-  "call denite#custom#option('default', 'winwidth', &columns)
-  call denite#custom#option('default', 'highlight_matched_char', 'Function')
-  call denite#custom#option('default', 'highlight_matched_range', 'Function')
-  "call denite#custom#option('_', {'start_filter': v:true})
-  call denite#custom#source('grep', 'args', ['', '', '!'])
-
-  noremap <Leader>t :Denite tag -start-filter<CR>
-  noremap <Leader>m :Denite outline <CR>
-  noremap <Leader>b :Denite buffer<CR>
-  noremap <Leader>l :Denite file/rec -start-filter<CR>
-  noremap <c-l> :Denite file/rec -start-filter<CR>
-  inoremap <c-l> <ESC>:Denite file/rec -start-filter<CR>
-  nnoremap <leader>f :<C-u>Denite grep -start-filter<CR>
-  nnoremap <leader>fr :<C-u>Denite grep -resume <CR>
-  nnoremap <leader><leader>f :<C-u>DeniteCursorWord grep:.<CR>
+  " Terminal mode:
+  tnoremap <Esc> <C-\><C-n>
+  tnoremap <M-[> <Esc>
+  tnoremap <C-v><Esc> <Esc>
+  tnoremap <A-h> <c-\><c-n><c-w>h
+  tnoremap <A-j> <c-\><c-n><c-w>j
+  tnoremap <A-k> <c-\><c-n><c-w>k
+  tnoremap <A-l> <c-\><c-n><c-w>l
 endif
+
+" File navigation mappings
+""""FZF""""
+
+" Customize fzf colors to match your color scheme
+  let g:fzf_colors =
+  \ { 'fg':      ['fg', 'Normal'],
+    \ 'bg':      ['bg', 'Normal'],
+    \ 'hl':      ['fg', 'Comment'],
+    \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+    \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+    \ 'hl+':     ['fg', 'Statement'],
+    \ 'info':    ['fg', 'PreProc'],
+    \ 'border':  ['fg', 'Ignore'],
+    \ 'prompt':  ['fg', 'Conditional'],
+    \ 'pointer': ['fg', 'Exception'],
+    \ 'marker':  ['fg', 'Keyword'],
+    \ 'spinner': ['fg', 'Label'],
+    \ 'header':  ['fg', 'Comment'] }
+
+  noremap <Leader>t :Tags<CR>
+  noremap <Leader>m :BTags<CR>
+  noremap <Leader>b :Buffers<CR>
+  noremap <Leader>l :Files<CR>
+  noremap <c-l> :Files<CR>
+  if executable('rg')
+    nnoremap <Leader>f :Rg 
+  elseif executable('ag')
+    nnoremap <Leader>f :Ag 
+  endif
+
+  "Floatterm
+  let g:floaterm_position = 'bottomleft'
+  let g:floaterm_winblend = 10
+  let g:floaterm_width = winwidth(0)
+  let g:floaterm_height = float2nr(0.4 * winheight(0))
+  let g:floaterm_background = '#14151b'
+  noremap  <silent> <F12>           :FloatermToggle<CR>i
+  noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>i
+  tnoremap <silent> <F12>           <C-\><C-n>:FloatermToggle<CR>
 
 " make python tags
 noremap <Leader><Leader>mt :! ctags -R --languages=python<CR>
 " insert the current datetime
 imap <Leader><Leader>dt <C-R>=strftime('%Y%m%d')<CR>
 " relative path (src/foo.txt)
-nnoremap <leader>cf :let @+=expand("%")<CR>
+nnoremap <Leader>cf :let @+=expand("%")<CR>
 " PWD
-nnoremap <leader>pwd :! pwd<CR>
+nnoremap <Leader>pwd :! pwd<CR>
+
+nnoremap <Leader>d :SignifyHunkDiff<CR>
+nnoremap <Leader>du :SignifyHunkUndo<CR>
 
 " Always mistyping :w as :W...
 command! W w
