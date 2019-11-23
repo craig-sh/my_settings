@@ -39,8 +39,6 @@ bspc monitor -n '-->'
 bspc monitor -d VI VII VIII IX X
 
 bspc rule -a "*:Skype" desktop=V follow=off
-bspc rule -a "*:keepassx2" state=floating
-#bspc rule -a "Thunderbird" state=floating
 bspc rule -a "*:Gimp" state=floating
 bspc rule -a "*:LoL Patcher" state=floating
 bspc rule -a "*:LoLClient.exe" state=floating
@@ -55,12 +53,6 @@ bspc rule -a plasmashell state=floating border=off layer=normal
 bspc rule -a krunner state=floating border=off
 bspc rule -a kmail desktop=IV
 
-### TO DELETE
-#compton --config /home/craig/my_settings/compton/compton.conf -b
-# echo "0" > /tmp/audio_sink
-# env GTK_THEME="Arc-Darker" thunderbird
-##########
-
 #### COMMON
 /usr/lib/kdeconnectd &
 sleep 1
@@ -71,6 +63,4 @@ sleep 1
 xautolock -time 15 -locker '/usr/local/bin/lock' &
 dunst &
 $HOME/.config/polybar/launch.sh &
-#/usr/local/bin/launch_spotify &
-/home/craig/my_gits/window_restore/window_restore.py
 
