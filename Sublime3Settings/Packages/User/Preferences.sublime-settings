@@ -1,6 +1,6 @@
 {
 	"close_windows_when_empty": false,
-	"color_scheme": "Packages/gruvbox/gruvbox (Dark) (Hard).tmTheme",
+	"color_scheme": "Packages/Color Scheme - Default/Mariana.sublime-color-scheme",
 	"ensure_newline_at_eof_on_save": false,
 	"font_face": "Inconsolata",
 	"font_options":
@@ -21,18 +21,20 @@
 		"Vintage",
 		"Vintageous"
 	],
+	"neovintageous_build_version": 11100,
 	"rulers":
 	[
 		72,
 		79
 	],
 	"tab_size": 4,
-	"theme": "gruvbox (Dark) (Hard).sublime-theme",
+	"theme": "Adaptive.sublime-theme",
 	"translate_tabs_to_spaces": true,
 	"trim_trailing_white_space_on_save": true,
 	"vintageous_hlsearch": true,
 	"vintageous_reset_mode_when_switching_tabs": false,
 	"vintageous_use_ctrl_keys": true,
+	"vintageous_use_super_keys": false,
 	"vintageous_use_sys_clipboard": true,
 	"vintageous_vintageous_ignorecase": false
 }
