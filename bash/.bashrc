@@ -81,3 +81,5 @@ git config --global color.ui true
 
 #PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 export PATH=$PATH:$HOME/wm/panels 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

@@ -1,3 +1,10 @@
+# Common Commands
+## Colorize the ls output ##
+alias ls='ls --color=auto'
+## Use a long listing format ##
+alias ll='ls -la'
+alias vim='nvim'
+
 #alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
 #alias gos="source /home/craig/Documents/GeorgiaTech/7637KBAI/kbai/bin/activate && cd /home/craig/Documents/GeorgiaTech/7637KBAI/Project-Code-Python"
 alias yy="xclip -selection clipboard"
@@ -13,6 +20,7 @@ alias goansi="cd /home/craig/Documents/ansible && source ~/pyvenvs/ansible/bin/a
 alias gofeud="source ~/pyvenvs/rfeud/bin/activate && cd /home/craig/my_gits/rfeud"
 alias gowin="/home/craig/my_gits/window_restore && source ~/pyvenvs/win_restore/bin/activate"
 alias gomygits="cd /home/craig/my_gits"
+alias gopylint="pyenv shell 3.7.5 && source ~/pyvenvs/pylint_env/bin/activate && cd ~/my_gits/pylint/"
 alias mess="source ~/pyvenvs/messy/bin/activate"
 alias startgains="cd /home/craig/my_gits/gains; source venv/bin/activate; cd dj_gains; python manage.py runserver"
 alias starthearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate && python run.py -d;"
@@ -21,7 +29,6 @@ alias send_to_phone="kdeconnect-cli --device ddb2c5878488731a --share"
 alias set_audio_sink="pactl list sinks short | awk '{print \$1}' > /tmp/audio_sink"
 alias powux="powerline-config tmux setup"
 alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
-alias vim='nvim'
 alias diskspace='sudo ncdu -x /'
 function rpan (){
     pkill -f "panel"
