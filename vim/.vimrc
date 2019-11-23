@@ -47,10 +47,12 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.ex
 
 if executable('rg')
   let grepprg = 'rg --vimgrep'
+  " Ignore necessary files
+  let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*" --glob "!.bzr/*"'
 elseif executable('ag')
   let grepprg = 'ag --vimgrep'
 endif
-
+let g:python3_host_prog='/usr/bin/python'
 """ General Settings
 set list
 set undofile
@@ -181,8 +183,8 @@ endif
   let g:floaterm_width = winwidth(0)
   let g:floaterm_height = float2nr(0.4 * winheight(0))
   let g:floaterm_background = '#14151b'
-  noremap  <silent> <F12>           :FloatermToggle<CR>i
-  noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>i
+  noremap  <silent> <F12>           :FloatermToggle<CR>
+  noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>
   tnoremap <silent> <F12>           <C-\><C-n>:FloatermToggle<CR>
 
 " make python tags
