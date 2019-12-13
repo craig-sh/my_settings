@@ -20,9 +20,9 @@ export ARCHFLAGS="-arch x86_64"
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-setopt appendhistory extendedglob nomatch notify hist_ignore_all_dups
+HISTSIZE=10000
+SAVEHIST=10000
+setopt inc_append_history extendedglob nomatch notify hist_ignore_all_dups
 bindkey -v
 bindkey '^P' up-history
 bindkey '^N' down-history
@@ -85,6 +85,7 @@ zle -N down-line-or-beginning-search
 
 
 zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'l:|=* r:|=*'
 zstyle :compinstall filename '~/.zshrc'
 
 autoload -Uz compinit
@@ -114,3 +115,4 @@ zplugin light zsh-users/zsh-autosuggestions
 zplugin light zdharma/fast-syntax-highlighting
 zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
 zplugin light trapd00r/LS_COLORS
+zplugin light MichaelAquilina/zsh-auto-notify
