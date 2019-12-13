@@ -23,7 +23,7 @@ Plug 'vim-python/python-syntax'
 Plug 'jeetsukumaran/vim-pythonsense'
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
-Plug 'ambv/black'
+Plug 'psf/black'
 
 " Utilities
 
@@ -171,6 +171,8 @@ endif
   noremap <Leader>b :Buffers<CR>
   noremap <Leader>l :Files<CR>
   noremap <c-l> :Files<CR>
+  " Netrw will map refresh to c-l if we don't define it first
+  nmap <unique> <leader><leader>q <Plug>NetrwRefresh
   if executable('rg')
     nnoremap <Leader>f :Rg 
   elseif executable('ag')
@@ -199,10 +201,14 @@ nnoremap <Leader>pwd :! pwd<CR>
 nnoremap <Leader>d :SignifyHunkDiff<CR>
 nnoremap <Leader>du :SignifyHunkUndo<CR>
 
+nnoremap <Leader>ss :syntax sync fromstart<CR>
+
 " Always mistyping :w as :W...
 command! W w
 nmap <C-j> <Plug>(signify-next-hunk)
 nmap <C-k> <Plug>(signify-prev-hunk)
+
+let g:black_virtualenv = '/home/craig/.local/pipx/venvs/black'
 
 let bzr_vcs = 0
 
