@@ -18,12 +18,14 @@ Plug 'Lokaltog/vim-easymotion'
 
 " Code feedback
 Plug 'mhinz/vim-signify'
-Plug 'majutsushi/tagbar'
+Plug 'tpope/vim-fugitive'
+Plug 'liuchengxu/vista.vim'
 Plug 'vim-python/python-syntax'
 Plug 'jeetsukumaran/vim-pythonsense'
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
 Plug 'psf/black'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " Utilities
 
@@ -36,6 +38,7 @@ Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mbbill/undotree'
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 
 " Visuals
 Plug 'vim-airline/vim-airline'
@@ -172,7 +175,7 @@ endif
   noremap <Leader>l :Files<CR>
   noremap <c-l> :Files<CR>
   " Netrw will map refresh to c-l if we don't define it first
-  nmap <unique> <leader><leader>q <Plug>NetrwRefresh
+  nnoremap <leader><leader>q <Plug>NetrwRefresh
   if executable('rg')
     nnoremap <Leader>f :Rg 
   elseif executable('ag')
@@ -208,9 +211,12 @@ command! W w
 nmap <C-j> <Plug>(signify-next-hunk)
 nmap <C-k> <Plug>(signify-prev-hunk)
 
+" Semshi
+let g:semshi#simplify_markup = v:false
+
 let g:black_virtualenv = '/home/craig/.local/pipx/venvs/black'
 
-let bzr_vcs = 0
+let bzr_vcs = 1
 
 if bzr_vcs
   " qlog of current file
@@ -223,6 +229,29 @@ if bzr_vcs
   noremap <Leader><Leader>qb :! bzr qblame % -L <C-r>=line('.')<CR> &<CR>
   " qdiff of all files
   noremap <Leader><Leader>fd :! bzr qdiff &<CR>
+endif
+
+
+if exists('g:started_by_firenvim')
+  " Mapping to escape firenvims focus in browser
+  nnoremap <Esc><Esc> :call firenvim#focus_page()<CR>
+  " Autosync firenvim buffer
+  let g:dont_write = v:false
+  function! My_Write(timer) abort
+          let g:dont_write = v:false
+          write
+  endfunction
+
+  function! Delay_My_Write() abort
+          if g:dont_write
+                  return
+          end
+          let g:dont_write = v:true
+          call timer_start(10000, 'My_Write')
+  endfunction
+
+  au TextChanged * ++nested call Delay_My_Write()
+  au TextChangedI * ++nested call Delay_My_Write()
 endif
 
 " Convenient command to see the difference between the current buffer and the
