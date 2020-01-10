@@ -216,20 +216,19 @@ let g:semshi#simplify_markup = v:false
 
 let g:black_virtualenv = '/home/craig/.local/pipx/venvs/black'
 
-let bzr_vcs = 1
+" log of current file
+noremap <Leader><Leader>l :! smerge log % &<CR>
+" log of all files
+noremap <Leader><Leader>gl :! smerge $(pwd) &<CR>
 
-if bzr_vcs
-  " qlog of current file
-  noremap <Leader><Leader>l :! bzr qlog % &<CR>
-  " qlog of all files
-  noremap <Leader><Leader>ql :! bzr qlog &<CR>
-  " qdiff of current file
-  noremap <Leader><Leader>d :! bzr qdiff % &<CR>
-  " qblame of current file
-  noremap <Leader><Leader>qb :! bzr qblame % -L <C-r>=line('.')<CR> &<CR>
-  " qdiff of all files
-  noremap <Leader><Leader>fd :! bzr qdiff &<CR>
-endif
+" diff of current file
+noremap <Leader><Leader>d :! meld % &<CR>
+
+" blame of current file
+noremap <Leader><Leader>gb :! smerge blame % <C-r>=line('.')<CR> &<CR>
+
+" qdiff of all files
+noremap <Leader><Leader>fd :! meld $(pwd) &<CR>
 
 
 if exists('g:started_by_firenvim')
