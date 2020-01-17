@@ -190,12 +190,12 @@ endif
   "Floatterm
   let g:floaterm_position = 'bottomleft'
   let g:floaterm_winblend = 10
-  let g:floaterm_width = winwidth(0)
-  let g:floaterm_height = float2nr(0.4 * winheight(0))
+  let g:floaterm_width = &columns " Take up full width of screen
+  let g:floaterm_height = 0.4 * &lines " 40% of heigt
   let g:floaterm_background = '#14151b'
-  noremap  <silent> <F12>           :FloatermToggle<CR>
-  noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>
-  tnoremap <silent> <F12>           <C-\><C-n>:FloatermToggle<CR>
+  noremap  <silent> <F12>  :FloatermToggle<CR>
+  noremap! <silent> <F12>  <Esc>:FloatermToggle<CR>
+  tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
 
 " make python tags
 noremap <Leader><Leader>mt :! ctags -R --languages=python<CR>
