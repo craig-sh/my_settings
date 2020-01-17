@@ -363,11 +363,13 @@ if has('nvim')
   set cmdheight=2
 endif
 
-"""tagbar
-nmap <F8> :TagbarToggle<CR>
-let g:tagbar_vertical = 30
-let g:tagbar_left = 1
-nmap <F3> :NERDTreeToggle<CR>
+""" Code Outline
+" nmap <F8> :TagbarToggle<CR>
+" let g:tagbar_vertical = 30
+" let g:tagbar_left = 1
+" nmap <F3> :NERDTreeToggle<CR>
+nmap <F8> :Vista!!<CR>
+
 
 """ vim-airline
 let g:airline_powerline_fonts = 1
