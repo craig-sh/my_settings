@@ -9,7 +9,10 @@ if has('nvim')
   Plug 'Shougo/neosnippet'
   " Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
   " Need to run :CocInstall coc-neosnippet coc-python coc-tag coc-syntax coc-highlight coc-lists
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  "Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  Plug 'neovim/nvim-lsp'
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete-lsp'
   Plug 'voldikss/vim-floaterm'
 endif
 
@@ -299,8 +302,30 @@ if has('nvim')
   xmap <C-k>     <Plug>(neosnippet_expand_target)
 endif
 
-" Coc
+"nvim lsp
 if has('nvim')
+lua << EOF
+require'nvim_lsp'.pyls.setup{}
+EOF
+  nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <silent> K <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+
+  " Use LSP omni-completion in Python files.
+  autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+  " completion
+  let g:deoplete#enable_at_startup = 1
+
+  " disable preview window
+  set completeopt-=preview
+endif
+
+" Coc
+if !has('nvim')
   let g:airline#extensions#coc#enabled = 1
   " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
   " Coc only does snippet and additional edit on confirm.
