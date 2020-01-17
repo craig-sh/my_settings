@@ -125,7 +125,12 @@ if &t_Co > 2 || has("gui_running")
     set guifont=Hack\ 14
   else
     let g:onedark_terminal_italics=1
-    colorscheme onedark
+    if &diff
+      " Its hard to read onedark's diff
+      colorscheme dracula
+    else
+      colorscheme onedark
+    endif
   endif
 endif
 
