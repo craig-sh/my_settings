@@ -22,7 +22,12 @@
 
 	# Fancier log, one line per commit
 	glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+
 	ffmerge = merge --ff-only
+
+	# Diff the whole directory with meld in one shot
+	dirdiff = difftool --dir-diff --tool=meld
+
 [merge]
 	conflictstyle = diff3
 
