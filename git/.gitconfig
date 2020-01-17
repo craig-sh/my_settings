@@ -11,3 +11,29 @@
 	default = simple
 [credential]
 	helper = cache --timeout=1440
+[alias]
+	# https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
+	# Undo last commit
+	undo = reset --soft HEAD^
+
+	# We wanna grab those pesky un-added files!
+	# https://git-scm.com/docs/git-stash
+	stash-all = stash save --include-untracked
+
+	# Fancier log, one line per commit
+	glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	ffmerge = merge --ff-only
+[merge]
+	conflictstyle = diff3
+
+# A nice little github-like colorful, split diff right in the console.
+# via http://owen.cymru/github-style-diff-in-terminal-with-icdiff/
+[diff]
+	tool = vimdiff3
+	guitool = meld
+[difftool]
+	prompt = false
+[difftool "vimdiff3"]
+	path = nvim
+[mergetool "nvim"]
+	cmd = nvim -f -c \"Gdiff\" \"$MERGED\"
