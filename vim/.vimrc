@@ -305,7 +305,10 @@ endif
 "nvim lsp
 if has('nvim')
 lua << EOF
-require'nvim_lsp'.pyls.setup{}
+local nvim_lsp = require'nvim_lsp'
+nvim_lsp.pyls.setup{
+    root_dir = nvim_lsp.util.root_pattern('.git');
+}
 EOF
   nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
   nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
