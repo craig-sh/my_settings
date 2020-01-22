@@ -259,6 +259,20 @@ if exists('g:started_by_firenvim')
 
   au TextChanged * ++nested call Delay_My_Write()
   au TextChangedI * ++nested call Delay_My_Write()
+
+  let g:firenvim_config = {
+      \ 'globalSettings': {
+          \ 'alt': 'all',
+      \  },
+      \ 'localSettings': {
+          \ '.*': {
+              \ 'cmdline': 'neovim',
+              \ 'priority': 0,
+              \ 'selector': 'textarea',
+              \ 'takeover': 'never',
+          \ },
+      \ }
+  \ }
 endif
 
 " Convenient command to see the difference between the current buffer and the
