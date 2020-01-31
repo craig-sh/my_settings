@@ -13,6 +13,8 @@ if has('nvim')
   Plug 'neovim/nvim-lsp'
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/deoplete-lsp'
+  " deoplete source for completion of tmux words
+  Plug 'wellle/tmux-complete.vim'
   Plug 'voldikss/vim-floaterm'
 endif
 
