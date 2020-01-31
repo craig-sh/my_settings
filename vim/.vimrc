@@ -325,7 +325,23 @@ local nvim_lsp = require'nvim_lsp'
 nvim_lsp.pyls.setup{
     root_dir = nvim_lsp.util.root_pattern('.git');
 }
+
+-- Show any lsp diagnostics in qflist
+do
+  local method = 'textDocument/publishDiagnostics'
+  local default_callback = vim.lsp.callbacks[method]
+  vim.lsp.callbacks[method] = function(err, method, result, client_id)
+    default_callback(err, method, result, client_id)
+    if result and result.diagnostics then
+      for _, v in ipairs(result.diagnostics) do
+        v.uri = v.uri or result.uri
+      end
+      vim.lsp.util.set_qflist(result.diagnostics)
+    end
+  end
+end
 EOF
+
   nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
   nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
   nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
