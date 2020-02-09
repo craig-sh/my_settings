@@ -83,14 +83,9 @@ zle -N down-line-or-beginning-search
 [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
 [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
 
-
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'l:|=* r:|=*'
-zstyle :compinstall filename '~/.zshrc'
-
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
+zstyle ':completion:*' menu select # select completions with arrow keys
+zstyle ':completion:*' group-name '' # group results by category
+zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
 #Display info for processses that take longer than 10 secs
 REPORTTIME=10
@@ -104,15 +99,17 @@ if [ -x /usr/bin/cowsay -a -x /usr/bin/fortune ]; then
 fi
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 eval "$(starship init zsh)"
 
-### Added by Zplugin's installer
-source "$HOME/.zplugin/bin/zplugin.zsh"
-autoload -Uz _zplugin
-(( ${+_comps} )) && _comps[zplugin]=_zplugin
-### End of Zplugin installer's chunk
-zplugin light zsh-users/zsh-autosuggestions
-zplugin light zdharma/fast-syntax-highlighting
-zplugin ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
-zplugin light trapd00r/LS_COLORS
-zplugin light MichaelAquilina/zsh-auto-notify
+source "$HOME/.zinit/bin/zinit.zsh"
+zinit ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
+zinit light trapd00r/LS_COLORS
+zinit light MichaelAquilina/zsh-auto-notify
+zinit ice silent wait blockf atpull'zinit creinstall -q .'
+zinit light zsh-users/zsh-completions
+zinit ice silent wait atinit"zpcompinit; zpcdreplay"
+zinit light zdharma/fast-syntax-highlighting
+zinit ice silent wait atload"_zsh_autosuggest_start"
+zinit light zsh-users/zsh-autosuggestions
+

@@ -60,7 +60,13 @@ if executable('rg')
 elseif executable('ag')
   let grepprg = 'ag --vimgrep'
 endif
-let g:python3_host_prog='/usr/bin/python'
+
+if ($VIRTUAL_ENV != '')
+    let g:python3_host_prog=$VIRTUAL_ENV . '/bin/python'
+elseif executable('pyenv')
+    let g:python3_host_prog='python'
+endif
+
 """ General Settings
 set list
 set undofile

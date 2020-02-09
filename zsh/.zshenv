@@ -1,4 +1,5 @@
 export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_VERSION="3.8.1"
 typeset -U PATH path
 path=(
   "$PYENV_ROOT/bin"
