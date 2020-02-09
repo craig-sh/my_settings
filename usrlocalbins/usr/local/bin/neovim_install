@@ -2,6 +2,14 @@
 
 set -e
 
-chmod u+x /home/craig/Downloads/nvim.appimage
+wget https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage -O /home/craig/Downloads/nvim.appimage.new
+chmod u+x /home/craig/Downloads/nvim.appimage.new
+echo "Removing current image"
+rm -f /home/craig/Downloads/nvim.appimage
+mv /home/craig/Downloads/nvim.appimage.new /home/craig/Downloads/nvim.appimage
+echo "Upadated nvim"
+echo "Updating links"
 sudo rm -f /usr/local/bin/nvim
 sudo ln -s /home/craig/Downloads/nvim.appimage /usr/local/bin/nvim
+echo "Compelete"
+
