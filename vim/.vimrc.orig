@@ -60,6 +60,7 @@ if executable('rg')
 elseif executable('ag')
   let grepprg = 'ag --vimgrep'
 endif
+<<<<<<< Updated upstream
 
 if ($VIRTUAL_ENV != '')
     let g:python3_host_prog=$VIRTUAL_ENV . '/bin/python'
@@ -67,6 +68,11 @@ elseif executable('pyenv')
     let g:python3_host_prog='python'
 endif
 
+||||||| constructed merge base
+let g:python3_host_prog='/usr/bin/python'
+=======
+
+>>>>>>> Stashed changes
 """ General Settings
 set list
 set undofile
@@ -229,9 +235,6 @@ noremap <Leader><Leader>gb :! smerge blame % <C-r>=line('.')<CR> &<CR>
 
 " qdiff of all files
 noremap <Leader><Leader>fd :! meld $(pwd) &<CR>
-
-" Run pylint on current file
-noremap <Leader><Leader>pl :! pylint % <CR>
 
 
 if exists('g:started_by_firenvim')
