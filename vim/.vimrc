@@ -183,11 +183,12 @@ endif
   endif
 
   "Floatterm
-  let g:floaterm_position = 'bottomleft'
-  let g:floaterm_winblend = 10
-  let g:floaterm_width = &columns " Take up full width of screen
-  let g:floaterm_height = 0.4 * &lines " 40% of heigt
-  let g:floaterm_background = '#14151b'
+  let g:floaterm_position = 'bottomright'
+  let g:floaterm_winblend = 25
+  "let g:floaterm_width = &columns " Take up full width of screen
+  "let g:floaterm_height = 0.4 * &lines " 40% of heigt
+  hi FloatermNF guibg='#14151b'
+  hi FloatermBorderNF guibg='#14151b' guifg=green
   noremap  <silent> <F12>  :FloatermToggle<CR>
   noremap! <silent> <F12>  <Esc>:FloatermToggle<CR>
   tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
