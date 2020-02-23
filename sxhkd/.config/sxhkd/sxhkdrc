@@ -163,7 +163,6 @@ XF86Sleep
 
 super + Return
 	termite
-	#tabbed urxvt -embed
 
 ctrl + F1
 	xautolock -locknow

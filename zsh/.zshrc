@@ -1,6 +1,29 @@
-# zshenv will tidy up duplicates in our path
-if [[ -r ~/.zshenv ]]; then
-  source ~/.zshenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_VERSION="3.8.1"
+typeset -U PATH path
+path=(
+  "$PYENV_ROOT/bin"
+  "$HOME/.cargo/bin"
+  '/usr/local/sbin'
+  '/usr/local/bin'
+  '/usr/sbin'
+  '/usr/bin'
+  '/sbin'
+  '/bin'
+  '/usr/games'
+  "$HOME/wm/panels"
+  "$HOME/.local/bin"
+  "$HOME/my_settings/my_scripts"
+  "$path[@]"
+)
+export PATH
+
+if command -v pyenv 1>/dev/null 2>&1; then
+   eval "$(pyenv init -)"
+fi
+
+if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
+  source "${VIRTUAL_ENV}/bin/activate"
 fi
 
 # You may need to manually set your language environment
@@ -18,7 +41,6 @@ export ARCHFLAGS="-arch x86_64"
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
-# Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
@@ -30,6 +52,9 @@ bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^w' backward-kill-word
 bindkey '^r' history-incremental-search-backward
+# ctrl + left|right to jump words
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
 
 # create a zkbd compatible hash;
 # to add other keys to this hash, see: man 5 terminfo
@@ -82,10 +107,6 @@ zle -N down-line-or-beginning-search
 
 [[ -n "${key[Up]}"   ]] && bindkey -- "${key[Up]}"   up-line-or-beginning-search
 [[ -n "${key[Down]}" ]] && bindkey -- "${key[Down]}" down-line-or-beginning-search
-
-# ctrl + left|right to jump words
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
 
 zstyle ':completion:*' menu select # select completions with arrow keys
 zstyle ':completion:*' group-name '' # group results by category

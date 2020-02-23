@@ -1,7 +1,7 @@
 """ External prorams to install
 " 1. exuberant ctags
 " 2. ripgrep or ag
-" 3. Need nodem, yarn,npm for CoC
+" 3. pip install --upgrade python-language-server pynvim msgpack
 
 """ Plugins
 call plug#begin()
