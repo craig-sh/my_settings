@@ -203,9 +203,9 @@ noremap <c-l> :Files<CR>
 " Netrw will map refresh to c-l if we don't define it first
 nnoremap <leader><leader>q <Plug>NetrwRefresh
 if executable('rg')
-  nnoremap <Leader>f :Rg 
+  nnoremap <Leader>f :Rg<Space>
 elseif executable('ag')
-  nnoremap <Leader>f :Ag 
+  nnoremap <Leader>f :Ag<Space>
 endif
 
 " Always mistyping :w as :W...
