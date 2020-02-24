@@ -145,6 +145,28 @@ if &t_Co > 2 || has("gui_running")
   endif
 endif
 
+""" vim-airline
+let g:airline_powerline_fonts = 1
+let g:airline_theme='onedark'
+set laststatus=2
+
+""" echodoc
+set noshowmode
+let g:echodoc_enable_at_startup = 1
+
+"Floatterm
+let g:floaterm_position = 'bottomright'
+let g:floaterm_winblend = 25
+"let g:floaterm_width = &columns " Take up full width of screen
+"let g:floaterm_height = 0.4 * &lines " 40% of heigt
+hi FloatermNF guibg='#14151b'
+hi FloatermBorderNF guibg='#14151b' guifg=green
+
+" Semshi
+let g:semshi#simplify_markup = v:false
+
+let g:black_virtualenv = '/home/craig/.local/pipx/venvs/black'
+
 """ Custom shortcuts
 imap jj <Esc>
 " Trim :railing whitespace from file
@@ -166,37 +188,34 @@ if has('nvim')
   tnoremap <A-l> <c-\><c-n><c-w>l
 endif
 
+noremap  <silent> <F12>  :FloatermToggle<CR>
+noremap! <silent> <F12>  <Esc>:FloatermToggle<CR>
+tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
+
 " File navigation mappings
 """"FZF""""
 
-  noremap <Leader>t :Tags<CR>
-  noremap <Leader>m :BTags<CR>
-  noremap <Leader>b :Buffers<CR>
-  noremap <Leader>l :Files<CR>
-  noremap <c-l> :Files<CR>
-  " Netrw will map refresh to c-l if we don't define it first
-  nnoremap <leader><leader>q <Plug>NetrwRefresh
-  if executable('rg')
-    nnoremap <Leader>f :Rg 
-  elseif executable('ag')
-    nnoremap <Leader>f :Ag 
-  endif
+noremap <Leader>t :Tags<CR>
+noremap <Leader>m :BTags<CR>
+noremap <Leader>b :Buffers<CR>
+noremap <Leader>l :Files<CR>
+noremap <c-l> :Files<CR>
+" Netrw will map refresh to c-l if we don't define it first
+nnoremap <leader><leader>q <Plug>NetrwRefresh
+if executable('rg')
+  nnoremap <Leader>f :Rg 
+elseif executable('ag')
+  nnoremap <Leader>f :Ag 
+endif
 
-  "Floatterm
-  let g:floaterm_position = 'bottomright'
-  let g:floaterm_winblend = 25
-  "let g:floaterm_width = &columns " Take up full width of screen
-  "let g:floaterm_height = 0.4 * &lines " 40% of heigt
-  hi FloatermNF guibg='#14151b'
-  hi FloatermBorderNF guibg='#14151b' guifg=green
-  noremap  <silent> <F12>  :FloatermToggle<CR>
-  noremap! <silent> <F12>  <Esc>:FloatermToggle<CR>
-  tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
+" Always mistyping :w as :W...
+command! W w
+nmap <C-j> <Plug>(signify-next-hunk)
+nmap <C-k> <Plug>(signify-prev-hunk)
 
-" make python tags
-noremap <Leader><Leader>mt :! ctags -R --languages=python<CR>
-" insert the current datetime
-imap <Leader><Leader>dt <C-R>=strftime('%Y%m%d')<CR>
+nmap <F3> :NERDTreeToggle<CR>
+nmap <F8> :Vista!!<CR>
+
 " relative path (src/foo.txt)
 nnoremap <Leader>cf :let @+=expand("%")<CR>
 " PWD
@@ -207,16 +226,11 @@ nnoremap <Leader>du :SignifyHunkUndo<CR>
 
 nnoremap <Leader>ss :syntax sync fromstart<CR>
 
-" Always mistyping :w as :W...
-command! W w
-nmap <C-j> <Plug>(signify-next-hunk)
-nmap <C-k> <Plug>(signify-prev-hunk)
-
-" Semshi
-let g:semshi#simplify_markup = v:false
-
-let g:black_virtualenv = '/home/craig/.local/pipx/venvs/black'
-
+" External shortcuts, start with <Leader><Leader>
+" make python tags
+noremap <Leader><Leader>mt :! ctags -R --languages=python<CR>
+" insert the current datetime
+imap <Leader><Leader>dt <C-R>=strftime('%Y%m%d')<CR>
 " log of current file
 noremap <Leader><Leader>l :! smerge log % &<CR>
 " log of all files
@@ -423,16 +437,3 @@ endif
 " nmap <F8> :TagbarToggle<CR>
 " let g:tagbar_vertical = 30
 " let g:tagbar_left = 1
-nmap <F3> :NERDTreeToggle<CR>
-nmap <F8> :Vista!!<CR>
-
-
-""" vim-airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme='onedark'
-set laststatus=2
-
-""" echodoc
-set noshowmode
-let g:echodoc_enable_at_startup = 1
-
