@@ -199,6 +199,7 @@ noremap <Leader>t :Tags<CR>
 noremap <Leader>m :BTags<CR>
 noremap <Leader>b :Buffers<CR>
 noremap <Leader>l :Files<CR>
+noremap <Leader>g :GFiles?<CR>
 noremap <c-l> :Files<CR>
 " Netrw will map refresh to c-l if we don't define it first
 nnoremap <leader><leader>q <Plug>NetrwRefresh
