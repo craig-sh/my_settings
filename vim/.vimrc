@@ -1,7 +1,7 @@
 """ External prorams to install
 " 1. exuberant ctags
 " 2. ripgrep or ag
-" 3. pip install --upgrade python-language-server pynvim msgpack
+" 3. pip install --upgrade python-language-server pynvim msgpack pyls-isort pyls-black
 
 """ Plugins
 call plug#begin()
@@ -205,8 +205,10 @@ noremap <c-l> :Files<CR>
 nnoremap <leader><leader>q <Plug>NetrwRefresh
 if executable('rg')
   nnoremap <Leader>f :Rg<Space>
+  nnoremap <Leader>fw :Rg <C-R><C-W><CR>
 elseif executable('ag')
   nnoremap <Leader>f :Ag<Space>
+  nnoremap <Leader>fw :Ag <C-R><C-W><CR>
 endif
 
 " Always mistyping :w as :W...
@@ -358,6 +360,7 @@ EOF
   nnoremap <silent> K <cmd>lua vim.lsp.buf.signature_help()<CR>
   nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
   nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+  nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
 
   " Use LSP omni-completion in Python files.
   autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
