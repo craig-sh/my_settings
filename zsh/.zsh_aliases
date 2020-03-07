@@ -33,9 +33,14 @@ alias powux="powerline-config tmux setup"
 alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
 alias diskspace='sudo ncdu -x /'
 alias music='systemctl restart spotifyd.service --user && spt'
+alias netroam='sudo netctl stop wlp1s0-Eriador && sudo netctl start wlp1s0-Zerus'
+alias nethome='sudo netctl stop wlp1s0-Zerus && sudo netctl start wlp1s0-Eriador'
+alias netleander='sudo netctl stop wlp1s0-Eriador && sudo netctl start wlp1s0-Overmind'
 function rpan (){
     pkill -f "panel"
 }
 function texpdfhelp(){
     pdflatex ${1}.tex && okular ${1}.pdf && rm ${1}.log && rm ${1}.aux
 }
+
+

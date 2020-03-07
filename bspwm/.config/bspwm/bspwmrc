@@ -30,23 +30,23 @@ bspc config urgent_border_color "#dc322f"   # red
 # Only set desktops after running configs, so that the ones that
 # set defaults (ex. border_width and window gap) get applied
 
-bspc monitor -f west
+#bspc monitor -f west
 bspc monitor -n '<--'
-bspc monitor -d I II III IV V
+bspc monitor -d I II III IV V VI VII VIII IX X
 bspc config -m '<--' top_padding 40
 
-bspc monitor -f east
-bspc monitor -n '-->'
-bspc monitor -d VI VII VIII IX X
+#bspc monitor -f east
+#bspc monitor -n '-->'
+#bspc monitor -d VI VII VIII IX X
 
 bspc rule -a "*:Gimp" state=floating
 bspc rule -a "*:org.gnome.Nautilus" state=floating
 bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "*:feh" state=floating
 
-dunst &
-/usr/lib/kdeconnectd &
-bash ~/.config/polybar/launch.sh --shades &
-
 ###### BAREBONES###
-xautolock -time 15 -locker '/usr/local/bin/lock' &
+#xautolock -time 15 -locker '/usr/local/bin/lock' &
+dunst &
+$HOME/.config/polybar/launch.sh &
+
+#bspc rule -a \*  --one-shot desktop=V && /usr/local/bin/flat_spotify &

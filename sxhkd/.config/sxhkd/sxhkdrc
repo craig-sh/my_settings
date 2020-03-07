@@ -169,6 +169,12 @@ super + r
 XF86Sleep
 	sudo systemctl suspend
 
+XF86MonBrightnessUp
+	 xbacklight -inc 10
+
+XF86MonBrightnessDown
+	 xbacklight -dec 10
+
 super + Return
 	termite
 
@@ -234,4 +240,12 @@ super + alt + backslash
 # make sxhkd reload its configuration files:
 super + ctrl + Escape
 	pkill -USR1 -x sxhkd
+
 ###################################################################
+#
+# Replicating keys from Pok3r keyboard setup.
+# See ~/.Xmodmap for mapping caps lock to Hyper
+
+hyper + k
+	xdotool key Up
+
