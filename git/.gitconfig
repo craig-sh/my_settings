@@ -29,16 +29,17 @@
 	dirdiff = difftool --dir-diff --tool=meld
 
 [merge]
-	conflictstyle = diff3
+	tool = meld
+
+[mergetool "meld"]
+    # Choose one of these 2 lines (not both!) explained below.
+    cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"
 
 # A nice little github-like colorful, split diff right in the console.
 # via http://owen.cymru/github-style-diff-in-terminal-with-icdiff/
 [diff]
-	tool = vimdiff3
-	guitool = meld
+    tool = meld
 [difftool]
-	prompt = false
-[difftool "vimdiff3"]
-	path = nvim
-[mergetool "nvim"]
-	cmd = nvim -f -c \"Gdiff\" \"$MERGED\"
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
