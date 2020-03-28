@@ -7,6 +7,7 @@
 call plug#begin()
 Plug 'Shougo/neosnippet'
 Plug 'neovim/nvim-lsp'
+Plug 'haorenW1025/diagnostic-nvim' " TEMP until built in lsp improces
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
 " deoplete source for completion of tmux words
@@ -25,6 +26,7 @@ Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
 Plug 'psf/black'
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+
 
 " Utilities
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
@@ -87,6 +89,8 @@ set number
 set nowrap
 set hlsearch
 set hidden " Switch buffers without saving
+set scrolloff=5
+set sidescrolloff=15
 
 set autoindent
 filetype plugin indent on
@@ -294,23 +298,9 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 lua << EOF
 local nvim_lsp = require'nvim_lsp'
 nvim_lsp.pyls.setup{
-    root_dir = nvim_lsp.util.root_pattern('.git');
+    root_dir = nvim_lsp.util.root_pattern('.git'),
+    on_attach=require'diagnostic'.on_attach,
 }
-
--- Show any lsp diagnostics in qflist
-do
-  local method = 'textDocument/publishDiagnostics'
-  local default_callback = vim.lsp.callbacks[method]
-  vim.lsp.callbacks[method] = function(err, method, result, client_id)
-    default_callback(err, method, result, client_id)
-    if result and result.diagnostics then
-      for _, v in ipairs(result.diagnostics) do
-        v.uri = v.uri or result.uri
-      end
-      vim.lsp.util.set_qflist(result.diagnostics)
-    end
-  end
-end
 EOF
 
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
@@ -321,6 +311,8 @@ nnoremap <silent> K <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
+nnoremap <silent> <C-n> <cmd>NextDiagnostic<CR>
+nnoremap <silent> <C-p> <cmd>PrevDiagnostic<CR>
 
 " Use LSP omni-completion in Python files.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
