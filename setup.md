@@ -79,6 +79,7 @@ cd my_settings && stow install starship
 # Update
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 # Activate corrent env and then outside of venv install tools we use
+# see nvim init file for other python tools
 pip install python-language-server
 pip install pynvim
 
