@@ -6,8 +6,8 @@ path=(
   "$HOME/.cargo/bin"
   '/usr/local/sbin'
   '/usr/local/bin'
-  '/usr/sbin'
   '/usr/bin'
+  '/usr/sbin'
   '/sbin'
   '/bin'
   '/usr/games'
