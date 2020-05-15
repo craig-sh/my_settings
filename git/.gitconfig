@@ -21,7 +21,7 @@
 	stash-all = stash save --include-untracked
 
 	# Fancier log, one line per commit
-	glog = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
+	glog = log -n20 --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'
 
 	ffmerge = merge --ff-only
 
