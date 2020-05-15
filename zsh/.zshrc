@@ -45,6 +45,7 @@ HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
 setopt inc_append_history extendedglob nomatch notify hist_ignore_all_dups share_history
+setopt autopushd pushdignoredups
 bindkey -v
 bindkey '^P' up-history
 bindkey '^N' down-history
