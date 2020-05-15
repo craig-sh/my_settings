@@ -24,8 +24,9 @@ Plug 'vim-python/python-syntax'
 Plug 'jeetsukumaran/vim-pythonsense'
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
-Plug 'psf/black'
+Plug 'psf/black', {'tag': '19.10b0'} " Until next full version is released
 Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
+Plug 'rhysd/git-messenger.vim'
 
 
 " Utilities
@@ -84,6 +85,7 @@ set ruler " show the cursor position all the time
 set showcmd " display incomplete commands
 set incsearch " do incremental searching
 set cursorline
+set cursorcolumn
 set relativenumber
 set number
 set nowrap
@@ -93,6 +95,7 @@ set scrolloff=5
 set sidescrolloff=15
 
 set autoindent
+set smartindent
 filetype plugin indent on
 
 
@@ -298,7 +301,6 @@ xmap <C-k>     <Plug>(neosnippet_expand_target)
 lua << EOF
 local nvim_lsp = require'nvim_lsp'
 nvim_lsp.pyls.setup{
-    root_dir = nvim_lsp.util.root_pattern('.git'),
     on_attach=require'diagnostic'.on_attach,
 }
 EOF
