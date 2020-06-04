@@ -1,3 +1,5 @@
+# Copied some lines from https://blog.scottnonnenberg.com/better-git-configuration/
+
 [core]
 	editor = vim
 [user]
@@ -7,6 +9,8 @@
 	ui = true
 [format]
 	pretty = oneline
+[pull]
+	ff = only
 [push]
 	default = simple
 [credential]
