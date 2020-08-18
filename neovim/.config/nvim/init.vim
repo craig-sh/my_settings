@@ -7,9 +7,9 @@
 call plug#begin()
 Plug 'Shougo/neosnippet'
 Plug 'neovim/nvim-lsp'
-Plug 'haorenW1025/diagnostic-nvim' " TEMP until built in lsp improces
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
+Plug 'weilbith/nvim-lsp-diamove'
 " deoplete source for completion of tmux words
 Plug 'wellle/tmux-complete.vim'
 
@@ -210,16 +210,18 @@ noremap <Leader><Leader>l :! smerge log % &<CR>
 noremap <Leader><Leader>gl :! smerge $(pwd) &<CR>
 
 " diff of current file
-noremap <Leader><Leader>d :! meld % &<CR>
+noremap <Leader><Leader>d :! GTK_THEME=Adwaita:light meld % &<CR>
 
 " blame of current file
 noremap <Leader><Leader>gb :! smerge blame % <C-r>=line('.')<CR> &<CR>
 
 " qdiff of all files
-noremap <Leader><Leader>fd :! meld $(pwd) &<CR>
+noremap <Leader><Leader>fd :! GTK_THEME=Adwaita:light meld $(pwd) &<CR>
+noremap <Leader><Leader>fdm :! GTK_THEME=Adwaita:light git dirdiff master &<CR>
 
 " Run pylint on current file
 noremap <Leader><Leader>pl :! pylint % <CR>
+noremap <Leader><Leader>mp :! mypy % --follow-imports=silent<CR>
 
 
 if exists('g:started_by_firenvim')
@@ -280,6 +282,8 @@ augroup vimrcEx
     \ endif
 augroup END
 
+au TextYankPost * silent! lua require'vim.highlight'.on_yank()
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -291,19 +295,19 @@ let g:neosnippet#disable_runtime_snippets = {
 " Snippet Settings
 let g:neosnippet#snippets_directory = '~/my_settings/vim-snips/'
 
+let g:lsp_diamove_disable_default_mapping = v:true
+
+"nvim lsp
+lua << EOF
+local nvim_lsp = require'nvim_lsp'
+nvim_lsp.pyls_ms.setup{}
+EOF
+
 " Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-"nvim lsp
-lua << EOF
-local nvim_lsp = require'nvim_lsp'
-nvim_lsp.pyls.setup{
-    on_attach=require'diagnostic'.on_attach,
-}
-EOF
 
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
 " nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
@@ -312,9 +316,10 @@ nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
-nnoremap <silent> <C-n> <cmd>NextDiagnostic<CR>
-nnoremap <silent> <C-p> <cmd>PrevDiagnostic<CR>
+nnoremap <silent> <C-n> <cmd>Dbelow<CR>
+nnoremap <silent> <C-p> <cmd>Dabove<CR>
 
 " Use LSP omni-completion in Python files.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
