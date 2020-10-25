@@ -300,7 +300,20 @@ let g:lsp_diamove_disable_default_mapping = v:true
 "nvim lsp
 lua << EOF
 local nvim_lsp = require'nvim_lsp'
-nvim_lsp.pyls_ms.setup{}
+nvim_lsp.pyls.setup{
+  settings = {
+    pyls = {
+      plugins = {
+        pylint = {
+          enabled = vim.NIL
+        },
+        jedi_completion = {
+          fuzzy = true
+        }
+      }
+    }
+  }
+}
 EOF
 
 " Plugin key-mappings.
