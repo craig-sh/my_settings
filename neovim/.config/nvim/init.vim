@@ -225,8 +225,12 @@ noremap <Leader><Leader>mp :! mypy % --follow-imports=silent<CR>
 
 
 if exists('g:started_by_firenvim')
+  " wrap is helpful in browser context
+  set wrap
+
   " Mapping to escape firenvims focus in browser
   nnoremap <Esc><Esc> :call firenvim#focus_page()<CR>
+
   " Autosync firenvim buffer
   let g:dont_write = v:false
   function! My_Write(timer) abort
@@ -251,7 +255,7 @@ if exists('g:started_by_firenvim')
       \  },
       \ 'localSettings': {
           \ '.*': {
-              \ 'cmdline': 'neovim',
+              \ 'cmdline': 'nvim',
               \ 'priority': 0,
               \ 'selector': 'textarea',
               \ 'takeover': 'never',

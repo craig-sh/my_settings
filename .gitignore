@@ -8,3 +8,6 @@ setup.sublime-project
 setup.sublime-workspace
 .vim
 Sublime3Settings/Packages/User/Projects/
+neovim/.config/nvim/.netrwhist
+neovim/.config/nvim/after/
+neovim/.config/nvim/plugged/
