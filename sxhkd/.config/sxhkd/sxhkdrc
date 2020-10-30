@@ -97,6 +97,10 @@ super + ctrl + {_,shift + }space
 super + alt + {Up,Down,Right,Left}
 	bspc node --layer {above,below,normal,normal}
 
+# This is so we focus the window we click on when trying to copy by shift + dragging left click
+shift + ~button1
+	bspc node pointed -f
+
 ###################################################################
 #
 # resize tiled/floating
