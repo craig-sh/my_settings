@@ -1,7 +1,7 @@
 """ External prorams to install
 " 1. exuberant ctags
 " 2. ripgrep or ag
-" 3. pip install --upgrade python-language-server pynvim msgpack pyls-isort pyls-black
+" 3. pip install --upgrade python-language-server pynvim msgpack pyls-isort pyls-black pyflakes
 
 """ Plugins
 call plug#begin()
@@ -9,9 +9,14 @@ Plug 'Shougo/neosnippet'
 Plug 'neovim/nvim-lsp'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
-Plug 'weilbith/nvim-lsp-diamove'
+"Plug 'weilbith/nvim-lsp-diamove'
+Plug 'nvim-lua/diagnostic-nvim'
 " deoplete source for completion of tmux words
 Plug 'wellle/tmux-complete.vim'
+Plug 'nvim-treesitter/nvim-treesitter'
+
+" Performance issues with this
+"Plug 'romgrk/nvim-treesitter-context'
 
 " Movement
 Plug 'Lokaltog/vim-easymotion'
@@ -20,12 +25,10 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vista.vim'
-Plug 'vim-python/python-syntax'
-Plug 'jeetsukumaran/vim-pythonsense'
+Plug 'jeetsukumaran/vim-pythonsense' " TODO remove and map using tree-sitter context
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
 Plug 'psf/black', {'tag': '19.10b0'} " Until next full version is released
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 Plug 'rhysd/git-messenger.vim'
 
 
@@ -33,7 +36,7 @@ Plug 'rhysd/git-messenger.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sensible' " Super common settings
-Plug 'tpope/vim-sleuth'  " Indentation settings
+Plug 'tpope/vim-sleuth'  " Indentation settings TODO this might be solved with tree-sitter indentation
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
@@ -131,6 +134,9 @@ let g:floaterm_winblend = 25
 hi FloatermNF guibg='#14151b'
 hi FloatermBorderNF guibg='#14151b' guifg=green
 
+" Vista
+let g:vista_default_executive = 'nvim_lsp'
+
 " Semshi
 let g:semshi#simplify_markup = v:false
 
@@ -210,17 +216,21 @@ noremap <Leader><Leader>l :! smerge log % &<CR>
 noremap <Leader><Leader>gl :! smerge $(pwd) &<CR>
 
 " diff of current file
-noremap <Leader><Leader>d :! GTK_THEME=Adwaita:light meld % &<CR>
+"noremap <Leader><Leader>d :! GTK_THEME=Adwaita:light meld % &<CR>
+noremap <Leader><Leader>d :! meld % &<CR>
 
 " blame of current file
 noremap <Leader><Leader>gb :! smerge blame % <C-r>=line('.')<CR> &<CR>
 
 " qdiff of all files
-noremap <Leader><Leader>fd :! GTK_THEME=Adwaita:light meld $(pwd) &<CR>
-noremap <Leader><Leader>fdm :! GTK_THEME=Adwaita:light git dirdiff master &<CR>
+"noremap <Leader><Leader>fd :! GTK_THEME=Adwaita:light meld $(pwd) &<CR>
+noremap <Leader><Leader>fd :! meld $(pwd) &<CR>
+"noremap <Leader><Leader>fdm :! GTK_THEME=Adwaita:light git dirdiff master &<CR>
+noremap <Leader><Leader>fdm :! git dirdiff master &<CR>
 
 " Run pylint on current file
 noremap <Leader><Leader>pl :! pylint % <CR>
+noremap <Leader><Leader>pf :! pyflakes % <CR>
 noremap <Leader><Leader>mp :! mypy % --follow-imports=silent<CR>
 
 
@@ -299,7 +309,7 @@ let g:neosnippet#disable_runtime_snippets = {
 " Snippet Settings
 let g:neosnippet#snippets_directory = '~/my_settings/vim-snips/'
 
-let g:lsp_diamove_disable_default_mapping = v:true
+let g:diagnostic_enable_virtual_text = 1
 
 "nvim lsp
 lua << EOF
@@ -313,10 +323,14 @@ nvim_lsp.pyls.setup{
         },
         jedi_completion = {
           fuzzy = true
-        }
+        },
+        pyflakes = {
+          enabled = true
+        },
       }
     }
-  }
+  },
+  on_attach=require'diagnostic'.on_attach,
 }
 EOF
 
@@ -335,8 +349,15 @@ nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
-nnoremap <silent> <C-n> <cmd>Dbelow<CR>
-nnoremap <silent> <C-p> <cmd>Dabove<CR>
+
+"Diamove
+"let g:lsp_diamove_disable_default_mapping = v:true
+"nnoremap <silent> <C-n> <cmd>Dbelow<CR>
+"nnoremap <silent> <C-p> <cmd>Dabove<CR>
+
+nnoremap <silent> <C-n> <cmd>NextDiagnostic<CR>
+nnoremap <silent> <C-p> <cmd>PrevDiagnostic<CR>
+nnoremap <Leader>w <cmd>OpenDiagnostic<CR>
 
 " Use LSP omni-completion in Python files.
 autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -347,3 +368,30 @@ call deoplete#custom#source('lsp', 'rank', 9999)
 
 " disable preview window
 set completeopt-=preview
+
+"""""""""""""
+" Tree sitter
+"
+""""""""""""
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  highlight = {
+    enable = true,
+    use_languagetree = false, -- Use this to enable language injection (this is very unstable)
+  },
+  incremental_selection = {
+   enable = true,
+   keymaps = {
+     init_selection = "<CR>",
+     node_incremental = "<CR>",
+     scope_incremental = "<C-s>",
+     node_decremental = "<C-r>",
+   },
+  },
+  indent = {
+    enable = true
+  }
+}
+EOF
+
