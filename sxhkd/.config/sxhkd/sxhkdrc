@@ -188,7 +188,7 @@ super + e ; w
 	bspc rule -a Chromium --one-shot desktop=V follow=on;chromium --app="https://web.whatsapp.com/" --force-device-scale-factor=1.75
 
 super + e ; m
-	spotify
+	bspc rule -a \* --one-shot desktop=V;/usr/local/bin/flat_spotify
 
 super + e ; n
 	nautilus
