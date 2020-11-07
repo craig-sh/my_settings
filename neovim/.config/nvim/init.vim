@@ -46,7 +46,8 @@ Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 Plug 'voldikss/vim-floaterm'
 
 " Visuals
-Plug 'vim-airline/vim-airline'
+Plug 'nvim-lua/lsp-status.nvim'
+Plug 'itchyny/lightline.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'joshdick/onedark.vim'
 call plug#end()
@@ -96,6 +97,7 @@ set hlsearch
 set hidden " Switch buffers without saving
 set scrolloff=5
 set sidescrolloff=15
+set noshowmode " for echodoc, also we display our mode in status line anyway
 
 set autoindent
 set smartindent
@@ -117,13 +119,19 @@ if &t_Co > 2 || has("gui_running")
     endif
 endif
 
-""" vim-airline
-let g:airline_powerline_fonts = 1
-let g:airline_theme='onedark'
-set laststatus=2
+let g:lightline = {
+      \ 'colorscheme': 'one',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified', 'lsp_status' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead',
+      \   'lsp_status': 'LspStatus'
+      \ },
+      \ }
 
 """ echodoc
-set noshowmode
 let g:echodoc_enable_at_startup = 1
 
 "Floatterm
@@ -313,7 +321,16 @@ let g:diagnostic_enable_virtual_text = 1
 
 "nvim lsp
 lua << EOF
+local lsp_status = require('lsp-status')
+lsp_status.register_progress()
+
 local nvim_lsp = require'nvim_lsp'
+
+local attach_client = function(client)
+    require('diagnostic').on_attach(client)
+    lsp_status.on_attach(client)
+end
+
 nvim_lsp.pyls.setup{
   settings = {
     pyls = {
@@ -330,9 +347,18 @@ nvim_lsp.pyls.setup{
       }
     }
   },
-  on_attach=require'diagnostic'.on_attach,
+  on_attach=attach_client,
+  capabilities = lsp_status.capabilities,
 }
 EOF
+
+" Statusline
+function! LspStatus() abort
+  if luaeval('#vim.lsp.buf_get_clients() > 0')
+    return luaeval("require('lsp-status').status()")
+  endif
+  return ''
+endfunction
 
 " Plugin key-mappings.
 " Note: It must be "imap" and "smap".  It uses <Plug> mappings.
@@ -390,8 +416,8 @@ require'nvim-treesitter.configs'.setup {
    },
   },
   indent = {
-    enable = true
-  }
+    enable = false
+  },
 }
 EOF
 
