@@ -350,6 +350,11 @@ nvim_lsp.pyls.setup{
   on_attach=attach_client,
   capabilities = lsp_status.capabilities,
 }
+
+nvim_lsp.bashls.setup{
+  on_attach=attach_client,
+  capabilities = lsp_status.capabilities,
+}
 EOF
 
 " Statusline
