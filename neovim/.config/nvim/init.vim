@@ -2,15 +2,15 @@
 " 1. exuberant ctags
 " 2. ripgrep or ag
 " 3. pip install --upgrade python-language-server pynvim msgpack pyls-isort pyls-black pyflakes
+" 4. Rust lsp - rustup update && rustup component add rls rust-analysis rust-src
+" 5. Vue lsp - :LspInstall vuels or npm install -g vls
 
 """ Plugins
 call plug#begin()
 Plug 'Shougo/neosnippet'
-Plug 'neovim/nvim-lsp'
+Plug 'neovim/nvim-lspconfig'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
-"Plug 'weilbith/nvim-lsp-diamove'
-Plug 'nvim-lua/diagnostic-nvim'
 " deoplete source for completion of tmux words
 Plug 'wellle/tmux-complete.vim'
 Plug 'nvim-treesitter/nvim-treesitter'
@@ -26,9 +26,10 @@ Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vista.vim'
 Plug 'jeetsukumaran/vim-pythonsense' " TODO remove and map using tree-sitter context
+Plug 'pangloss/vim-javascript'
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
-Plug 'psf/black', {'tag': '19.10b0'} " Until next full version is released
+Plug 'psf/black'
 Plug 'rhysd/git-messenger.vim'
 
 
@@ -324,10 +325,9 @@ lua << EOF
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
 
-local nvim_lsp = require'nvim_lsp'
+local nvim_lsp = require'lspconfig'
 
 local attach_client = function(client)
-    require('diagnostic').on_attach(client)
     lsp_status.on_attach(client)
 end
 
@@ -351,10 +351,21 @@ nvim_lsp.pyls.setup{
   capabilities = lsp_status.capabilities,
 }
 
+nvim_lsp.rls.setup{
+  on_attach=attach_client,
+  capabilities = lsp_status.capabilities,
+}
+
 nvim_lsp.bashls.setup{
   on_attach=attach_client,
   capabilities = lsp_status.capabilities,
 }
+
+nvim_lsp.vuels.setup{
+  on_attach=attach_client,
+  capabilities = lsp_status.capabilities,
+}
+
 EOF
 
 " Statusline
@@ -386,12 +397,10 @@ nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
 "nnoremap <silent> <C-n> <cmd>Dbelow<CR>
 "nnoremap <silent> <C-p> <cmd>Dabove<CR>
 
-nnoremap <silent> <C-n> <cmd>NextDiagnostic<CR>
-nnoremap <silent> <C-p> <cmd>PrevDiagnostic<CR>
-nnoremap <Leader>w <cmd>OpenDiagnostic<CR>
+nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next { wrap = true }<CR>
+nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_prev { wrap = true }<CR>
+nnoremap <Leader>w <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 
-" Use LSP omni-completion in Python files.
-autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
 " completion
 let g:deoplete#enable_at_startup = 1
 " Bubble lsp completeions to the top
