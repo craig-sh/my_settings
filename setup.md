@@ -1,61 +1,39 @@
 # Install
 
-# Generic
-
-```
-sudo pacman -S wget curl git stow
-sudo pacman -S gcc make
-```
-
-# Internet
+# Internet Do this under arch chroot
 
 ```
 sudo pacman -S netctl dhcpd openssh
 ```
 
-# Scripts
+# SSD
 
+Follow archwiki for setting SSD trim
 ```
-cd ~/my_settings && sudo stow usrlocalbins -t'/'
-cd ~/my_settings && stow git
-```
-
-## ZSH Settings
-
-```
-# From https://github.com/zdharma/zinit
-mkdir ~/.zinit
-git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
-
-cd ~/my_settings &&  rm -f ~/.zshrc && stow zsh
+systemctl enable fstrim.timer
 ```
 
-## Fonts
+# Video drivers
+
+* Needed to diable modesetting with kernel parameter nomodeset after installing nvidia driver. Otherwise got a black screen on boot
+* Also needed to blacklist the i915 module otherwise wasn't able to startx
+
+# User
+```
+pacman -S zsh sudo vim
+useradd -m craig -s /bin/zsh
+passwd craig
+gpasswd -a craig wheel # add craig to wheel group
+export EDITOR=/usr/bin/vim
+visudo # enable permissions for craig
+```
+
+# Generic
 
 ```
-pacman -S noto-fonts-emoji ttf-fantasque-sans-mono
-```
-
-# Tmux
-
-```
-sudo pacman -S tmux powerline
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-cd ~/my_settings && stow tmux
-```
-
-## Nvim
-
-```
-# App image dependency
-sudo pacman -S fuse2 xclip xsel wget curl
-neovim_install
-mkdir -p ~/nvimtmp
-mkdir -p ~/nvimundo
-sudo pacman -S ctags ripgrep python
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-cd ~/my_settings && stow neovim
+sudo pacman -S wget curl git stow
+sudo pacman -S gcc make vim
+cd my_settings && stow install vim
 ```
 
 # Commandline
@@ -71,6 +49,100 @@ sudo pacman -S rust
 cargo install starship
 cd my_settings && stow install starship
 ```
+
+## ZSH Settings
+
+```
+# From https://github.com/zdharma/zinit
+mkdir ~/.zinit
+git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
+
+cd ~/my_settings &&  rm -f ~/.zshrc && stow zsh
+```
+
+
+# Tmux
+
+```
+sudo pacman -S tmux powerline
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+cd ~/my_settings && stow tmux
+```
+
+
+
+# GUI
+
+## Fonts
+
+```
+pacman -S noto-fonts-emoji ttf-fantasque-sans-mono
+```
+
+
+## Rofi
+
+```
+sudo pacman -S rofi
+cd ~/my_settings && stow rofi
+```
+
+## Dunst
+
+```
+sudo pacman -S dunst libnotify
+cd ~/my_settings && stow dunst
+```
+
+Check bspwm github for dependencies
+```
+sudo pacman -Syu bspwm sxhkd
+
+              OR
+
+mkdir wm ; cd wm
+git clone https://github.com/baskerville/bspwm.git
+git clone https://github.com/baskerville/sxhkd.git
+cd bspwm && make && sudo make install
+cd ../sxhkd && make && sudo make install
+#####################
+
+sudo pacman -Syu xclip xsel gvim feh
+
+cd ~/my_settings
+stow bspwm
+stow sxhkd
+stow X11
+stow termite
+
+
+# Edit bspwm and  .xinitrc for machine specific setup
+```
+
+# Scripts
+
+```
+cd ~
+git clone https://github.com/craig-sh/my_settings.git
+cd ~/my_settings && sudo stow usrlocalbins -t'/'
+cd ~/my_settings && stow git
+```
+
+
+## Nvim
+
+```
+# App image dependency
+sudo pacman -S fuse2 xclip xsel wget curl
+neovim_install
+mkdir -p ~/nvimtmp
+mkdir -p ~/nvimundo
+sudo pacman -S ctags ripgrep python
+curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+cd ~/my_settings && stow neovim
+```
+
 
 
 ## Pyenv
@@ -97,39 +169,7 @@ sudo pacman -S termite
 sudo pacman -S ttf-fantasque-sans-mono
 ```
 
-## BSPWM
 
-Check bspwm github for dependencies
-
-```
-mkdir wm ; cd wm
-git clone https://github.com/baskerville/bspwm.git
-git clone https://github.com/baskerville/sxhkd.git
-cd bspwm && make && sudo make install
-cd ../sxhkd && make && sudo make install
-
-cd ~/my_settings
-stow bspwm
-stow sxhkd
-stow X11
-stow termite
-
-# Edit bspwm and  .xinitrc for machine specific setup
-```
-
-## Rofi
-
-```
-sudo pacman -S rofi
-cd ~/my_settings && stow rofi
-```
-
-## Dunst
-
-```
-sudo pacman -S dunst libnotify
-cd ~/my_settings && stow dunst
-```
 
 ## Polybar
 
