@@ -46,9 +46,7 @@ bspc rule -a "*:feh" state=floating
 
 dunst &
 /usr/lib/kdeconnectd &
-$HOME/.config/polybar/launch.sh &
+bash ~/.config/polybar/launch.sh --shades &
 
 ###### BAREBONES###
 xautolock -time 15 -locker '/usr/local/bin/lock' &
-
-bspc rule -a \*  --one-shot desktop=V && /usr/local/bin/flat_spotify &

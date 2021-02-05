@@ -1,5 +1,5 @@
 export PYENV_ROOT="$HOME/.pyenv"
-export PYENV_VERSION="3.8.1"
+export PYENV_VERSION="3.9.1"
 typeset -U PATH path
 path=(
   "$PYENV_ROOT/bin"
@@ -26,6 +26,7 @@ if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then
   source "${VIRTUAL_ENV}/bin/activate"
 fi
 
+# TODO should we move these exports to .zprofile?
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
 
@@ -124,7 +125,12 @@ if [ -x /usr/bin/cowsay -a -x /usr/bin/fortune ]; then
       fortune -s | cowsay
 fi
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [[ -d "/usr/share/fzf" ]]; then
+  source /usr/share/fzf/key-bindings.zsh
+  source /usr/share/fzf/completion.zsh
+elif [[ -f ~/.fzf.zsh ]]; then
+  source ~/.fzf.zsh
+fi
 
 eval "$(starship init zsh)"
 

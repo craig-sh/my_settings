@@ -1,7 +1,9 @@
 [options]
 #font = Source Code Pro Semibold 14
 #font = Hack 13
-font = Fantasque Sans Mono Regular 8
+#font = Fantasque Sans Mono Regular 8
+# font = Fantasque Sans Mono Regular Nerd Font Complete 8
+ font = FantasqueSansMono Nerd Font 9
 
 # Dracula theme for termite
 # https://github.com/dracula/termite

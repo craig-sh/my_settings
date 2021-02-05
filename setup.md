@@ -42,7 +42,8 @@ cd my_settings && stow install vim
 
 ```
 # Used for starship prompt currently
-sudo pacman -S rust
+# install rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # this can take a while to compile, can also directly install the binary
 # https://starship.rs/#quick-install
@@ -56,7 +57,7 @@ cd my_settings && stow install starship
 # From https://github.com/zdharma/zinit
 mkdir ~/.zinit
 git clone https://github.com/zdharma/zinit.git ~/.zinit/bin
-
+sudo pacman -S fzf
 cd ~/my_settings &&  rm -f ~/.zshrc && stow zsh
 ```
 
@@ -64,19 +65,99 @@ cd ~/my_settings &&  rm -f ~/.zshrc && stow zsh
 # Tmux
 
 ```
-sudo pacman -S tmux powerline
+sudo pacman -S tmux
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 cd ~/my_settings && stow tmux
 ```
+
+# Scripts
+
+```
+cd ~
+git clone https://github.com/craig-sh/my_settings.git
+cd ~/my_settings && sudo stow usrlocalbins -t'/'
+cd ~/my_settings && stow git
+```
+
+## Pyenv
+
+```
+# Update
+sudo pacman -Syu --needed base-devel openssl zlib bzip2 readline sqlite curl llvm ncurses xz tk libffi python-pyopenssl git
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+pyenv install <version>
+# set version in zshrc
+# Activate corrent env and then outside of venv install tools we use
+# see nvim init file for other python tools
+pip install python-language-server
+pip install pynvim
+
+mkdir -p ~/pyvenvs
+
+# Install envs with 
+python -m ~/pyvenvs/<envname> --system-site-packages
+```
+
+## Nvim
+
+### compile it
+
+```
+sudo pacman -S base-devel cmake unzip ninja tree-sitter
+mkdir ~/gits
+cd ~/gits
+git clone https://github.com/neovim/neovim.git
+make distclean && make CMAKE_BUILD_TYPE=Release
+sudo make install
+```
+
+### Plugin/Misc setup
+
+```
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+mkdir -p ~/nvimtmp
+mkdir -p ~/nvimundo
+sudo pacman -Syu ripgrep
+pip install pynvim
+
+# install nvm zinit will probably have already done this
+# curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+
+nvm install --lts
+nvm use --lts
+
+# install whatever languages servers run on node
+npm install -g pyright
+mkdir -p /home/craig/.local/bin
+cd /home/craig/.local/bin
+ln -s $(which pyright)
+
+
+cd ~/my_settings && stow neovim
+```
+
 
 
 
 # GUI
 
+
+## Start
+
+```
+sudo pacman -S xorg xclip xsel xdotool
+```
+
 ## Fonts
 
 ```
-pacman -S noto-fonts-emoji ttf-fantasque-sans-mono
+mkdir -p ~/.local/share/fonts
+cd  ~/.local/share/fonts
+# Download from
+https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/FantasqueSansMono/Regular/complete/Fantasque%20Sans%20Mono%20Regular%20Nerd%20Font%20Complete.ttf
+fc-cache -v
+pacman -S noto-fonts-emoji
 ```
 
 
@@ -109,6 +190,55 @@ cd ../sxhkd && make && sudo make install
 
 sudo pacman -Syu xclip xsel gvim feh
 
+```
+
+## Polybar
+
+```
+sudo pacman -Syu --needed cmake gcc pkg-config libxcb xcb-proto xcb-util-image xcb-util-wm libxcb xcb-util-xrm xcb-util-cursor jsoncpp curl libnl
+pyenv shell system
+mkdir -p ~/gits
+cd ~/gits
+git clone --recursive https://github.com/polybar/polybar
+cd polybar
+mkdir build
+cd build
+git checkout <version>
+cmake ..
+make -j$(nproc)
+# Optional. This will install the polybar executable in /usr/local/bin
+sudo make install
+
+sudo pacman -S --needed pacman-contrib python-pywal calc
+
+mkdir -p ~/gits
+cd ~/gits
+git clone https://github.com/adi1090x/polybar-themes.git
+cd polybar-themes
+./setup.sh
+
+edit ~/.config/polybar/<theme-name>/config.ini
+Set below configs:
+
+    tray-position
+    monitor
+    bottom
+    width = 100%
+    height = 35
+    background = ${color.background}
+
+In ~/.config/polybar/<theme-name>/modules.ini
+pin-workspaces: false
+
+
+```
+
+
+## Final
+
+```
+sudo pacman -S termite
+
 cd ~/my_settings
 stow bspwm
 stow sxhkd
@@ -119,97 +249,29 @@ stow termite
 # Edit bspwm and  .xinitrc for machine specific setup
 ```
 
-# Scripts
-
-```
-cd ~
-git clone https://github.com/craig-sh/my_settings.git
-cd ~/my_settings && sudo stow usrlocalbins -t'/'
-cd ~/my_settings && stow git
-```
-
-
-## Nvim
-
-```
-# App image dependency
-sudo pacman -S fuse2 xclip xsel wget curl
-neovim_install
-mkdir -p ~/nvimtmp
-mkdir -p ~/nvimundo
-sudo pacman -S ctags ripgrep python
-curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-cd ~/my_settings && stow neovim
-```
-
-
-
-## Pyenv
-
-```
-# Update
-git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-# Activate corrent env and then outside of venv install tools we use
-# see nvim init file for other python tools
-pip install python-language-server
-pip install pynvim
-
-mkdir -p ~/pyvenvs
-
-# Install envs with 
-python -m ~/pyvenvs/<envname> --system-site-packages
-```
-
-# GUI
-
-```
-sudo pacman -S xorg
-sudo pacman -S termite
-sudo pacman -S ttf-fantasque-sans-mono
-```
-
-
-
-## Polybar
-
-```
-sudo pacman -S cmake gcc pkg-config libxcb xcb-proto xcb-util-image xcb-util-wm libxcb xcb-util-xrm xcb-util-cursor jsoncpp curl libnl
-
-mkdir -p ~/wm
-cd ~/wm
-git clone --recursive https://github.com/polybar/polybar
-cd polybar
-mkdir build
-cd build
-cmake ..
-make -j$(nproc)
-# Optional. This will install the polybar executable in /usr/local/bin
-sudo make install
-
-mkdir -p ~/gits
-cd ~/gits
-git clone https://github.com/adi1090x/polybar-themes.git
-cd polybar-themes/polybar-6
-sudo cp -r fonts/*  /usr/share/fonts/
-fc-cache
-
-sudo pacman -S pacman-contrib
-
-cd ~/my_settings && stow polybar
-```
-
 ## Browser
 
 ```
-pacman -S firefox gtk-engine-murrine gtk-engines lxappearence meld
-cd ~/gits
-git clone https://github.com/vinceliuice/vimix-gtk-themes
-cd vimix-gtk-themes
-./Install
+sudo pacman -Syu firefox gtk-engine-murrine gtk-engines lxappearance-gtk3 meld arc-gtk-theme arc-icon-theme --needed
 # config with lxappearence
 ```
 
+## Password manager
+
+```
+sudo pacman -Syu keepassxc
+```
+
+# Music
+```
+sudo pacman -Syu pulseaudio pulseaudio-alsa spotifyd pavucontrol
+
+cd ~/my_settings && stow spotifyd
+# save password in file called .config/spotifyd/.spotify_pw
+systemctl enable --user --now spotifyd.service
+cargo intsall spotify-tui
+# then follow instructions for adding client id and secret
+```
 
 # Power Settings
 
