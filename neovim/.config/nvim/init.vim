@@ -31,9 +31,11 @@ Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
 Plug 'psf/black'
 Plug 'rhysd/git-messenger.vim'
+Plug 'Glench/Vim-Jinja2-Syntax'
 
 
 " Utilities
+Plug 'kevinhwang91/nvim-bqf' " Preview windows for qf list, etc
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sensible' " Super common settings
@@ -51,6 +53,7 @@ Plug 'nvim-lua/lsp-status.nvim'
 Plug 'itchyny/lightline.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'joshdick/onedark.vim'
+Plug 'ryanoasis/vim-devicons' " README says to load this plugin as the last one
 call plug#end()
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,.svn,.git,.hg,CVS,.bzr,*.pyc,*.pyo,*.exe,*.dll,*.obj,*.o,*.a,*.lib,*.so,*.dylib,*.ncb,*.sdf,*.suo,*.pdb,*.idb,.DS_Store,*.class,*.psd,*.db,*.sublime-workspace,*.min.js,*.~1~,*.~2~,*.~3~,*.~4~,*.~5~,tags,htmlcov
@@ -77,9 +80,6 @@ set backupdir=~/nvimtmp//
 set directory=~/nvimtmp//
 set undodir=~/.nvimundo
 set inccommand=split
-set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
-  \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
-  \,sm:block-blinkwait175-blinkoff150-blinkon175
 set wildoptions=pum
 set pumblend=20
 set clipboard=unnamedplus
@@ -117,7 +117,8 @@ if &t_Co > 2 || has("gui_running")
     colorscheme dracula
   else
     colorscheme onedark
-    endif
+  endif
+  set guifont=Fantasque\ Sans\ Mono:h16
 endif
 
 let g:lightline = {
@@ -145,11 +146,6 @@ hi FloatermBorderNF guibg='#14151b' guifg=green
 
 " Vista
 let g:vista_default_executive = 'nvim_lsp'
-
-" Semshi
-let g:semshi#simplify_markup = v:false
-
-let g:black_virtualenv = '/home/craig/.local/pipx/venvs/black'
 
 """ Custom shortcuts
 imap jj <Esc>
@@ -318,7 +314,11 @@ let g:neosnippet#disable_runtime_snippets = {
 " Snippet Settings
 let g:neosnippet#snippets_directory = '~/my_settings/vim-snips/'
 
-let g:diagnostic_enable_virtual_text = 1
+" Embedded syntax highlighting of vimscript for lua
+let g:vimsyn_embed = 'l'
+
+" fzf preview window to appear on top, toggle with ctrl-/
+let g:fzf_preview_window = ['up:50%', 'ctrl-/']
 
 "nvim lsp
 lua << EOF
@@ -331,22 +331,7 @@ local attach_client = function(client)
     lsp_status.on_attach(client)
 end
 
-nvim_lsp.pyls.setup{
-  settings = {
-    pyls = {
-      plugins = {
-        pylint = {
-          enabled = vim.NIL
-        },
-        jedi_completion = {
-          fuzzy = true
-        },
-        pyflakes = {
-          enabled = true
-        },
-      }
-    }
-  },
+nvim_lsp.pyright.setup{
   on_attach=attach_client,
   capabilities = lsp_status.capabilities,
 }
