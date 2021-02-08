@@ -351,6 +351,24 @@ nvim_lsp.vuels.setup{
   capabilities = lsp_status.capabilities,
 }
 
+nvim_lsp.diagnosticls.setup{
+  filetypes={"python"},
+  init_options = {
+     linters = {
+       pylint = {
+         command = "pylint";
+         args = {'--stdin-display-name'; '%filepath'; '-'};
+         sourceName = 'pylint';
+         debounce = 250;
+         formatLines = 1;
+         formatPattern = {'^[^:]+:(\\d+):((\\d+):)?\\s+(.+)$';
+         {line = 1; column = 3; message = 4}};
+         rootPatterns = {''};
+       },
+     }
+  }
+}
+
 EOF
 
 " Statusline

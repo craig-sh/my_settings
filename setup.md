@@ -94,7 +94,7 @@ pip install pynvim
 
 mkdir -p ~/pyvenvs
 
-# Install envs with 
+# Install envs with
 python -m ~/pyvenvs/<envname> --system-site-packages
 ```
 
@@ -128,13 +128,29 @@ nvm install --lts
 nvm use --lts
 
 # install whatever languages servers run on node
+
+# Pyright
 npm install -g pyright
 mkdir -p /home/craig/.local/bin
 cd /home/craig/.local/bin
 ln -s $(which pyright)
 
+#Bash
+npm i -g bash-language-server
+cd /home/craig/.local/bin
+ln -s $(which bash-language-server)
 
+# Diagnostic
+npm install -g  diagnostic-languageserver
+cd /home/craig/.local/bin
+ln -s $(which diagnostic-languageserver)
+
+
+npm install -g
 cd ~/my_settings && stow neovim
+
+# In nvim
+:TSInstall bash python rust json html
 ```
 
 
