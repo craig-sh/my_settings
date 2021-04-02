@@ -134,6 +134,7 @@ npm install -g pyright
 mkdir -p /home/craig/.local/bin
 cd /home/craig/.local/bin
 ln -s $(which pyright)
+ln -s $(which pyright-langserver)
 
 #Bash
 npm i -g bash-language-server

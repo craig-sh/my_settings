@@ -32,6 +32,8 @@ Plug 'lifepillar/pgsql.vim'
 Plug 'psf/black'
 Plug 'rhysd/git-messenger.vim'
 Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'Yggdroot/indentLine'
+Plug 'lukas-reineke/indent-blankline.nvim'
 
 
 " Utilities
@@ -120,6 +122,9 @@ if &t_Co > 2 || has("gui_running")
   endif
   set guifont=Fantasque\ Sans\ Mono:h16
 endif
+
+" Indent
+let g:indentLine_char = '▏'
 
 let g:lightline = {
       \ 'colorscheme': 'one',
@@ -327,47 +332,62 @@ lsp_status.register_progress()
 
 local nvim_lsp = require'lspconfig'
 
-local attach_client = function(client)
-    lsp_status.on_attach(client)
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gh', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '<C-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<C-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<Leader>w', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "gF", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "gF", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
+  lsp_status.on_attach(client)
 end
 
-nvim_lsp.pyright.setup{
-  on_attach=attach_client,
-  capabilities = lsp_status.capabilities,
-}
-
-nvim_lsp.rls.setup{
-  on_attach=attach_client,
-  capabilities = lsp_status.capabilities,
-}
-
-nvim_lsp.bashls.setup{
-  on_attach=attach_client,
-  capabilities = lsp_status.capabilities,
-}
-
-nvim_lsp.vuels.setup{
-  on_attach=attach_client,
-  capabilities = lsp_status.capabilities,
-}
-
-nvim_lsp.diagnosticls.setup{
-  filetypes={"python"},
-  init_options = {
-     linters = {
-       pylint = {
-         command = "pylint";
-         args = {'--stdin-display-name'; '%filepath'; '-'};
-         sourceName = 'pylint';
-         debounce = 250;
-         formatLines = 1;
-         formatPattern = {'^[^:]+:(\\d+):((\\d+):)?\\s+(.+)$';
-         {line = 1; column = 3; message = 4}};
-         rootPatterns = {''};
-       },
-     }
+-- Use a loop to conveniently both setup defined servers 
+-- and map buffer local keybindings when the language server attaches
+local servers = { "pyright", "rls", "bashls", "vuels" }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    capabilities = lsp_status.capabilities,
   }
-}
+end
 
 EOF
 
@@ -385,24 +405,6 @@ imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
 xmap <C-k>     <Plug>(neosnippet_expand_target)
 
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-" nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> K <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> gR    <cmd>lua vim.lsp.buf.rename()<CR>
-nnoremap <silent> gF    <cmd>lua vim.lsp.buf.formatting()<CR>
-
-"Diamove
-"let g:lsp_diamove_disable_default_mapping = v:true
-"nnoremap <silent> <C-n> <cmd>Dbelow<CR>
-"nnoremap <silent> <C-p> <cmd>Dabove<CR>
-
-nnoremap <silent> <C-n> <cmd>lua vim.lsp.diagnostic.goto_next { wrap = true }<CR>
-nnoremap <silent> <C-p> <cmd>lua vim.lsp.diagnostic.goto_prev { wrap = true }<CR>
-nnoremap <Leader>w <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
 
 " completion
 let g:deoplete#enable_at_startup = 1
