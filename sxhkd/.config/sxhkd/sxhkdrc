@@ -75,7 +75,7 @@ super + {_,shift + }{h,j,k,l}
 
 #cycle between nodes
 super + {_,shift + }c
-	bspc node -f {next,prev}.local
+	bspc node -f {next,prev}.local.!hidden.window
 
 super + {comma,period}
 	bspc desktop -C {backward,forward}
@@ -161,6 +161,10 @@ XF86AudioStop
 
 XF86AudioPlay
 	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotifyd /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+
+# spotifyd only play's even though playpause is sent
+super + r
+	dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotifyd /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Pause
 
 XF86Sleep
 	sudo systemctl suspend
