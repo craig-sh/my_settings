@@ -5,6 +5,9 @@ alias ls='ls --color=auto'
 alias ll='ls -la'
 alias vim='nvim'
 
+alias bspwm_confi='vim ~/.config/bspwm/bspwm'
+alias sxhkd_config='vim ~/.config/sxhkd/sxhkdrc'
+
 #alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
 #alias gos="source /home/craig/Documents/GeorgiaTech/7637KBAI/kbai/bin/activate && cd /home/craig/Documents/GeorgiaTech/7637KBAI/Project-Code-Python"
 alias yy="xclip -selection clipboard"

@@ -169,6 +169,12 @@ super + r
 XF86Sleep
 	sudo systemctl suspend
 
+XF86MonBrightnessUp
+	 xbacklight -inc 5
+
+XF86MonBrightnessDown
+	 xbacklight -dec 5
+
 super + Return
 	termite
 

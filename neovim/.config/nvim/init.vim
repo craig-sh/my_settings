@@ -13,7 +13,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
 " deoplete source for completion of tmux words
 Plug 'wellle/tmux-complete.vim'
-Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 
 " Performance issues with this
 "Plug 'romgrk/nvim-treesitter-context'
@@ -48,6 +48,7 @@ Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'mbbill/undotree'
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+Plug 'folke/which-key.nvim'
 Plug 'voldikss/vim-floaterm'
 
 " Visuals
@@ -389,6 +390,7 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+require("which-key").setup {}
 EOF
 
 " Statusline

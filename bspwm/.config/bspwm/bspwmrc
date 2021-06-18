@@ -46,7 +46,7 @@ bspc rule -a "*:feh" state=floating
 
 dunst &
 /usr/lib/kdeconnectd &
-bash ~/.config/polybar/launch.sh --shades &
+$HOME/.config/polybar/launch.sh --shades &
 
 ###### BAREBONES###
 xautolock -time 15 -locker '/usr/local/bin/lock' &

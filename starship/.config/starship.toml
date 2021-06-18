@@ -1,5 +1,5 @@
 [character]      # The name of the module we are configuring is "character"
-symbol = "➜"     # The "symbol" segment is being set to "➜"
+success_symbol = "[➜](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
 
 [time]
 disabled = true
@@ -16,10 +16,6 @@ diverged = "😵"
 untracked = "🤷"
 stashed = "📦"
 modified = "📝"
-staged.value = "++"
-staged.style = "green"
-staged_count.enabled = true
-staged_count.style = "green"
+staged = '[++\($count\)](green)'
 renamed = "👅"
 deleted = "🗑"
-

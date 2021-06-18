@@ -281,7 +281,7 @@ sudo pacman -Syu keepassxc
 
 # Music
 ```
-sudo pacman -Syu pulseaudio pulseaudio-alsa spotifyd pavucontrol
+sudo pacman -Syu pipewire piprewire-alsa piprewire-pulse spotifyd pavucontrol
 
 cd ~/my_settings && stow spotifyd
 # save password in file called .config/spotifyd/.spotify_pw
