@@ -48,6 +48,6 @@ bspc rule -a "*:feh" state=floating
 #xautolock -time 15 -locker '/usr/local/bin/lockscreen.sh' &
 xss-lock /usr/local/bin/locksreen.sh &
 dunst &
-$HOME/.config/polybar/launch.sh &
+bash $HOME/.config/polybar/launch.sh --shades &
 
 #bspc rule -a \*  --one-shot desktop=V && /usr/local/bin/flat_spotify &
