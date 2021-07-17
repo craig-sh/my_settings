@@ -44,6 +44,9 @@ bspc rule -a "*:org.gnome.Nautilus" state=floating
 bspc rule -a "Steam" desktop=X follow=off state=floating
 bspc rule -a "*:feh" state=floating
 
+###### BAREBONES###
+#xautolock -time 15 -locker '/usr/local/bin/lockscreen.sh' &
+xss-lock /usr/local/bin/locksreen.sh &
 dunst &
 /usr/lib/kdeconnectd &
 $HOME/.config/polybar/launch.sh --shades &

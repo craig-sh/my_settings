@@ -30,9 +30,9 @@ Plug 'pangloss/vim-javascript'
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
 Plug 'psf/black'
+Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'rhysd/git-messenger.vim'
 Plug 'Glench/Vim-Jinja2-Syntax'
-Plug 'Yggdroot/indentLine'
 Plug 'lukas-reineke/indent-blankline.nvim'
 
 

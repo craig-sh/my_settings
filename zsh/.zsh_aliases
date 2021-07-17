@@ -1,14 +1,15 @@
 # Common Commands
 ## Colorize the ls output ##
-alias ls='ls --color=auto'
+alias ls='exa --color=auto'
 ## Use a long listing format ##
 alias ll='ls -la'
 alias vim='nvim'
 
-alias bspwm_confi='vim ~/.config/bspwm/bspwm'
+alias bspwm_config='vim ~/.config/bspwm/bspwmrc'
 alias sxhkd_config='vim ~/.config/sxhkd/sxhkdrc'
+alias bar_config='vim ~/.config/polybar/shades/config.ini'
 
-#alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
+alias launch_bar='bash $HOME/.config/polybar/launch.sh --shades' #alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
 #alias gos="source /home/craig/Documents/GeorgiaTech/7637KBAI/kbai/bin/activate && cd /home/craig/Documents/GeorgiaTech/7637KBAI/Project-Code-Python"
 alias yy="xclip -selection clipboard"
 alias yi=" tr -d '\n' | xclip -selection clipboard"
@@ -36,9 +37,13 @@ alias powux="powerline-config tmux setup"
 alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
 alias diskspace='sudo ncdu -x /'
 alias music='systemctl restart spotifyd.service --user && spt'
-function rpan (){
-    pkill -f "panel"
+alias wakehyper='wol bc:5f:f4:36:33:f4'
+
+#laptop specific
+function netconnect {
+    sudo iwctl station wlan0 scan
+    sudo iwctl station wlan0 connect $1
 }
-function texpdfhelp(){
-    pdflatex ${1}.tex && okular ${1}.pdf && rm ${1}.log && rm ${1}.aux
-}
+alias netroam='netconnect Zerus'
+alias nethome='netconnect Eriador'
+alias netleander='netconnect Overmind'

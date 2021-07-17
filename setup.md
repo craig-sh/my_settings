@@ -163,7 +163,7 @@ cd ~/my_settings && stow neovim
 ## Start
 
 ```
-sudo pacman -S xorg xclip xsel xdotool
+sudo pacman -S xorg xclip xsel xdotool xss-lock
 ```
 
 ## Fonts
@@ -290,6 +290,40 @@ cargo intsall spotify-tui
 # then follow instructions for adding client id and secret
 ```
 
+# Utils
+```
+sudo pacman -S progress bat exa fd jq procs --needed
+
+Install rust
+
+then
+
+cargo install git-delta
+cargo install du-dust
+cargo install bottom
+```
+
+# Podman
+
+For rootless setup
+```
+# Needed containerd/crun because I ran into issues with secomp
+# https://github.com/containers/podman/issues/8472
+
+sudo pacman -S podman crun containerd
+[root@carbonarch ~]# echo craig:10000:65536 >> /etc/subuid
+[root@carbonarch ~]# echo craig:10000:65536 >> /etc/subgid
+
+
+# add any registries
+❯ tail -2 /etc/containers/registries.conf
+[registries.search]
+registries = ['docker.io']
+
+
+pip install podman-compose
+``` 
+
 # Power Settings
 
-TODO
+Created scripts in usrlocalbins and systemd. See set-battery-threshold
