@@ -7,13 +7,17 @@
 
 """ Plugins
 call plug#begin()
-Plug 'Shougo/neosnippet'
+"Plug 'Shougo/neosnippet'
+" Track the engine.
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
 Plug 'neovim/nvim-lspconfig'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/deoplete-lsp'
 " deoplete source for completion of tmux words
 Plug 'wellle/tmux-complete.vim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter-textobjects'
 
 " Performance issues with this
 "Plug 'romgrk/nvim-treesitter-context'
@@ -25,7 +29,6 @@ Plug 'Lokaltog/vim-easymotion'
 Plug 'mhinz/vim-signify'
 Plug 'tpope/vim-fugitive'
 Plug 'liuchengxu/vista.vim'
-Plug 'jeetsukumaran/vim-pythonsense' " TODO remove and map using tree-sitter context
 Plug 'pangloss/vim-javascript'
 Plug 'Shougo/echodoc.vim'
 Plug 'lifepillar/pgsql.vim'
@@ -312,13 +315,11 @@ au TextYankPost * silent! lua require'vim.highlight'.on_yank()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Neosnippet
-" disables all runtime snippets
-let g:neosnippet#disable_runtime_snippets = {
-\   '_' : 1,
-\ }
+let g:UltiSnipsExpandTrigger="<c-k>"
+let g:UltiSnipsJumpForwardTrigger="<c-k>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " Snippet Settings
-let g:neosnippet#snippets_directory = '~/my_settings/vim-snips/'
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "mysnips"]
 
 " Embedded syntax highlighting of vimscript for lua
 let g:vimsyn_embed = 'l'
@@ -401,12 +402,6 @@ function! LspStatus() abort
   return ''
 endfunction
 
-" Plugin key-mappings.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
 
 " completion
 let g:deoplete#enable_at_startup = 1
@@ -438,6 +433,23 @@ require'nvim-treesitter.configs'.setup {
   },
   indent = {
     enable = false
+  },
+  textobjects = {
+    select = {
+      enable = true,
+
+      -- Automatically jump forward to textobj, similar to targets.vim 
+      lookahead = true,
+
+      keymaps = {
+        -- You can use the capture groups defined in textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@class.outer",
+        ["ic"] = "@class.inner",
+
+      },
+    },
   },
 }
 EOF
