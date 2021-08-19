@@ -12,12 +12,12 @@ call plug#begin()
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'neovim/nvim-lspconfig'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/deoplete-lsp'
-" deoplete source for completion of tmux words
-Plug 'wellle/tmux-complete.vim'
+
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+
+Plug 'hrsh7th/nvim-compe'
+Plug 'andersevenrud/compe-tmux'
 
 " Performance issues with this
 "Plug 'romgrk/nvim-treesitter-context'
@@ -334,6 +334,16 @@ lsp_status.register_progress()
 
 local nvim_lsp = require'lspconfig'
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
+
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
@@ -383,15 +393,40 @@ end
 
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
+capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
 local servers = { "pyright", "rls", "bashls", "vuels" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
+    capabilities = capabilities,
   }
 end
 
 require("which-key").setup {}
+
+
+-- Compe setup
+require('compe').setup {
+  source = {
+    path = true,
+    nvim_lsp = true,
+    luasnip = false,
+    buffer = true,
+    calc = false,
+    nvim_lua = false,
+    vsnip = false,
+    ultisnips = true,
+    tmux = {
+      disabled = false,
+      all_panes = true,
+      kind = 'Text',
+    },
+  },
+}
+-- Map compe confirm and complete functions
+vim.api.nvim_set_keymap('i', '<cr>', 'compe#confirm("<cr>")', { expr = true })
+vim.api.nvim_set_keymap('i', '<c-k>', 'compe#complete()', { expr = true })
+
 EOF
 
 " Statusline
@@ -403,13 +438,10 @@ function! LspStatus() abort
 endfunction
 
 
-" completion
-let g:deoplete#enable_at_startup = 1
-" Bubble lsp completeions to the top
-call deoplete#custom#source('lsp', 'rank', 9999)
-
 " disable preview window
-set completeopt-=preview
+" set completeopt-=preview
+" For nvim-compe
+set completeopt=menuone,noselect
 
 """""""""""""
 " Tree sitter
