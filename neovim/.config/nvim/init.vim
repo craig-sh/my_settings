@@ -41,8 +41,8 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Utilities
 Plug 'kevinhwang91/nvim-bqf' " Preview windows for qf list, etc
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 Plug 'tpope/vim-sensible' " Super common settings
 Plug 'tpope/vim-sleuth'  " Indentation settings TODO this might be solved with tree-sitter indentation
 Plug 'tpope/vim-surround'
@@ -182,21 +182,22 @@ tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
 " File navigation mappings
 """"FZF""""
 
-noremap <Leader>t :Tags<CR>
-noremap <Leader>m :BTags<CR>
-noremap <Leader>b :Buffers<CR>
-noremap <Leader>l :Files<CR>
-noremap <Leader>g :GFiles?<CR>
-noremap <c-l> :Files<CR>
+noremap <Leader>tt <cmd>Telescope lsp_dynamic_workspace_symbols<CR>
+noremap <Leader>ts <cmd>Telescope treesitter<CR>
+noremap <Leader>tw <cmd>Telescope lsp_references<CR>
+noremap <Leader>c <cmd>Telescope lsp_code_actions<CR>
+noremap <Leader>cr <cmd>Telescope lsp_range_code_actions<CR>
+noremap <Leader>m <cmd>Telescope lsp_document_symbols<CR>
+noremap <Leader>b <cmd>Telescope buffers<CR>
+noremap <Leader>l <cmd>Telescope find_files<CR>
+" noremap <Leader>g :GFiles?<CR>
+noremap <c-l> <cmd>Telescope find_files<CR>
+
+nnoremap <Leader>f <cmd>Telescope live_grep<CR>
+nnoremap <Leader>ff <cmd>Telescope live_grep<CR>
+nnoremap <Leader>fw <cmd>Telescope grep_string<CR>
 " Netrw will map refresh to c-l if we don't define it first
 nnoremap <leader><leader>q <Plug>NetrwRefresh
-if executable('rg')
-  nnoremap <Leader>f :Rg<Space>
-  nnoremap <Leader>fw :Rg <C-R><C-W><CR>
-elseif executable('ag')
-  nnoremap <Leader>f :Ag<Space>
-  nnoremap <Leader>fw :Ag <C-R><C-W><CR>
-endif
 
 " Always mistyping :w as :W...
 command! W w
@@ -425,7 +426,7 @@ require('compe').setup {
 }
 -- Map compe confirm and complete functions
 vim.api.nvim_set_keymap('i', '<cr>', 'compe#confirm("<cr>")', { expr = true })
-vim.api.nvim_set_keymap('i', '<c-k>', 'compe#complete()', { expr = true })
+vim.api.nvim_set_keymap('i', '<c-h>', 'compe#complete()', { expr = true })
 
 EOF
 
