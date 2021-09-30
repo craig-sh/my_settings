@@ -505,20 +505,25 @@ vim.g.firenvim_config = {
   }
 }
 
-vim.cmd([[
-" Autocommands
-" Put these in an autocmd group, so that we can delete them easily.
-augroup vimrcEx
-  autocmd!
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  " Also don't do it when the mark is in the first line, that is the default
-  " position when opening a file.
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
-augroup end
-]])
+-- autocommands
+--https://old.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
+-- This function is taken from https://github.com/norcalli/nvim_utils
+function nvim_create_augroups(definitions)
+    for group_name, definition in pairs(definitions) do
+        vim.api.nvim_command('augroup '..group_name)
+        vim.api.nvim_command('autocmd!')
+        for _, def in ipairs(definition) do
+            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+            vim.api.nvim_command(command)
+        end
+        vim.api.nvim_command('augroup END')
+    end
+end
+
+local autocmds = {
+  restore_cursor = {
+      { 'BufRead', '*', [[call setpos(".", getpos("'\""))]] };
+  };
+}
+nvim_create_augroups(autocmds)
 vim.cmd([[ au TextYankPost * silent! lua require'vim.highlight'.on_yank() ]])
