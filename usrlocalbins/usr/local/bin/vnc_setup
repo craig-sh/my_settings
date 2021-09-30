@@ -1,0 +1,40 @@
+#!/bin/bash
+xrandr --output HDMI-0 --rotate left --mode 1920x1080
+xrandr --output HDMI-0 --mode 1920x1080 --output DP-2 --mode 1920x1080 --right-of HDMI-0
+xrandr --output DP-2 --pos 1080x400 --mode 1920x1080
+# Move all desktops to the right monitor
+bspc desktop "I" -m "-->"
+bspc desktop "II" -m "-->"
+bspc desktop "III" -m "-->"
+bspc desktop "IV" -m "-->"
+bspc desktop "V" -m "-->"
+
+# Move our bar to the right monitor as well
+bspc config -m '<--' top_padding 0
+bspc config -m '-->' top_padding 40
+$HOME/.config/polybar/launch.sh right &
+
+# Use xmodmap because the remote host's keyboard may not be configured in hardware
+xmodmap ~/.Xmodmap
+
+x11vnc -repeat -ncache 10 -clip  xinerama1 -noxrecord
+
+
+xrandr --output HDMI-0 --rotate left
+xrandr --output HDMI-0 --auto --output DP-2 --auto --right-of HDMI-0
+xrandr --output DP-2 --pos 1440x579
+
+# Reset keyboard layout (assumes the localhost has a hardware configured keyboard)
+setxkbmap -layout us
+
+# Move desktops back
+bspc desktop "I" -m "<--"
+bspc desktop "II" -m "<--"
+bspc desktop "III" -m "<--"
+bspc desktop "IV" -m "<--"
+bspc desktop "V" -m "<--"
+
+# Move bar back
+bspc config -m '<--' top_padding 40
+bspc config -m '-->' top_padding 0
+$HOME/.config/polybar/launch.sh &
