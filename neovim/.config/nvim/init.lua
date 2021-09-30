@@ -67,7 +67,10 @@ require('packer').startup(function()
         'nvim-lua/plenary.nvim'
       },
     }
-    use 'famiu/feline.nvim'
+    use {
+      'hoob3rt/lualine.nvim',
+      requires = {'kyazdani42/nvim-web-devicons', opt = true}
+    }
     use {'dracula/vim', as = 'dracula'}
     use 'joshdick/onedark.vim'
 
@@ -90,6 +93,7 @@ endif
 ]]
 )
 
+-- DBUI
 vim.cmd([[ let g:db_ui_use_nerd_fonts = 1 ]])
 vim.cmd([[ let g:db_ui_tmp_query_location = '~/queries' ]])
 vim.cmd([[ autocmd Filetype sql nnoremap <Leader>W <Plug>(DBUI_SaveQuery) ]])
@@ -154,8 +158,8 @@ hi FloatermBorderNF guibg='#14151b' guifg=green
 vim.g.vista_default_executive = 'nvim_lsp'
 
 -- snips
-vim.g.UltiSnipsExpandTrigger = '<c-k>'
-vim.g.UltiSnipsJumpForwardTrigger = '<c-k>'
+vim.g.UltiSnipsExpandTrigger = '<C-k>'
+vim.g.UltiSnipsJumpForwardTrigger = '<C-k>'
 vim.g.UltiSnipsJumpBackwardTrigger = '<c-b>'
 vim.g.UltiSnipsSnippetDirectories = {'UltiSnips', 'mysnips'}
 
@@ -166,23 +170,35 @@ vimp.imap('jj', '<Esc>')
 
 vimp.nnoremap({'expr', 'silent'}, '<F5>', [[:let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>]])
 
-vimp.nnoremap({'expr', 'silent'}, '<A-k>', ':wincmd k<CR>')
-vimp.nnoremap({'expr', 'silent'}, '<A-j>', ':wincmd j<CR>')
-vimp.nnoremap({'expr', 'silent'}, '<A-h>', ':wincmd h<CR>')
-vimp.nnoremap({'expr', 'silent'}, '<A-l>', ':wincmd l<CR>')
+
+vim.cmd([[
+nnoremap <silent> <A-k> :wincmd k<CR>
+nnoremap <silent> <A-j> :wincmd j<CR>
+nnoremap <silent> <A-h> :wincmd h<CR>
+nnoremap <silent> <A-l> :wincmd l<CR>
+]])
+--vimp.nnoremap({'expr', 'silent'}, '<A-k>', ':wincmd k<CR>')
+--vimp.nnoremap({'expr', 'silent'}, '<A-j>', ':wincmd j<CR>')
+--vimp.nnoremap({'expr', 'silent'}, '<A-h>', ':wincmd h<CR>')
+--vimp.nnoremap({'expr', 'silent'}, '<A-l>', ':wincmd l<CR>')
 
 -- Terminal mode:
 vimp.tnoremap('<Esc>', [[<C-\><C-n>]])
 vimp.tnoremap('<M-[>', '<Esc>')
 vimp.tnoremap('<C-v><Esc>', '<Esc>')
-vimp.tnoremap('<A-h>', [[<c-\><c-n><c-w>h]])
-vimp.tnoremap('<A-j>', [[<c-\><c-n><c-w>j]])
-vimp.tnoremap('<A-k>', [[<c-\><c-n><c-w>k]])
-vimp.tnoremap('<A-l>', [[<c-\><c-n><c-w>l]])
+vimp.tnoremap('<A-h>', [[<C-\><C-n><C-w>h]])
+vimp.tnoremap('<A-j>', [[<C-\><C-n><C-w>j]])
+vimp.tnoremap('<A-k>', [[<C-\><C-n><C-w>k]])
+vimp.tnoremap('<A-l>', [[<C-\><C-n><C-w>l]])
 
-vimp.nnoremap({'expr', 'silent'}, '<F12>', [[:FloatermToggle<CR>]])
-vimp.inoremap({'expr', 'silent'}, '<F12>', [[<Esc>:FloatermToggle<CR>]])
-vimp.tnoremap({'expr', 'silent'}, '<F12>', [[<C-\><C-n>:FloatermToggle<CR>]])
+vim.cmd([[
+noremap  <silent> <F12>  :FloatermToggle<CR>
+noremap! <silent> <F12>  <Esc>:FloatermToggle<CR>
+tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
+]])
+--vimp.nnoremap({'expr', 'silent'}, '<F12>', [[:FloatermToggle<CR>]])
+--vimp.inoremap({'expr', 'silent'}, '<F12>', [[<Esc>:FloatermToggle<CR>]])
+--vimp.tnoremap({'expr', 'silent'}, '<F12>', [[<C-\><C-n>:FloatermToggle<CR>]])
 
 -- File navigation mappings
 
@@ -195,14 +211,11 @@ vimp.noremap('<Leader>m', '<cmd>Telescope lsp_document_symbols<CR>')
 vimp.noremap('<Leader>b', '<cmd>Telescope buffers<CR>')
 vimp.noremap('<Leader>l', '<cmd>Telescope find_files<CR>')
 -- noremap <Leader>g :GFiles?<CR>
-vimp.noremap({ 'override' }, '<c-l>', '<cmd>Telescope find_files<CR>')
+vimp.noremap({ 'override' }, '<C-l>', '<cmd>Telescope find_files<CR>')
 
 --vimp.nnoremap('<Leader>f', '<cmd>Telescope live_grep<CR>')
 vimp.nnoremap('<Leader>ff', '<cmd>Telescope live_grep<CR>')
 vimp.nnoremap('<Leader>fw', '<cmd>Telescope grep_string<CR>')
-
--- Netrw will map refresh to c-l if we don't define it first
--- vimp.nnoremap('<leader><leader>q', '<Plug>NetrwRefresh')
 
 -- Always mistyping :w as :W...
 vim.cmd([[ command! W w ]])
@@ -236,13 +249,15 @@ vimp.noremap('<Leader><Leader>pf', '::! pyflakes % <CR>')
 vimp.noremap('<Leader><Leader>mp', '::! mypy % --follow-imports=silent<CR>')
 
 
-require('gitsigns').setup {
+
+local gitsigns = require('gitsigns')
+gitsigns.setup {
   keymaps = {
     -- Default keymap options
     noremap = true,
 
-    ['n <c-j>'] = { expr = true, "&diff ? '<c-j>' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'"},
-    ['n <c-k>'] = { expr = true, "&diff ? '<c-k>' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'"},
+    ['n <C-j>'] = { expr = true, buffer = true, "&diff ? '<C-j>' : '<cmd>lua require\"gitsigns.actions\".next_hunk({wrap=false})<CR>'"},
+    ['n <C-k>'] = { expr = true, buffer = true, "&diff ? '<C-k>' : '<cmd>lua require\"gitsigns.actions\".prev_hunk({wrap=false})<CR>'"},
 
     ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
     ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
@@ -254,10 +269,27 @@ require('gitsigns').setup {
     ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
     ['n <leader>hS'] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
     ['n <leader>hU'] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
+  },
+  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+    delay = 2000,
+  },
+}
+
+require('lualine').setup{
+  options = {
+    theme = 'onedark',
+    component_separators = {'|', '|'},
+    section_separators = {'', ''},
+  },
+  sections = {
+    lualine_b = {'b:gitsigns_head', 'b:gitsigns_status'},
+    lualine_c = {'filename',  require'lsp-status'.status},
   }
 }
 
-require('feline').setup()
 -- LSP
 
 local actions = require('telescope.actions')
@@ -389,7 +421,7 @@ cmp.setup {
     ['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-k>'] = cmp.mapping.complete(),
+    ['<C-l>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
@@ -398,8 +430,8 @@ cmp.setup {
     ['<Tab>'] = function(fallback)
       if vim.fn.pumvisible() == 1 then
         vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-      elseif luasnip.expand_or_jumpable() then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
+      --elseif luasnip.expand_or_jumpable() then
+      --  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
       else
         fallback()
       end
@@ -407,8 +439,8 @@ cmp.setup {
     ['<S-Tab>'] = function(fallback)
       if vim.fn.pumvisible() == 1 then
         vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-      elseif luasnip.jumpable(-1) then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
+      --elseif luasnip.jumpable(-1) then
+      --  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
       else
         fallback()
       end
@@ -452,6 +484,34 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+
+-- autocommands
+--https://old.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
+-- This function is taken from https://github.com/norcalli/nvim_utils
+function nvim_create_augroups(definitions)
+    for group_name, definition in pairs(definitions) do
+        vim.api.nvim_command('augroup '..group_name)
+        vim.api.nvim_command('autocmd!')
+        for _, def in ipairs(definition) do
+            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
+            vim.api.nvim_command(command)
+        end
+        vim.api.nvim_command('augroup END')
+    end
+end
+
+local autocmds = {
+  restore_cursor = {
+      { 'BufRead', '*', [[call setpos(".", getpos("'\""))]] };
+  };
+  lua_highlight = {
+      { "TextYankPost", "*", [[silent! lua vim.highlight.on_yank() {higroup="IncSearch", timeout=400}]] };
+  };
+}
+nvim_create_augroups(autocmds)
+
+
+-- Firenvim
 vim.cmd([[
 if exists('g:started_by_firenvim')
   " wrap is helpful in browser context
@@ -504,26 +564,3 @@ vim.g.firenvim_config = {
     },
   }
 }
-
--- autocommands
---https://old.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
--- This function is taken from https://github.com/norcalli/nvim_utils
-function nvim_create_augroups(definitions)
-    for group_name, definition in pairs(definitions) do
-        vim.api.nvim_command('augroup '..group_name)
-        vim.api.nvim_command('autocmd!')
-        for _, def in ipairs(definition) do
-            local command = table.concat(vim.tbl_flatten{'autocmd', def}, ' ')
-            vim.api.nvim_command(command)
-        end
-        vim.api.nvim_command('augroup END')
-    end
-end
-
-local autocmds = {
-  restore_cursor = {
-      { 'BufRead', '*', [[call setpos(".", getpos("'\""))]] };
-  };
-}
-nvim_create_augroups(autocmds)
-vim.cmd([[ au TextYankPost * silent! lua require'vim.highlight'.on_yank() ]])
