@@ -1,0 +1,19 @@
+{
+  "Listeners" : [ "HTTP:8009" ],
+  "ExitIfAnyPortIsAlreadyUsed" : false,
+  "AvoidDualUDPSending" : {
+          "Active": true,
+          "Delay": "100ms"
+  },
+  "LogLevel" : "INFO",
+  "BroadcastIP" : "255.255.255.255",
+  "Commands" : [
+    {
+        "Operation" : "sleep",
+        "Command" : "systemctl suspend",
+        "Default" : "true"
+    }
+  ]
+
+
+}

@@ -20,23 +20,33 @@ systemctl enable fstrim.timer
 
 # User
 ```
-pacman -S zsh sudo vim
+pacman -S zsh sudo vim git
 useradd -m craig -s /bin/zsh
 passwd craig
 gpasswd -a craig wheel # add craig to wheel group
 export EDITOR=/usr/bin/vim
 visudo # enable permissions for craig
+
+# Get settings from gitbhu
+cd && git clone https://github.com/craig-sh/my_settings
 ```
 
 # Generic
 
 ```
-sudo pacman -S wget curl git stow
+sudo pacman -S wget curl git stow reflector
 sudo pacman -S gcc make vim
-cd my_settings && stow install vim
+cd ~/my_settings && stow vim
+# Read reflector docs to enable service
+
+--save /etc/pacman.d/mirrorlist
+--country Canada,'United States'
+--protocol https
+--latest 5
 ```
 
 # Commandline
+
 
 ## Rust
 
@@ -48,7 +58,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # this can take a while to compile, can also directly install the binary
 # https://starship.rs/#quick-install
 cargo install starship
-cd my_settings && stow install starship
+cd ~/my_settings && stow starship
 ```
 
 ## ZSH Settings
@@ -107,6 +117,7 @@ sudo pacman -S base-devel cmake unzip ninja tree-sitter
 mkdir ~/gits
 cd ~/gits
 git clone https://github.com/neovim/neovim.git
+cd neovim
 make distclean && make CMAKE_BUILD_TYPE=Release
 sudo make install
 ```
@@ -163,7 +174,7 @@ cd ~/my_settings && stow neovim
 ## Start
 
 ```
-sudo pacman -S xorg xclip xsel xdotool xss-lock
+sudo pacman -S xorg xclip xsel xdotool xorg-xinit xss-lock
 ```
 
 ## Fonts
@@ -203,6 +214,7 @@ git clone https://github.com/baskerville/bspwm.git
 git clone https://github.com/baskerville/sxhkd.git
 cd bspwm && make && sudo make install
 cd ../sxhkd && make && sudo make install
+
 #####################
 
 sudo pacman -Syu xclip xsel gvim feh
