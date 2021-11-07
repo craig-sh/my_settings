@@ -3,7 +3,7 @@ require('packer').startup(function()
     use 'wbthomason/packer.nvim' -- Package manager
 
     use 'SirVer/ultisnips'
-    use {'honza/vim-snippets', requires = { 'SirVer/ultisnips' } }
+    use {'honza/vim-snippets', rtp = '.', requires = { 'SirVer/ultisnips' } }
 
     use 'neovim/nvim-lspconfig'
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
@@ -14,6 +14,7 @@ require('packer').startup(function()
     use 'hrsh7th/cmp-nvim-lua'
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-cmdline'
     use 'quangnguyen30192/cmp-nvim-ultisnips'
     use { 'andersevenrud/compe-tmux', branch = 'cmp' }
 
@@ -40,6 +41,7 @@ require('packer').startup(function()
     use 'kevinhwang91/nvim-bqf' -- Preview windows for qf list, etc
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
+    use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
     use 'tpope/vim-sensible'   -- Super common settings
     use 'tpope/vim-sleuth' --  Indentation settings
     use 'tpope/vim-surround'
@@ -296,18 +298,15 @@ local actions = require('telescope.actions')
 -- Global remapping
 ------------------------------
 require('telescope').setup{
-  pickers = {
-    buffers = {
-      sort_lastused = true
+  extensions = {
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
     }
   },
   defaults = {
-    layout_strategy = "vertical",
-    layout_config = {
-       vertical = {
-         preview_height = 0.5, -- adjust to taste
-      }
-    },
     mappings = {
       i = {
         ["<C-e>"] = actions.send_to_qflist + actions.open_qflist,
@@ -329,6 +328,7 @@ lsp_status.register_progress()
 local nvim_lsp = require'lspconfig'
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
@@ -388,7 +388,7 @@ end
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
 capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
-local servers = { "pyright", "rls", "bashls", "vuels" }
+local servers = { "pyright", "rls", "bashls", "vuels", "ansiblels"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -403,6 +403,11 @@ vim.o.completeopt = 'menuone,noselect'
 -- Compe setup
 local cmp = require('cmp')
 cmp.setup {
+  snippet = {
+    expand = function(args)
+      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+    end,
+  },
   sources = {
     { name = 'path' },
     { name = 'nvim_lsp' },
@@ -417,16 +422,13 @@ cmp.setup {
     },
   },
   mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
+    --['<C-p>'] = cmp.mapping.select_prev_item(),
+    --['<C-n>'] = cmp.mapping.select_next_item(),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-l>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
+    ['<CR>'] = cmp.mapping.confirm(),
     ['<Tab>'] = function(fallback)
       if vim.fn.pumvisible() == 1 then
         vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
@@ -447,6 +449,22 @@ cmp.setup {
     end,
   },
 }
+
+-- Use buffer source for `/`.
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':'.
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
 
 require'nvim-treesitter.configs'.setup {
   highlight = {
