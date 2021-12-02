@@ -18,6 +18,14 @@ require('packer').startup(function()
     use 'quangnguyen30192/cmp-nvim-ultisnips'
     use { 'andersevenrud/compe-tmux', branch = 'cmp' }
 
+    use {'kristijanhusak/orgmode.nvim'}
+    use {"akinsho/org-bullets.nvim", config = function()
+        require("org-bullets").setup {
+          symbols = { "◉", "✸", "✿", "○" }
+          -- or a function that receives the defaults and returns a list
+        }
+      end
+    }
     -- Performance issues with this
     -- use 'romgrk/nvim-treesitter-context'
 
@@ -322,6 +330,8 @@ require('telescope').setup{
   }
 }
 
+
+
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
 
@@ -388,13 +398,49 @@ end
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
 capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
-local servers = { "pyright", "rls", "bashls", "vuels", "ansiblels"}
+local servers = { "pyright", "rust_analyzer", "bashls", "vuels", "ansiblels"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
   }
 end
+
+-- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
+local sumneko_root_path = '/home/craig/gits/lua-language-server'
+local sumneko_binary = sumneko_root_path.."/bin/Linux/lua-language-server"
+
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, "lua/?.lua")
+table.insert(runtime_path, "lua/?/init.lua")
+
+require'lspconfig'.sumneko_lua.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+  settings = {
+    Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+        -- Setup your lua path
+        path = runtime_path,
+      },
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = {'vim'},
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
 
 require("which-key").setup {}
 
@@ -466,11 +512,24 @@ cmp.setup.cmdline(':', {
   })
 })
 
+local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+parser_config.org = {
+  install_info = {
+    url = 'https://github.com/milisims/tree-sitter-org',
+    revision = 'main',
+    files = {'src/parser.c', 'src/scanner.cc'},
+  },
+  filetype = 'org',
+}
+
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
-    use_languagetree = false, -- Use this to enable language injection (this is very unstable)
+    disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
+    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
+    -- use_languagetree = false, -- Use this to enable language injection (this is very unstable)
   },
+  ensure_installed = {'org','python','bash','javascript'}, -- Or run :TSUpdate org
   incremental_selection = {
    enable = true,
    keymaps = {
@@ -501,6 +560,11 @@ require'nvim-treesitter.configs'.setup {
     },
   },
 }
+
+require('orgmode').setup({
+  org_agenda_files = {'~/Documents/org/*'},
+  org_default_notes_file = '~/Documents/org/refile.org',
+})
 
 
 -- autocommands

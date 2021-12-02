@@ -176,7 +176,7 @@ XF86MonBrightnessDown
 	 xbacklight -dec 5
 
 super + Return
-	termite
+	kitty
 
 ctrl + F1
 	xautolock -locknow

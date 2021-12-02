@@ -38,7 +38,11 @@ alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML
 alias diskspace='sudo ncdu -x /'
 alias music='systemctl restart spotifyd.service --user && spt'
 alias wakehyper='wol bc:5f:f4:36:33:f4'
-
+if [[ "$TERM" == "screen-256color" ]]; then
+  alias ssh="TERM=screen ssh"
+elif [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh="kitty +kitten ssh"
+fi
 #laptop specific
 function netconnect {
     sudo iwctl station wlan0 scan
