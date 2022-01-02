@@ -50,6 +50,7 @@ function netconnect {
 }
 alias netroam='netconnect Zerus'
 alias nethome='netconnect Eriador'
+alias nethomepalan='netconnect palantir'
 alias netleander='netconnect Overmind'
 
 function transmission_dl {

@@ -8,6 +8,13 @@ require('packer').startup(function()
     use 'neovim/nvim-lspconfig'
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use {'nvim-treesitter/nvim-treesitter-textobjects', requires = { 'nvim-treesitter/nvim-treesitter' } }
+    use 'kristijanhusak/orgmode.nvim'
+    use {"akinsho/org-bullets.nvim", config = function()
+        require("org-bullets").setup {
+          symbols = { "◉", "○", "✸", "✿" }
+        }
+      end
+    }
 
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-buffer'
@@ -16,21 +23,13 @@ require('packer').startup(function()
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-cmdline'
     use 'quangnguyen30192/cmp-nvim-ultisnips'
-    use { 'andersevenrud/compe-tmux', branch = 'cmp' }
+    use { 'andersevenrud/compe-tmux' }
 
-    use {'kristijanhusak/orgmode.nvim'}
-    use {"akinsho/org-bullets.nvim", config = function()
-        require("org-bullets").setup {
-          symbols = { "◉", "✸", "✿", "○" }
-          -- or a function that receives the defaults and returns a list
-        }
-      end
-    }
     -- Performance issues with this
     -- use 'romgrk/nvim-treesitter-context'
 
     -- Movement
-    use 'justinmk/vim-sneak'
+    use 'ggandor/lightspeed.nvim'
 
     -- Code feedback
     use 'tpope/vim-fugitive'
@@ -50,6 +49,18 @@ require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+    use {
+      "AckslD/nvim-neoclip.lua",
+      requires = {
+        {'tami5/sqlite.lua', module = 'sqlite'},
+        {'nvim-telescope/telescope.nvim'},
+      },
+      config = function()
+        require('neoclip').setup({
+          enable_persistant_history = true,
+        })
+      end,
+    }
     use 'tpope/vim-sensible'   -- Super common settings
     use 'tpope/vim-sleuth' --  Indentation settings
     use 'tpope/vim-surround'
@@ -220,12 +231,14 @@ vimp.noremap('<Leader>cr', '<cmd>Telescope lsp_range_code_actions<CR>')
 vimp.noremap('<Leader>m', '<cmd>Telescope lsp_document_symbols<CR>')
 vimp.noremap('<Leader>b', '<cmd>Telescope buffers<CR>')
 vimp.noremap('<Leader>l', '<cmd>Telescope find_files<CR>')
+vimp.noremap('<Leader>cb', '<cmd>Telescope neoclip<CR>')
 -- noremap <Leader>g :GFiles?<CR>
 vimp.noremap({ 'override' }, '<C-l>', '<cmd>Telescope find_files<CR>')
 
 --vimp.nnoremap('<Leader>f', '<cmd>Telescope live_grep<CR>')
 vimp.nnoremap('<Leader>ff', '<cmd>Telescope live_grep<CR>')
 vimp.nnoremap('<Leader>fw', '<cmd>Telescope grep_string<CR>')
+vimp.nnoremap('<Leader>gg', '<cmd>Telescope git_status<CR>')
 
 -- Always mistyping :w as :W...
 vim.cmd([[ command! W w ]])
@@ -330,10 +343,19 @@ require('telescope').setup{
   }
 }
 
-
+require('telescope').load_extension('neoclip')
 
 local lsp_status = require('lsp-status')
 lsp_status.register_progress()
+
+vim.diagnostic.config({
+  virtual_text = {
+    source = "always",  -- Or "if_many"
+  },
+  float = {
+    source = "always",  -- Or "if_many"
+  },
+})
 
 local nvim_lsp = require'lspconfig'
 
@@ -397,12 +419,26 @@ end
 
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
+-- Update commands
+-- pip install 'python-lsp-server[all]' pylint pylsp-mypy pyls-isort pylsp-rope pyls-flake8 --upgrade
 capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
-local servers = { "pyright", "rust_analyzer", "bashls", "vuels", "ansiblels"}
+local servers = { "hls", "pylsp", "rust_analyzer", "bashls", "vuels", "ansiblels"}
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
     capabilities = capabilities,
+    settings = {
+      pylsp = {
+        plugins = {
+          pycodestyle = {
+            maxLineLength = 200,
+          },
+          flake8 = {
+            maxLineLength = 200,
+          }
+        }
+      }
+    }
   }
 end
 
@@ -462,10 +498,11 @@ cmp.setup {
     { name = 'ultisnips' },
     {
       name = 'tmux',
-      opts = {
+      option = {
         all_panes = true,
       }
     },
+    { name = 'orgmode' },
   },
   mapping = {
     --['<C-p>'] = cmp.mapping.select_prev_item(),
@@ -512,11 +549,12 @@ cmp.setup.cmdline(':', {
   })
 })
 
+
 local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
 parser_config.org = {
   install_info = {
     url = 'https://github.com/milisims/tree-sitter-org',
-    revision = 'main',
+    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
     files = {'src/parser.c', 'src/scanner.cc'},
   },
   filetype = 'org',
@@ -525,11 +563,10 @@ parser_config.org = {
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
-    disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
-    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
-    -- use_languagetree = false, -- Use this to enable language injection (this is very unstable)
+    --disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
+    --additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
-  ensure_installed = {'org','python','bash','javascript'}, -- Or run :TSUpdate org
+  ensure_installed = {'org', 'python', 'bash', 'vim', 'lua', 'javascript'},
   incremental_selection = {
    enable = true,
    keymaps = {
@@ -560,6 +597,7 @@ require'nvim-treesitter.configs'.setup {
     },
   },
 }
+
 
 require('orgmode').setup({
   org_agenda_files = {'~/Documents/org/*'},
