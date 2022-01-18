@@ -12,3 +12,4 @@ neovim/.config/nvim/.netrwhist
 neovim/.config/nvim/after/
 neovim/.config/nvim/plugged/
 spotifyd/.config/spotifyd/.spotify_pw
+__pycache__/
