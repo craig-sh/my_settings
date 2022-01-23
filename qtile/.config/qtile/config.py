@@ -24,34 +24,69 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from libqtile.log_utils import logger # noqa
 import os
 import subprocess
+from types import SimpleNamespace
 from typing import List  # noqa: F401
-from typing import Callable, NamedTuple
+from typing import Callable, Dict, NamedTuple
 
 from libqtile import bar, hook, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
+from libqtile.log_utils import logger  # noqa
 from libqtile.widget.volume import Volume
 
 # HELPERS ###################
-# Dracula color theme
+# Onedark kitty theme - from https://github.com/ful1e5/dotfiles/blob/main/kitty/.config/kitty/themes/onedark.conf#L9
 THEME = {
-    "background": "#282a36",
-    "current": "#44475a",
-    "selection": "#44475a",
-    "foreground": "#f8f8f2",
-    "comment": "#6272a4",
-    "cyan": "#8be9fd",
-    "green": "#50fa7b",
-    "orange": "#ffb86c",
-    "pink": "#ff79c6",
-    "purple": "#bd93f9",
-    "red": "#ff5555",
-    "yellow": "#f1fa8c"
+    "background": "#282c34",
+    "foreground": "#abb2bf",
+    "selection_background": "#393f4a",
+    "selection_foreground": "#abb2bf",
+    "url_color": "#98c379",
+    "cursor": "#528bff",
+    # Tabs
+    "active_tab_background": "#61afef",
+    "active_tab_foreground": "#282c34",
+    "inactive_tab_background": "#abb2bf",
+    "inactive_tab_foreground": "#282c34",
+    # Windows Border
+    "active_border_color": "#393f4a",
+    "inactive_border_color": "#393f4a",
+    # normal
+    "color0": "#20232A",
+    "color1": "#e86671",
+    "color2": "#98c379",
+    "color3": "#e5c07b",
+    "color4": "#61afef",
+    "color5": "#c678dd",
+    "color6": "#56b6c2",
+    "color7": "#798294",
+    # bright
+    "color8": "#5c6370",
+    "color9": "#e86671",
+    "color10": "#98c379",
+    "color11": "#e5c07b",
+    "color12": "#61afef",
+    "color13": "#c678dd",
+    "color14": "#56b6c2",
+    "color15": "#abb2bf",
+    # extended colors
+    "color16": "#d19a66",
+    "color17": "#f65866",
 }
+
+theme = SimpleNamespace(
+    bar_bg=THEME["background"],
+    bar_fg=THEME["foreground"],
+    bar_fg_inactive=THEME["inactive_border_color"],
+    sep_fg=THEME["color2"],
+    sep_bg=THEME["background"],
+    bar_active=THEME["color3"],
+    selected=THEME["color10"],
+    **THEME,
+)
 
 # TODO ctrl + tab breaks across screens
 # TODO create GH issue for cmd_to_layout_index. type hint for index should be int not str. See usage in /usr/lib/python3.10/site-packages/libqtile/group.py:125
@@ -59,23 +94,41 @@ THEME = {
 
 class MyLayout(NamedTuple):
     obj: layout.base.Layout
-    index: int # noqa
+    idx: int  # noqa
 
 
 _border_colors = {
-    "border_focus": THEME["green"],           # "#859900",   # green
-    "border_normal": THEME["background"],     # "#504339",   # grey
+    "border_focus": theme.selected,
+    "border_normal": theme.bar_bg,
     "border_width": 6,
     "margin": 8
 }
+
+def get_num_screens() -> int:
+    """
+    ➜ xrandr --listmonitors|head -1
+    Monitors: 2
+    """
+    output = subprocess.run(["xrandr --listmonitors|head -1"], shell=True, capture_output=True).stdout.decode("utf-8")
+    return int(output.split(":")[1].strip())
+
+
+def is_laptop() -> bool:
+    return os.path.isdir("/proc/acpi/button/lid")
 
 
 MONAD_TALL_LAYOUT = MyLayout(layout.MonadTall(**_border_colors), 0)
 MAX_LAYOUT = MyLayout(layout.Max(), 1)
 TREE_TAB_LAYOUT = MyLayout(layout.TreeTab(), 2)
+COL_LAYOUT = MyLayout(layout.Columns(**_border_colors), 3)
+
+NUM_SCREENS = get_num_screens()
+IS_LAPTOP = is_laptop()
 
 LEFT_SCREEN_IDX = 1
 RIGHT_SCREEN_IDX = 0
+
+PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 
 
 def move_to_next_screen(qtile, direction=1):
@@ -149,10 +202,40 @@ def toggle_max_layout() -> Callable:
     def _inner(qtile: Qtile) -> None:
         """Toggle between max layout and monadtall"""
         cur_layout = qtile.current_group.current_layout
-        if cur_layout == MAX_LAYOUT.index:
-            qtile.cmd_to_layout_index(MONAD_TALL_LAYOUT.index)
+        prev_layout = PREV_TOGGLE_LAYOUTS.get(qtile.current_screen.index, MONAD_TALL_LAYOUT.idx)
+        if cur_layout == MAX_LAYOUT.idx:
+            qtile.cmd_to_layout_index(prev_layout)
         else:
-            qtile.cmd_to_layout_index(MAX_LAYOUT.index)
+            PREV_TOGGLE_LAYOUTS[qtile.current_screen.index] = cur_layout
+            qtile.cmd_to_layout_index(MAX_LAYOUT.idx)
+    return _inner
+
+
+def focus_left() -> Callable:
+    def _inner(qtile: Qtile) -> None:
+        """Call focus_left but jump screens if necessary """
+        if len(qtile.screens) == 1 or qtile.current_screen.index == LEFT_SCREEN_IDX:
+            qtile.current_layout.cmd_left()
+            return
+
+        cur_window = qtile.current_window
+        qtile.current_layout.cmd_left()
+        if cur_window == qtile.current_window:
+            qtile.cmd_next_screen()
+    return _inner
+
+
+def focus_right() -> Callable:
+    def _inner(qtile: Qtile) -> None:
+        """Call focus_right but jump screens if necessary """
+        if len(qtile.screens) == 1 or qtile.current_screen.index == RIGHT_SCREEN_IDX:
+            qtile.current_layout.cmd_right()
+            return
+
+        cur_window = qtile.current_window
+        qtile.current_layout.cmd_right()
+        if cur_window == qtile.current_window:
+            qtile.cmd_next_screen()
     return _inner
 
 
@@ -161,13 +244,13 @@ class MyVolume(Volume):
     def _update_drawer(self):
         if self.volume <= 0:
             self.volume = '0%'
-            self.text = '🔇' + str(self.volume)
+            self.text = '婢 ' + str(self.volume)
         elif self.volume < 30:
-            self.text = '🔈' + str(self.volume) + '%'
+            self.text = '奔 ' + str(self.volume) + '%'
         elif self.volume < 80:
-            self.text = '🔉' + str(self.volume) + '%'
+            self.text = '墳 ' + str(self.volume) + '%'
         else:  # self.volume >=80:
-            self.text = '🔊' + str(self.volume) + '%'
+            self.text = ' ' + str(self.volume) + '%'
 
     def restore(self):
         self.timer_setup()
@@ -183,8 +266,9 @@ keys = [
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
 
     # Switch between windows
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
+    #Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
+    Key([mod], "h", lazy.function(focus_left()), desc="Move focus to left"),
+    Key([mod], "l", lazy.function(focus_right()), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
     Key([mod], "k", lazy.layout.up(), desc="Move focus up"),
     Key([mod], "c", lazy.layout.next(),
@@ -298,48 +382,117 @@ layouts = [
     MONAD_TALL_LAYOUT.obj,
     MAX_LAYOUT.obj,
     TREE_TAB_LAYOUT.obj,
+    COL_LAYOUT.obj,
 ]
 
 widget_defaults = dict(
-    font='sans',
-    fontsize=12,
+    font="FantasqueSansMono Nerd Font Mono",
+    fontsize=20,
     padding=3,
+    background=theme.bar_bg,
+    foreground=theme.bar_fg,
+    active=theme.bar_active,
+    max_title_width=300,
 )
 extension_defaults = widget_defaults.copy()
 
-
-volume = MyVolume(
-    foreground=THEME["background"],
-    background=THEME["purple"],
+sep_args = dict(
+    foreground=theme.sep_fg,
+    linewidth=0,
 )
 
 
+def make_sep_icon():
+    return widget.TextBox(
+        text="/",
+        fontsize="33",
+        padding=0,
+        background=theme.sep_bg,
+        foreground=theme.sep_fg,
+    )
+
+
+def make_icon(icon):
+    return widget.TextBox(
+        text=icon,
+        fontsize="33",
+        padding=0,
+        background=theme.sep_bg,
+        foreground=theme.sep_fg,
+    )
+
+
+visible_groups = "12345"
+if NUM_SCREENS == 1:
+    visible_groups = "1234567890"
+
+widget_list = [
+    widget.GroupBox(
+        block_highlight_text_color=theme.selected,
+        visible_groups=visible_groups,
+    ),
+    widget.Sep(**sep_args), make_sep_icon(),
+    widget.CurrentLayout(),
+    widget.Sep(**sep_args), make_sep_icon(),
+    widget.Prompt(),
+    widget.TaskList(),
+    widget.Chord(
+        chords_colors={
+            'launch': ("#ff0000", "#ffffff"),
+        },
+        name_transform=lambda name: name.upper(),
+    ),
+    widget.Sep(**sep_args), make_sep_icon(),
+    MyVolume(fontsize="25"),
+    widget.Sep(**sep_args), make_sep_icon(),
+    make_icon(" "), widget.DF(visible_on_warn=False),
+    widget.Sep(**sep_args), make_sep_icon(),
+    widget.CheckUpdates(
+        colour_have_updates=theme.bar_active,
+        colour_no_updates=theme.bar_fg_inactive,
+        display_format=" {updates}",
+        fontsize=25
+    ),
+]
+if IS_LAPTOP:
+    widget_list += [
+        widget.BatteryIcon(),
+        widget.Sep(**sep_args), make_sep_icon(),
+    ]
+
+widget_list += [
+    widget.Sep(**sep_args), make_sep_icon(),
+    widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
+    widget.Sep(**sep_args), make_sep_icon(),
+    widget.Systray(),
+]
+
+
 screens = [
-    Screen(),
     Screen(
         top=bar.Bar(
-            [
-                widget.CurrentLayout(),
-                widget.GroupBox(),
-                widget.Prompt(),
-                widget.WindowName(for_current_screen=True),
-                widget.Chord(
-                    chords_colors={
-                        'launch': ("#ff0000", "#ffffff"),
-                    },
-                    name_transform=lambda name: name.upper(),
-                ),
-                volume,
-                widget.Systray(),
-                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-                widget.QuickExit(),
-            ],
-            24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
+            widget_list,
+            40,
         ),
     ),
 ]
+
+if NUM_SCREENS > 1:
+    screens.insert(
+        0,
+        Screen(
+            top=bar.Bar(
+                [
+                    widget.GroupBox(
+                        block_highlight_text_color=theme.selected,
+                        visible_groups="67890",
+                    ),
+                    widget.TaskList()
+                ],
+                40
+            )
+        ),
+    )
 
 # Drag floating layouts.
 mouse = [
