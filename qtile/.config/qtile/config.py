@@ -496,6 +496,7 @@ if NUM_SCREENS > 1:
                         block_highlight_text_color=theme.selected,
                         visible_groups="67890",
                     ),
+                    widget.CurrentLayout(foreground=theme.color10),
                     widget.TaskList()
                 ],
                 40

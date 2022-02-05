@@ -420,7 +420,7 @@ end
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
 -- Update commands
--- pip install 'python-lsp-server[all]' pylint pylsp-mypy pyls-isort pylsp-rope pyls-flake8 --upgrade
+-- pip install 'python-lsp-server[all]' pylint pylsp-mypy pyls-isort pylsp-rope pyls-flake8 --upgrade --user
 capabilities = vim.tbl_extend('keep', capabilities or {}, lsp_status.capabilities)
 local servers = { "hls", "pylsp", "rust_analyzer", "bashls", "vuels", "ansiblels"}
 for _, lsp in ipairs(servers) do

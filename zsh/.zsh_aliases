@@ -56,3 +56,8 @@ alias netleander='netconnect Overmind'
 function transmission_dl {
     transmission-cli --download-dir="/home/craig/Downloads" --encryption-required $1
 }
+function convert_media {
+    for f in *.$1;
+        do ffmpeg -i "${f}" "${f%%.*}.mp4";
+    done
+}

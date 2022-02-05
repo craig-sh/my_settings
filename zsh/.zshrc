@@ -1,4 +1,4 @@
-export PYENV_VERSION="3.9.5"
+export PYENV_VERSION="system"
 
 if command -v pyenv 1>/dev/null 2>&1; then
    eval "$(pyenv init -)"
@@ -131,3 +131,13 @@ zinit light zdharma/fast-syntax-highlighting
 zinit ice silent wait atload"_zsh_autosuggest_start"
 zinit light zsh-users/zsh-autosuggestions
 
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk

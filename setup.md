@@ -342,3 +342,12 @@ pip install podman-compose
 # Power Settings
 
 Created scripts in usrlocalbins and systemd. See set-battery-threshold
+
+# quickemu [[ https://github.com/quickemu-project/quickemu ]]
+
+```
+sudo pacman -Syu qemu coreutils edk2-ovmf jq lsb-release procps cdrkit usbutils spice-gtk swtpm xdg-user-dirs zsync
+```
+
+
+
