@@ -104,6 +104,7 @@ _border_colors = {
     "margin": 8
 }
 
+
 def get_num_screens() -> int:
     """
     ➜ xrandr --listmonitors|head -1
@@ -165,9 +166,9 @@ def go_next_group(direction: int) -> Callable:
             raise RuntimeError
         if len(qtile.screens) == 1:
             if direction == 1:
-                qtile.cmd_next_screen()
+                qtile.current_screen.cmd_next_group()
             else:
-                qtile.cmd_prev_screen()
+                qtile.current_screen.cmd_prev_group()
             return
 
         # TODO map screen to nums
@@ -266,7 +267,6 @@ keys = [
     # at https://docs.qtile.org/en/latest/manual/config/lazy.html
 
     # Switch between windows
-    #Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
     Key([mod], "h", lazy.function(focus_left()), desc="Move focus to left"),
     Key([mod], "l", lazy.function(focus_right()), desc="Move focus to right"),
     Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
@@ -315,7 +315,7 @@ keys = [
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "m", lazy.function(toggle_max_layout()), desc="Toggle max layout"),
     Key([mod], "t", lazy.to_layout_index(MONAD_TALL_LAYOUT.index), desc="Change to monadtall"),
-    Key([mod, "shift"], "t", lazy.to_layout_index(TREE_TAB_LAYOUT.index), desc="Toggle between layouts"),
+    # Key([mod, "shift"], "t", lazy.to_layout_index(TREE_TAB_LAYOUT.index), desc="Toggle between layouts"),
 
     # Groups
     Key(["control"], "Tab", lazy.screen.toggle_group()),
@@ -330,18 +330,6 @@ keys = [
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
 
-    # Sound
-    Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle Mute"),
-    Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +2%"), desc="Raise Volume"),
-    Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2%"), desc="Lower Volume"),
-
-    # Music
-    Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
-    Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
-    Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"), desc="Previous song"),
-    Key([], "XF86AudioStop", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"), desc="Stop music"),
-    Key([], "XF86AudioPlay", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"), desc="Play/Pause music"),
-
     # Brightness
     Key([], "XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5"), desc="Increate Brightness"),
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5"), desc="Lower Brightness"),
@@ -349,12 +337,28 @@ keys = [
     # Power
     Key([], "XF86Sleep", lazy.spawn("sudo systemctl suspend"), desc="Suspend Computer"),
 
-
     # Launchers
     Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
     Key([mod], "space", lazy.spawn("rofi -show run"), desc="Spawn a command using a prompt widget"),
 
 ]
+
+if not is_laptop():
+    # bug with how keys are captured on laptop with Xmodmap
+    keys += [
+        # Sound
+        Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle Mute"),
+        Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +2%"), desc="Raise Volume"),
+        Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2%"), desc="Lower Volume"),
+
+        # Music
+        Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
+        Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
+        Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"), desc="Previous song"),
+        Key([], "XF86AudioStop", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"), desc="Stop music"),
+        Key([], "XF86AudioPlay", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"), desc="Play/Pause music"),
+    ]
+
 
 groups = [Group(i) for i in "1234567890"]
 for i in groups:
@@ -381,7 +385,7 @@ for i in groups:
 layouts = [
     MONAD_TALL_LAYOUT.obj,
     MAX_LAYOUT.obj,
-    TREE_TAB_LAYOUT.obj,
+#    TREE_TAB_LAYOUT.obj,
     COL_LAYOUT.obj,
 ]
 
@@ -402,23 +406,23 @@ sep_args = dict(
 )
 
 
-def make_sep_icon():
+def make_sep_icon(background=theme.sep_bg, foreground=theme.sep_fg):
     return widget.TextBox(
         text="/",
         fontsize="33",
-        padding=0,
-        background=theme.sep_bg,
-        foreground=theme.sep_fg,
+        padding=2,
+        background=background,
+        foreground=foreground,
     )
 
 
-def make_icon(icon):
+def make_icon(icon, background=theme.sep_bg, foreground=theme.sep_fg):
     return widget.TextBox(
         text=icon,
         fontsize="33",
         padding=0,
-        background=theme.sep_bg,
-        foreground=theme.sep_fg,
+        background=background,
+        foreground=foreground,
     )
 
 
@@ -431,9 +435,9 @@ widget_list = [
         block_highlight_text_color=theme.selected,
         visible_groups=visible_groups,
     ),
-    widget.Sep(**sep_args), make_sep_icon(),
-    widget.CurrentLayout(),
-    widget.Sep(**sep_args), make_sep_icon(),
+    widget.Sep(**sep_args),  # make_sep_icon(background=theme.color4),
+    widget.CurrentLayout(foreground=theme.color10),
+    widget.Sep(**sep_args),  # make_sep_icon(),
     widget.Prompt(),
     widget.TaskList(),
     widget.Chord(
@@ -442,28 +446,33 @@ widget_list = [
         },
         name_transform=lambda name: name.upper(),
     ),
-    widget.Sep(**sep_args), make_sep_icon(),
-    MyVolume(fontsize="25"),
-    widget.Sep(**sep_args), make_sep_icon(),
-    make_icon(" "), widget.DF(visible_on_warn=False),
-    widget.Sep(**sep_args), make_sep_icon(),
+    widget.Sep(**sep_args),  # make_sep_icon(),
+    make_icon(" ", background=theme.color11, foreground=theme.inactive_tab_foreground),
+    widget.DF(visible_on_warn=False, background=theme.color11, foreground=theme.inactive_tab_foreground),
+    widget.Sep(**sep_args, background=theme.color10),  # make_sep_icon(),
     widget.CheckUpdates(
-        colour_have_updates=theme.bar_active,
+        colour_have_updates=theme.color1,
         colour_no_updates=theme.bar_fg_inactive,
         display_format=" {updates}",
-        fontsize=25
+        fontsize=25,
+        background=theme.color6,
+        no_updates_string=" ",
+        distro="Arch_checkupdates",
     ),
 ]
 if IS_LAPTOP:
     widget_list += [
-        widget.BatteryIcon(),
-        widget.Sep(**sep_args), make_sep_icon(),
+        widget.Battery(background=theme.cursor, foreground=theme.color0, format='{char} {percent:2.0%} {hour:d}:{min:02d}', charge_char='', discharge_char='', full_char=''),
+        widget.Sep(**sep_args),  # make_sep_icon(),
+        widget.Wlan(background=theme.cursor, foreground=theme.color0),
     ]
 
 widget_list += [
-    widget.Sep(**sep_args), make_sep_icon(),
-    widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
-    widget.Sep(**sep_args), make_sep_icon(),
+    widget.Sep(**sep_args, background=theme.color4),  # make_sep_icon(),
+    MyVolume(fontsize="25", background=theme.color4, foreground=theme.color0),
+    widget.Sep(**sep_args, background=theme.color5),  # make_sep_icon(),
+    widget.Clock(format='%Y-%m-%d %a %I:%M %p', background=theme.color5, foreground=theme.color0),
+    widget.Sep(**sep_args),  # make_sep_icon(),
     widget.Systray(),
 ]
 
@@ -543,9 +552,10 @@ wmname = "LG3D"
 
 
 @hook.subscribe.screen_change
-def restart_on_randr(qtile, ev):
+def restart_on_randr(ev):
     # TODO only if numbers of screens changed
-    qtile.cmd_restart()
+    # qtile.cmd_restart()
+    pass
 
 # Hooks
 # Runs startup applications
