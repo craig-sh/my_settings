@@ -10,6 +10,15 @@ xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0
 xrdb -merge  ~/.Xresources
 #[ "$XDG_CURRENT_DESKTOP" = "KDE" ] || [ "$XDG_CURRENT_DESKTOP" = "GNOME" ] || export QT_QPA_PLATFORMTHEME="qt5ct"
 feh --bg-scale ~/my_settings/background.jpg
+
+# Taken from default xinit
+# start some nice programs
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+ for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+  [ -x "$f" ] && . "$f"
+ done
+ unset f
+fi
 #numlockx &
 # Had issues launching gtk apps like meld quickly so started launching with dbus
 #exec dbus-launch --exit-with-x11 bspwm

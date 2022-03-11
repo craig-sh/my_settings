@@ -2,6 +2,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 typeset -U PATH path
 path=(
   "$PYENV_ROOT/bin"
+  "$HOME/.poetry/bin"
   "$HOME/.cargo/bin"
   '/usr/local/sbin'
   '/usr/local/bin'
