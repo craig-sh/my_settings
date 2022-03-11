@@ -26,11 +26,14 @@
 
 import os
 import subprocess
+from time import sleep
 from types import SimpleNamespace
 from typing import List  # noqa: F401
 from typing import Callable, Dict, NamedTuple
 
-from libqtile import bar, hook, layout, widget
+from libqtile import bar, hook, layout
+from libqtile import qtile as imported_qtile
+from libqtile import widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
@@ -78,6 +81,8 @@ THEME = {
 }
 
 theme = SimpleNamespace(
+    screen_active=THEME["color0"],
+    screen_inactive=THEME["color7"],
     bar_bg=THEME["background"],
     bar_fg=THEME["foreground"],
     bar_fg_inactive=THEME["inactive_border_color"],
@@ -133,6 +138,8 @@ PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 
 
 def move_to_next_screen(qtile, direction=1):
+    if len(qtile.screens) == 1:
+        return
     other_scr_index = (qtile.screens.index(qtile.current_screen) + direction) % len(qtile.screens)
     other_scr = qtile.screens[other_scr_index]
     othergroup = other_scr.group
@@ -219,10 +226,14 @@ def focus_left() -> Callable:
             qtile.current_layout.cmd_left()
             return
 
-        cur_window = qtile.current_window
-        qtile.current_layout.cmd_left()
-        if cur_window == qtile.current_window:
+        cur_layout = qtile.current_group.current_layout
+        if cur_layout == MAX_LAYOUT.idx:
             qtile.cmd_next_screen()
+        else:
+            cur_window = qtile.current_window
+            qtile.current_layout.cmd_left()
+            if cur_window == qtile.current_window:
+                qtile.cmd_next_screen()
     return _inner
 
 
@@ -233,10 +244,14 @@ def focus_right() -> Callable:
             qtile.current_layout.cmd_right()
             return
 
-        cur_window = qtile.current_window
-        qtile.current_layout.cmd_right()
-        if cur_window == qtile.current_window:
+        cur_layout = qtile.current_group.current_layout
+        if cur_layout == MAX_LAYOUT.idx:
             qtile.cmd_next_screen()
+        else:
+            cur_window = qtile.current_window
+            qtile.current_layout.cmd_right()
+            if cur_window == qtile.current_window:
+                qtile.cmd_next_screen()
     return _inner
 
 
@@ -385,7 +400,7 @@ for i in groups:
 layouts = [
     MONAD_TALL_LAYOUT.obj,
     MAX_LAYOUT.obj,
-#    TREE_TAB_LAYOUT.obj,
+    #    TREE_TAB_LAYOUT.obj,
     COL_LAYOUT.obj,
 ]
 
@@ -435,7 +450,7 @@ widget_list = [
         block_highlight_text_color=theme.selected,
         visible_groups=visible_groups,
     ),
-    widget.Sep(**sep_args),  # make_sep_icon(background=theme.color4),
+    # widget.Sep(**sep_args),  # make_sep_icon(background=theme.color4),
     widget.CurrentLayout(foreground=theme.color10),
     widget.Sep(**sep_args),  # make_sep_icon(),
     widget.Prompt(),
@@ -547,22 +562,63 @@ auto_minimize = True
 # java that happens to be on java's whitelist.
 wmname = "LG3D"
 
+
+def _preset_screens(qtile: Qtile):
+    # preset the screens for switching next/prev of screens/groups behaves as expected
+    TIME_OF_SLEEP = 0.1
+    sleep(2 * TIME_OF_SLEEP)
+    go_to_group("1")(qtile)
+    sleep(TIME_OF_SLEEP)
+    go_to_group("2")(qtile)
+    sleep(TIME_OF_SLEEP)
+    if len(qtile.screens) > 1:
+        go_to_group("6")(qtile)
+        sleep(TIME_OF_SLEEP)
+        go_to_group("7")(qtile)
+        sleep(TIME_OF_SLEEP)
+        go_to_group("6")(qtile)
+        sleep(TIME_OF_SLEEP)
+    go_to_group("1")(qtile)
+
 # Hooks
 
-# subscribe for change of screen setup, just restart if called
+
+@hook.subscribe.current_screen_change
+def screen_change():
+    if len(imported_qtile.screens) != 2:
+        return
+
+    # Highlight the layout block differently depending oun which screen is focused
+    for screen in imported_qtile.screens:
+        if screen == imported_qtile.current_screen:
+            screen.top.widgets[1].background = theme.screen_active
+        else:
+            screen.top.widgets[1].background = theme.screen_inactive
+        screen.top.draw()
 
 
 @hook.subscribe.screen_change
 def restart_on_randr(ev):
     # TODO only if numbers of screens changed
-    # qtile.cmd_restart()
-    pass
+    num_screens_changed = NUM_SCREENS != get_num_screens()
+    from datetime import datetime
+    logger.error(f"SCREEN change called at {datetime.now()}: {num_screens_changed=}")
+    if num_screens_changed:
+        imported_qtile.cmd_restart()
+        # imported_qtile.cmd_reload_config()
+        # _preset_screens(imported_qtile)
 
-# Hooks
-# Runs startup applications
+
+@hook.subscribe.startup_complete
+def on_start():
+    _preset_screens(imported_qtile)
+    from datetime import datetime
+    num_screens_chaned = NUM_SCREENS != get_num_screens()
+    logger.error(f"ON START  called at {datetime.now()}: {num_screens_chaned=}")
 
 
 @hook.subscribe.startup_once
 def start_once():
+    # Runs startup applications
     home = os.path.expanduser('~/.config/qtile/autostart.sh')
     subprocess.call([home])
