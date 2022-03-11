@@ -1,0 +1,8 @@
+#!/bin/bash
+
+HOSTNAME="$(cat /etc/hostname)"
+
+if [ $HOSTNAME  == "hyperarch" ]; then
+    xrandr --output DP-0 --off
+    xrandr --output HDMI-0 --mode 1920x1080
+fi
