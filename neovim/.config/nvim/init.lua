@@ -42,7 +42,10 @@ require('packer').startup(function()
     use 'rhysd/git-messenger.vim'
     use 'Glench/Vim-Jinja2-Syntax'
     use 'lukas-reineke/indent-blankline.nvim'
-
+    use { 'norcalli/nvim-colorizer.lua', config = function ()
+        require'colorizer'.setup()
+      end
+    }
 
     -- Utilities
     use 'kevinhwang91/nvim-bqf' -- Preview windows for qf list, etc
@@ -52,14 +55,8 @@ require('packer').startup(function()
     use {
       "AckslD/nvim-neoclip.lua",
       requires = {
-        {'tami5/sqlite.lua', module = 'sqlite'},
         {'nvim-telescope/telescope.nvim'},
       },
-      config = function()
-        require('neoclip').setup({
-          enable_persistant_history = true,
-        })
-      end,
     }
     use 'tpope/vim-sensible'   -- Super common settings
     use 'tpope/vim-sleuth' --  Indentation settings
@@ -554,22 +551,17 @@ cmp.setup.cmdline(':', {
   })
 })
 
-
-local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-parser_config.org = {
-  install_info = {
-    url = 'https://github.com/milisims/tree-sitter-org',
-    revision = 'f110024d539e676f25b72b7c80b0fd43c34264ef',
-    files = {'src/parser.c', 'src/scanner.cc'},
-  },
-  filetype = 'org',
-}
+require('orgmode').setup({
+  org_agenda_files = {'~/Documents/org/*'},
+  org_default_notes_file = '~/Documents/org/refile.org',
+})
+require('orgmode').setup_ts_grammar()
 
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
-    --disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
-    --additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
+    disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
+    additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
   ensure_installed = {'org', 'python', 'bash', 'vim', 'lua', 'javascript'},
   incremental_selection = {
@@ -602,12 +594,6 @@ require'nvim-treesitter.configs'.setup {
     },
   },
 }
-
-
-require('orgmode').setup({
-  org_agenda_files = {'~/Documents/org/*'},
-  org_default_notes_file = '~/Documents/org/refile.org',
-})
 
 
 -- autocommands
