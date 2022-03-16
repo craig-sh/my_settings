@@ -2,7 +2,10 @@
 
 HOSTNAME="$(cat /etc/hostname)"
 
-if [ $HOSTNAME  == "hyperarch" ]; then
+if [[ $HOSTNAME  == "hyperarch" ]]; then
     xrandr --output DP-0 --off
     xrandr --output HDMI-0 --mode 1920x1080
+elif [[ $HOSTNAME == "craig-work-pc" ]]; then
+    xrandr --output HDMI-0 --off
+    xrandr --output DP-2 --mode 1920x1080
 fi

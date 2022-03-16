@@ -2,8 +2,9 @@
 
 HOSTNAME="$(cat /etc/hostname)"
 
-if [ $HOSTNAME  == "hyperarch" ]; then
+if [[ $HOSTNAME  == "hyperarch" ]]; then
     xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0
-elif [ $HOSTNAME  == "" ]; then
-    echo "TODO"
+elif [[ $HOSTNAME == "craig-work-pc" ]]; then
+    xrandr --output HDMI-0 --auto --output DP-2 --auto --right-of HDMI-0
+    xrandr --output DP-2
 fi

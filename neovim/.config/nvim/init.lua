@@ -90,7 +90,8 @@ require('packer').startup(function()
       requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
     use {'dracula/vim', as = 'dracula'}
-    use 'joshdick/onedark.vim'
+    --use 'joshdick/onedark.vim'
+    use 'navarasu/onedark.nvim'
 
     use 'svermeulen/vimpeccable'
   end)
@@ -153,8 +154,12 @@ vim.cmd('syntax on')
 vim.o.background = 'dark'
 
 --Set colorscheme (order is important here)
-vim.o.termguicolors = true
-vim.g.onedark_terminal_italics = 1
+-- vim.o.termguicolors = true
+-- vim.g.onedark_terminal_italics = 1
+-- vim.cmd [[colorscheme onedark]]
+require('onedark').setup  {
+  toggle_style_key = '<leader>cs',
+}
 vim.cmd [[colorscheme onedark]]
 
 vim.g.indentLine_char = '▏'
