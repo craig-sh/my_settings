@@ -478,11 +478,11 @@ widget_list = [
 if IS_LAPTOP:
     widget_list += [
         widget.Battery(background=theme.cursor, foreground=theme.color0, format='{char} {percent:2.0%} {hour:d}:{min:02d}', charge_char='', discharge_char='', full_char=''),
-        widget.Sep(**sep_args),  # make_sep_icon(),
-        widget.Wlan(background=theme.cursor, foreground=theme.color0),
     ]
 
 widget_list += [
+    widget.Sep(**sep_args),  # make_sep_icon(),
+    widget.Wlan(background=theme.cursor, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color4),  # make_sep_icon(),
     MyVolume(fontsize="25", background=theme.color4, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color5),  # make_sep_icon(),
