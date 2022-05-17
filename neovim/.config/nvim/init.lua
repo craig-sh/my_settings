@@ -22,6 +22,8 @@ require('packer').startup(function()
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-cmdline'
+    use 'hrsh7th/cmp-nvim-lsp-signature-help'
+    use 'ray-x/cmp-treesitter'
     use 'quangnguyen30192/cmp-nvim-ultisnips'
     use { 'andersevenrud/compe-tmux' }
 
@@ -62,7 +64,11 @@ require('packer').startup(function()
     use 'tpope/vim-sleuth' --  Indentation settings
     use 'tpope/vim-surround'
     use 'tpope/vim-repeat'
-    use { 'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons' }
+    use { 
+      'kyazdani42/nvim-tree.lua',
+      requires = 'kyazdani42/nvim-web-devicons',
+      config = function() require'nvim-tree'.setup {} end
+    }
     use 'AndrewRadev/splitjoin.vim'
     use 'mbbill/undotree'
     use { 'glacambre/firenvim',
@@ -70,7 +76,7 @@ require('packer').startup(function()
     }
     use 'folke/which-key.nvim'
     use 'voldikss/vim-floaterm'
-    use 'justinmk/vim-dirvish'
+    -- use 'justinmk/vim-dirvish'
 
     -- DB
     use 'tpope/vim-dadbod'
@@ -245,7 +251,7 @@ vimp.nnoremap('<Leader>gg', '<cmd>Telescope git_status<CR>')
 -- Always mistyping :w as :W...
 vim.cmd([[ command! W w ]])
 
-vimp.nmap('<F3>', ':NERDTreeToggle<CR>')
+vimp.nmap('<F3>', ':NvimTreeFindFileToggle<CR>')
 vimp.nmap('<F8>', ':Vista!!<CR>')
 
 vimp.nnoremap('<Leader>ev', ':e $MYVIMRC<CR>')
@@ -400,30 +406,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<C-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', '<C-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
   buf_set_keymap('n', '<Leader>w', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "gF", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "gF", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-  end
-
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
-  lsp_status.on_attach(client)
+  buf_set_keymap("n", "gF", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
-
 -- Use a loop to conveniently both setup defined servers 
 -- and map buffer local keybindings when the language server attaches
 -- Update commands
@@ -500,6 +484,8 @@ cmp.setup {
   sources = {
     { name = 'path' },
     { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
+    { name = 'treesitter' },
     { name = 'buffer' },
     { name = 'nvim_lua' },
     { name = 'ultisnips' },
@@ -512,8 +498,8 @@ cmp.setup {
     { name = 'orgmode' },
   },
   mapping = {
-    --['<C-p>'] = cmp.mapping.select_prev_item(),
-    --['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), {'i','c'}),
+    ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i','c'}),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-l>'] = cmp.mapping.complete(),
