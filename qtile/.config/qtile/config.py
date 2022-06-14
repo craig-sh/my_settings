@@ -462,9 +462,9 @@ widget_list = [
         name_transform=lambda name: name.upper(),
     ),
     widget.Sep(**sep_args),  # make_sep_icon(),
-    make_icon(" ", background=theme.color11, foreground=theme.inactive_tab_foreground),
-    widget.DF(visible_on_warn=False, background=theme.color11, foreground=theme.inactive_tab_foreground),
-    widget.Sep(**sep_args, background=theme.color10),  # make_sep_icon(),
+    #make_icon(" ", background=theme.color15, foreground=theme.inactive_tab_foreground),
+    widget.DF(visible_on_warn=True, background=theme.color15, foreground=theme.inactive_tab_foreground),
+    #widget.Sep(**sep_args, background=theme.color10),  # make_sep_icon(),
     widget.CheckUpdates(
         colour_have_updates=theme.color1,
         colour_no_updates=theme.bar_fg_inactive,
@@ -478,15 +478,18 @@ widget_list = [
 if IS_LAPTOP:
     widget_list += [
         widget.Battery(background=theme.cursor, foreground=theme.color0, format='{char} {percent:2.0%} {hour:d}:{min:02d}', charge_char='', discharge_char='', full_char=''),
+        make_icon("", background=theme.color11, foreground=theme.inactive_tab_foreground),
+        widget.Backlight(background=theme.color11, foreground=theme.color0, brightness_file='/sys/class/backlight/intel_backlight/brightness', max_brightness_file='/sys/class/backlight/intel_backlight/max_brightness'),
     ]
 
 widget_list += [
-    widget.Sep(**sep_args),  # make_sep_icon(),
-    widget.Wlan(background=theme.cursor, foreground=theme.color0),
+    make_icon("", background=theme.color2, foreground=theme.inactive_tab_foreground),
+    widget.Wlan(background=theme.color2, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color4),  # make_sep_icon(),
     MyVolume(fontsize="25", background=theme.color4, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color5),  # make_sep_icon(),
-    widget.Clock(format='%Y-%m-%d %a %I:%M %p', background=theme.color5, foreground=theme.color0),
+    make_icon("", background=theme.color5, foreground=theme.inactive_tab_foreground),
+    widget.Clock(format='%Y-%m-%d %H:%M', background=theme.color5, foreground=theme.color0),
     widget.Sep(**sep_args),  # make_sep_icon(),
     widget.Systray(),
 ]
