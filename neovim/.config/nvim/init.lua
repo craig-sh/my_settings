@@ -9,12 +9,12 @@ require('packer').startup(function()
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use {'nvim-treesitter/nvim-treesitter-textobjects', requires = { 'nvim-treesitter/nvim-treesitter' } }
     use 'kristijanhusak/orgmode.nvim'
-    use {"akinsho/org-bullets.nvim", config = function()
-        require("org-bullets").setup {
-          symbols = { "◉", "○", "✸", "✿" }
-        }
-      end
-    }
+    -- use {"akinsho/org-bullets.nvim", config = function()
+    --     require("org-bullets").setup {
+    --       symbols = { "◉", "○", "✸", "✿" }
+    --     }
+    --   end
+    -- }
 
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-buffer'
@@ -62,7 +62,12 @@ require('packer').startup(function()
     }
     use 'tpope/vim-sensible'   -- Super common settings
     use 'tpope/vim-sleuth' --  Indentation settings
-    use 'tpope/vim-surround'
+    use({
+        "kylechui/nvim-surround",
+        config = function()
+            require("nvim-surround").setup({})
+        end
+    })
     use 'tpope/vim-repeat'
     use { 
       'kyazdani42/nvim-tree.lua',
