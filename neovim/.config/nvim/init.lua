@@ -8,13 +8,8 @@ require('packer').startup(function()
     use 'neovim/nvim-lspconfig'
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     use {'nvim-treesitter/nvim-treesitter-textobjects', requires = { 'nvim-treesitter/nvim-treesitter' } }
-    use 'kristijanhusak/orgmode.nvim'
-    -- use {"akinsho/org-bullets.nvim", config = function()
-    --     require("org-bullets").setup {
-    --       symbols = { "◉", "○", "✸", "✿" }
-    --     }
-    --   end
-    -- }
+    use {'nvim-treesitter/playground'}
+    use 'nvim-orgmode/orgmode'
 
     use 'hrsh7th/nvim-cmp'
     use 'hrsh7th/cmp-buffer'
@@ -54,12 +49,6 @@ require('packer').startup(function()
     use 'nvim-lua/plenary.nvim'
     use 'nvim-telescope/telescope.nvim'
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
-    use {
-      "AckslD/nvim-neoclip.lua",
-      requires = {
-        {'nvim-telescope/telescope.nvim'},
-      },
-    }
     use 'tpope/vim-sensible'   -- Super common settings
     use 'tpope/vim-sleuth' --  Indentation settings
     use({
@@ -69,10 +58,15 @@ require('packer').startup(function()
         end
     })
     use 'tpope/vim-repeat'
-    use { 
+    use {
       'kyazdani42/nvim-tree.lua',
       requires = 'kyazdani42/nvim-web-devicons',
-      config = function() require'nvim-tree'.setup {} end
+      config = function() require'nvim-tree'.setup {
+        hijack_directories = {
+          enable = false,
+          auto_open = false,
+        }
+      } end
     }
     use 'AndrewRadev/splitjoin.vim'
     use 'mbbill/undotree'
@@ -81,6 +75,7 @@ require('packer').startup(function()
     }
     use 'folke/which-key.nvim'
     use 'voldikss/vim-floaterm'
+    use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
     -- use 'justinmk/vim-dirvish'
 
     -- DB
@@ -97,6 +92,14 @@ require('packer').startup(function()
       },
     }
     use {
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup({
+        })
+      end
+    }
+    use {
       'hoob3rt/lualine.nvim',
       requires = {'kyazdani42/nvim-web-devicons', opt = true}
     }
@@ -106,6 +109,11 @@ require('packer').startup(function()
 
     use 'svermeulen/vimpeccable'
   end)
+
+
+-- Diable netrw
+vim.g.loaded = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- Do this because we're getting errors with netrw
 vim.cmd( [[ let loaded_netrwPlugin = 1 ]] )
@@ -377,8 +385,7 @@ vim.diagnostic.config({
 
 local nvim_lsp = require'lspconfig'
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
   properties = {
@@ -406,14 +413,16 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
   buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '<C-p>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<C-n>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<Leader>w', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  --buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>TroubleToggle lsp_references<CR>', opts)
+  buf_set_keymap('n', '<Leader>w', '<cmd>TroubleToggle<CR>', opts)
+  buf_set_keymap('n', '<C-p>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<C-n>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+  --buf_set_keymap('n', '<Leader>w', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  --buf_set_keymap('n', '<Leader>w', '<cmd>TroubleToggle loclist<CR>', opts)
   buf_set_keymap("n", "gF", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 end
--- Use a loop to conveniently both setup defined servers 
+-- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
 -- Update commands
 -- pip install 'python-lsp-server[all]' pylint pylsp-mypy pyls-isort pylsp-rope pyls-flake8 --upgrade --user
@@ -547,19 +556,14 @@ cmp.setup.cmdline(':', {
   })
 })
 
-require('orgmode').setup({
-  org_agenda_files = {'~/Documents/org/*'},
-  org_default_notes_file = '~/Documents/org/refile.org',
-})
 require('orgmode').setup_ts_grammar()
 
 require'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
-    -- disable = {'org'}, -- Remove this to use TS highlighter for some of the highlights (Experimental)
     additional_vim_regex_highlighting = {'org'}, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
-  ensure_installed = {'org', 'python', 'bash', 'vim', 'lua', 'javascript'},
+  ensure_installed = {'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql'},
   incremental_selection = {
    enable = true,
    keymaps = {
@@ -576,7 +580,7 @@ require'nvim-treesitter.configs'.setup {
     select = {
       enable = true,
 
-      -- Automatically jump forward to textobj, similar to targets.vim 
+      -- Automatically jump forward to textobj, similar to targets.vim
       lookahead = true,
 
       keymaps = {
@@ -591,6 +595,10 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+require('orgmode').setup({
+  org_agenda_files = {'~/Documents/org/*'},
+  org_default_notes_file = '~/Documents/org/refile.org',
+})
 
 -- autocommands
 --https://old.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
