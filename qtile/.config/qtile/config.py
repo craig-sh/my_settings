@@ -485,6 +485,12 @@ if IS_LAPTOP:
 widget_list += [
     make_icon("", background=theme.color2, foreground=theme.inactive_tab_foreground),
     widget.Wlan(background=theme.color2, foreground=theme.color0),
+    widget.Sep(**sep_args, background=theme.color2),  # make_sep_icon(),
+    make_icon("", background=theme.color6, foreground=theme.inactive_tab_foreground),
+    widget.Memory(format='{MemPercent}%', background=theme.color6, foreground=theme.inactive_tab_foreground),
+    widget.Sep(**sep_args, background=theme.color6),  # make_sep_icon(),
+    make_icon("﬙", background=theme.color16, foreground=theme.inactive_tab_foreground),
+    widget.CPU(format='{freq_current}GHz {load_percent}%', background=theme.color16, foreground=theme.inactive_tab_foreground),
     widget.Sep(**sep_args, background=theme.color4),  # make_sep_icon(),
     MyVolume(fontsize="25", background=theme.color4, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color5),  # make_sep_icon(),
@@ -534,9 +540,9 @@ mouse = [
 
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
-follow_mouse_focus = False
+follow_mouse_focus = True
 bring_front_click = False
-cursor_warp = False
+cursor_warp = True
 floating_layout = layout.Floating(float_rules=[
     # Run the utility of `xprop` to see the wm class and name of an X client.
     *layout.Floating.default_float_rules,
