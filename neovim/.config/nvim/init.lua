@@ -49,8 +49,6 @@ require('packer').startup(function()
 
   -- Code feedback
   use 'tpope/vim-fugitive'
-  use 'liuchengxu/vista.vim'
-  use 'pangloss/vim-javascript'
   use 'Shougo/echodoc.vim'
   use 'lifepillar/pgsql.vim'
   use 'psf/black'
@@ -64,9 +62,15 @@ require('packer').startup(function()
   }
 
   -- Utilities
+  use 'stevearc/dressing.nvim'
   use 'kevinhwang91/nvim-bqf' -- Preview windows for qf list, etc
   use 'nvim-lua/plenary.nvim'
   use 'nvim-telescope/telescope.nvim'
+  use({
+    'mrjones2014/legendary.nvim',
+    -- sqlite is only needed if you want to use frecency sorting
+    requires = 'kkharji/sqlite.lua'
+  })
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   use 'tpope/vim-sensible' -- Super common settings
@@ -122,7 +126,6 @@ require('packer').startup(function()
   --use 'joshdick/onedark.vim'
   use 'navarasu/onedark.nvim'
 
-  use 'svermeulen/vimpeccable'
   if is_bootstrap then
     require('packer').sync()
   end
@@ -141,14 +144,13 @@ if is_bootstrap then
   return
 end
 
--- TODO getting vimp errors so wait on recompiling this
 -- Automatically source and re-compile packer whenever you save this init.lua
---local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
---vim.api.nvim_create_autocmd('BufWritePost', {
---  command = 'source <afile> | PackerCompile',
---  group = packer_group,
---  pattern = vim.fn.expand '$MYVIMRC',
---})
+local packer_group = vim.api.nvim_create_augroup('Packer', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePost', {
+  command = 'source <afile> | PackerCompile',
+  group = packer_group,
+  pattern = vim.fn.expand '$MYVIMRC',
+})
 
 -- Diable netrw
 vim.g.loaded = 1
@@ -229,125 +231,102 @@ hi FloatermBorderNF guibg='#14151b' guifg=green
 ]]
 )
 
--- Vista
-vim.g.vista_default_executive = 'nvim_lsp'
-
 -- snips
 vim.g.UltiSnipsExpandTrigger = '<C-k>'
 vim.g.UltiSnipsJumpForwardTrigger = '<C-k>'
 vim.g.UltiSnipsJumpBackwardTrigger = '<c-b>'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips', 'mysnips' }
 
--- vimp is shorthand for vimpeccable
-local vimp = require('vimp')
+local l_opts = { noremap = true }
+require('legendary').setup({
+  keymaps = {
+    { '<Leader>ts', ':Telescope treesiter<CR>', desc = 'Treesitter symbols', opts = l_opts },
+    { '<Leader>tt', ':Telescope lsp_dynamic_workspace_symbols<CR>', desc = 'LSP Workspace symbols', opts = l_opts },
+    { '<Leader>tw', ':Telescope treesiter<CR>', desc = 'LSP References', opts = l_opts },
+    { '<Leader>m', ':Telescope lsp_document_symbols<CR>', desc = 'LSP Document Symbols', opts = l_opts },
 
-vimp.imap('jj', '<Esc>')
+    -- Removed
+    --{ '<Leader>ca', ':Telescope lsp_code_actions<CR>', desc = '', opts = l_opts },
+    --{ '<Leader>cr', ':Telescope lsp_range_code_actions<CR>', desc = '', opts = l_opts },
+    --
+    { '<Leader>b', ':Telescope buffers<CR>', desc = 'Select buffer', opts = l_opts },
+    { '<Leader>l', ':Telescope find_files<CR>', desc = 'Find file', opts = l_opts },
+    { '<Leader>ff', ':Telescope live_grep<CR>', desc = 'Grep for text', opts = l_opts },
+    { '<Leader>fw', ':Telescope grep_string<CR>', desc = 'Grep for word under cursor', opts = l_opts },
+    { '<Leader>gg', ':Telescope git_status<CR>', desc = 'Find modified git files', opts = l_opts },
+    { '<C-l>', ':Telescope find_files<CR>', desc = 'Find file', opts = l_opts },
 
-vimp.nnoremap({ 'expr', 'silent' }, '<F5>',
-  [[:let _s=@/ <Bar> :%s/\s\+$//e <Bar> :let @/=_s <Bar> :nohl <Bar> :unlet _s <CR>]])
+    { '<F3>', '::NvimTreeFindFileToggle<CR>', desc = 'Tree finder', opts = l_opts },
+    { '<Leader>ev', ':e $MYVIMRC<CR>', desc = 'Edit nvim config', opts = l_opts },
+    { '<Leader>sv', ':source $MYVIMRC<CR>', desc = 'Source nvim config', opts = l_opts },
+
+    { '<Leader>cf', [[:let @+=expand("%")<CR>]], desc = 'Copy relative path of file', opts = l_opts },
+    { '<Leader>pwd', ':! pwd<CR>', desc = 'Print the pwd', opts = l_opts },
+    { '<Leader>ss', ':syntax sync fromstart<CR>', desc = 'Resync syntax', opts = l_opts },
+
+    { '<Leader><Leader>dt', [[<C-R>=strftime('%Y%m%d')<CR>]], desc = 'Insert current date', opts = l_opts, mode = 'i' },
+    { '<Leader><Leader>dd', ':! meld % &<CR>', desc = 'Git current file diff', opts = l_opts },
+
+    { '<Leader><Leader>fd', ':! meld $(pwd) &<CR>', desc = 'Git working tree diff', opts = l_opts },
+    { '<Leader><Leader>fm', ':! git dirdiff master &<CR>', desc = 'Git diff against master', opts = l_opts },
+
+    { '<Leader><Leader>pl', ':! pylint %<CR>', desc = 'Pylint', opts = l_opts },
+    { '<Leader><Leader>pf', '::! pyflakes %<CR>', desc = 'Pyflakes', opts = l_opts },
+    { '<Leader><Leader>mp', '::! mypy % --follow-imports=silent<CR> %<CR>', desc = 'mp', opts = l_opts },
+
+    -- Gitsigns
+    { '<Leader>hs', ':lua require"gitsigns".stage_hunk()<CR>', desc = 'Stage hunk', opts = l_opts },
+    { '<Leader>hs', ':lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', desc = 'Stage hunk',
+      opts = l_opts, mode = 'v' },
+    { '<Leader>hu', ':lua require"gitsigns".undo_stage_hunk()<CR>', desc = 'Undo stage hunk', opts = l_opts },
+    { '<Leader>hr', ':lua require"gitsigns".reset_hunk()<CR>', desc = 'Reset hunk', opts = l_opts },
+    { '<Leader>hr', ':lua require"gitsigns".reset_hunk()<CR>', desc = 'Reset hunk', opts = l_opts, mode = 'v' },
+    { '<Leader>hR', ':lua require"gitsigns".reset_buffer()<CR>', desc = 'Reset buffer', opts = l_opts },
+    { '<Leader>hp', ':lua require"gitsigns".preview_hunk()<CR>', desc = 'Preview hunk', opts = l_opts },
+    { '<Leader>hb', ':lua require"gitsigns".blame_line()<CR>', desc = 'Blame line', opts = l_opts },
+    { '<Leader>hS', ':lua require"gitsigns".stage_buffer()<CR>', desc = 'Stage buffer', opts = l_opts },
+    { '<Leader>hU', ':lua require"gitsigns".reset_buffer_index()<CR>', desc = 'Reset buffer index', opts = l_opts },
 
 
-vim.cmd([[
-nnoremap <silent> <A-k> :wincmd k<CR>
-nnoremap <silent> <A-j> :wincmd j<CR>
-nnoremap <silent> <A-h> :wincmd h<CR>
-nnoremap <silent> <A-l> :wincmd l<CR>
-]])
---vimp.nnoremap({'expr', 'silent'}, '<A-k>', ':wincmd k<CR>')
---vimp.nnoremap({'expr', 'silent'}, '<A-j>', ':wincmd j<CR>')
---vimp.nnoremap({'expr', 'silent'}, '<A-h>', ':wincmd h<CR>')
---vimp.nnoremap({'expr', 'silent'}, '<A-l>', ':wincmd l<CR>')
+    { 'jj', '<Esc>', desc = 'Change to normal mode', mode = 'i', opts = { noremap = true, silent = true } },
+    { '<F5>', [[%s/\s\+$//e]], desc = 'Remove trailing white space', opts = { noremap = true, expr = true } },
 
--- Terminal mode:
-vimp.tnoremap('<Esc>', [[<C-\><C-n>]])
-vimp.tnoremap('<M-[>', '<Esc>')
-vimp.tnoremap('<C-v><Esc>', '<Esc>')
-vimp.tnoremap('<A-h>', [[<C-\><C-n><C-w>h]])
-vimp.tnoremap('<A-j>', [[<C-\><C-n><C-w>j]])
-vimp.tnoremap('<A-k>', [[<C-\><C-n><C-w>k]])
-vimp.tnoremap('<A-l>', [[<C-\><C-n><C-w>l]])
+    { '<A-k>', ':wincmd k<CR>', desc = 'Window: Move up', opts = { noremap = true, silent = true } },
+    { '<A-j>', ':wincmd j<CR>', desc = 'Window: Move down', opts = { noremap = true, silent = true } },
+    { '<A-h>', ':wincmd h<CR>', desc = 'Window: Move left', opts = { noremap = true, silent = true } },
+    { '<A-l>', ':wincmd l<CR>', desc = 'Window: Move right', opts = { noremap = true, silent = true } },
 
-vim.cmd([[
-noremap  <silent> <F12>  :FloatermToggle<CR>
-noremap! <silent> <F12>  <Esc>:FloatermToggle<CR>
-tnoremap <silent> <F12>  <C-\><C-n>:FloatermToggle<CR>
-]])
---vimp.nnoremap({'expr', 'silent'}, '<F12>', [[:FloatermToggle<CR>]])
---vimp.inoremap({'expr', 'silent'}, '<F12>', [[<Esc>:FloatermToggle<CR>]])
---vimp.tnoremap({'expr', 'silent'}, '<F12>', [[<C-\><C-n>:FloatermToggle<CR>]])
 
--- File navigation mappings
+    { '<Esc>', [[<C-\><C-n>]], desc = 'Term: normal mode', opts = { noremap = true }, mode = 't' },
+    { '<M-[>', '<Esc>', desc = 'Term: send esc', opts = { noremap = true }, mode = 't' },
+    { '<C-v><Esc>', '<Esc>', desc = 'Term: send esc', opts = { noremap = true }, mode = 't' },
+    { '<A-h>', [[<C-\><C-n><C-w>h]], desc = 'Term: (window) move left', opts = { noremap = true }, mode = 't' },
+    { '<A-j>', [[<C-\><C-n><C-w>j]], desc = 'Term: (window) move down', opts = { noremap = true }, mode = 't' },
+    { '<A-k>', [[<C-\><C-n><C-w>k]], desc = 'Term: (window) move up', opts = { noremap = true }, mode = 't' },
+    { '<A-l>', [[<C-\><C-n><C-w>l]], desc = 'Term: (window) move right', opts = { noremap = true }, mode = 't' },
 
-vimp.noremap('<Leader>tt', '<cmd>Telescope lsp_dynamic_workspace_symbols<CR>')
-vimp.noremap('<Leader>ts', '<cmd>Telescope treesitter<CR>')
-vimp.noremap('<Leader>tw', '<cmd>Telescope lsp_references<CR>')
-vimp.noremap('<Leader>ca', '<cmd>Telescope lsp_code_actions<CR>')
-vimp.noremap('<Leader>cr', '<cmd>Telescope lsp_range_code_actions<CR>')
-vimp.noremap('<Leader>m', '<cmd>Telescope lsp_document_symbols<CR>')
-vimp.noremap('<Leader>b', '<cmd>Telescope buffers<CR>')
-vimp.noremap('<Leader>l', '<cmd>Telescope find_files<CR>')
--- noremap <Leader>g :GFiles?<CR>
-vimp.noremap({ 'override' }, '<C-l>', '<cmd>Telescope find_files<CR>')
+    { '<F12>', ':FloatermToggle<CR>', desc = 'Floaterm toggle', opts = { noremap = true, silent = true } },
+    { '<F12>', [[<C-\><C-n>:FloatermToggle<CR>]], desc = 'Floaterm toggle', opts = { noremap = true, silent = true },
+      mode = 't' },
 
---vimp.nnoremap('<Leader>f', '<cmd>Telescope live_grep<CR>')
-vimp.nnoremap('<Leader>ff', '<cmd>Telescope live_grep<CR>')
-vimp.nnoremap('<Leader>fw', '<cmd>Telescope grep_string<CR>')
-vimp.nnoremap('<Leader>gg', '<cmd>Telescope git_status<CR>')
+  },
+  -- TODO autocommands
+})
+
+
 
 -- Always mistyping :w as :W...
 vim.cmd([[ command! W w ]])
-
-vimp.nmap('<F3>', ':NvimTreeFindFileToggle<CR>')
-vimp.nmap('<F8>', ':Vista!!<CR>')
-
-vimp.nnoremap('<Leader>ev', ':e $MYVIMRC<CR>')
-vimp.nnoremap('<Leader>sv', ':source $MYVIMRC<CR>')
--- relative path (src/foo.txt)
-vimp.nnoremap('<Leader>cf', [[:let @+=expand("%")<CR>]])
-vimp.nnoremap('<Leader>pwd', ':! pwd<CR>')
-
-vimp.nnoremap('<Leader>ss', ':syntax sync fromstart<CR>')
-
--- External shortcuts, start with <Leader><Leader>
--- make python tags
-vimp.noremap('<Leader><Leader>mt', ':! ctags -R --languages=python<CR>')
--- insert the current datetime
-vimp.imap('<Leader><Leader>dt', [[<C-R>=strftime('%Y%m%d')<CR>]])
-
--- diff of current file
-vimp.noremap('<Leader><Leader>dd', ':! meld % &<CR>')
-
-vimp.noremap('<Leader><Leader>fd', ':! meld $(pwd) &<CR>')
-vimp.noremap('<Leader><Leader>fm', ':! git dirdiff master &<CR>')
-
--- Run pylint on current file
-vimp.noremap('<Leader><Leader>pl', ':! pylint % <CR>')
-vimp.noremap('<Leader><Leader>pf', '::! pyflakes % <CR>')
-vimp.noremap('<Leader><Leader>mp', '::! mypy % --follow-imports=silent<CR>')
-
-
 
 local gitsigns = require('gitsigns')
 gitsigns.setup {
   keymaps = {
     -- Default keymap options
     noremap = true,
-
     ['n <C-j>'] = { expr = true, buffer = true,
       "&diff ? '<C-j>' : '<cmd>lua require\"gitsigns.actions\".next_hunk({wrap=false})<CR>'" },
     ['n <C-k>'] = { expr = true, buffer = true,
       "&diff ? '<C-k>' : '<cmd>lua require\"gitsigns.actions\".prev_hunk({wrap=false})<CR>'" },
-
-    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-    ['v <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-    ['v <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line(true)<CR>',
-    ['n <leader>hS'] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
-    ['n <leader>hU'] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
   },
   current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
   current_line_blame_opts = {
@@ -419,34 +398,31 @@ require('mason').setup()
 require('mason-lspconfig').setup()
 
 local nvim_lsp = require 'lspconfig'
-
+local legend = require 'legendary'
 local on_attach = function(_, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
+  local b_opts = { noremap = true, silent = true, buffer = bufnr }
   -- Mappings.
-  local opts = { noremap = true, silent = true }
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'gh', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', 'gk', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', 'gR', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  --buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>TroubleToggle lsp_references<CR>', opts)
-  buf_set_keymap('n', '<Leader>w', '<cmd>TroubleToggle<CR>', opts)
-  buf_set_keymap('n', '<C-p>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<C-n>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  --buf_set_keymap('n', '<Leader>w', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  --buf_set_keymap('n', '<Leader>w', '<cmd>TroubleToggle loclist<CR>', opts)
-  buf_set_keymap("n", "gF", "<cmd>Format<CR>", opts)
+  legend.keymap({ 'gD', ':lua vim.lsp.buf.declaration()<CR>', opts = b_opts, desc = 'LSP goto declaration' })
+  legend.keymap({ 'gd', ':lua vim.lsp.buf.definition()<CR>', opts = b_opts, desc = 'LSP goto definition' })
+  legend.keymap({ 'gh', ':lua vim.lsp.buf.hover()<CR>', opts = b_opts, desc = 'LSP hover' })
+  legend.keymap({ 'gi', ':lua vim.lsp.buf.implementation()<CR>', opts = b_opts, desc = 'LSP goto implementation' })
+  legend.keymap({ 'gk', ':lua vim.lsp.buf.signature_help()<CR>', opts = b_opts, desc = 'LSP signature help' })
+  legend.keymap({ '<space>wa', ':lua vim.lsp.buf.add_workspace_folder()<CR>', opts = b_opts,
+    desc = 'LSP add workspace folder' })
+  legend.keymap({ '<space>wr', ':lua vim.lsp.buf.remove_workspace_folder()<CR>', opts = b_opts,
+    desc = 'LSP remove workspace folder' })
+  legend.keymap({ '<space>wl', ':lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts = b_opts,
+    desc = 'LSP list workspace folders' })
+  legend.keymap({ 'gt', ':lua vim.lsp.buf.type_definition()<CR>', opts = b_opts, desc = 'LSP goto type definition' })
+  legend.keymap({ 'gR', ':lua vim.lsp.buf.rename()<CR>', opts = b_opts, desc = 'LSP rename' })
+  --legend.keymap({'gr', ':lua vim.lsp.buf.references()<CR>', opts= b_opts, desc=''})
+  legend.keymap({ 'gr', ':TroubleToggle lsp_references<CR>', opts = b_opts, desc = 'LSP show references' })
+  legend.keymap({ '<Leader>w', ':TroubleToggle<CR>', opts = b_opts, desc = 'LSP show issue window' })
+  legend.keymap({ '<C-p>', ':lua vim.diagnostic.goto_prev()<CR>', opts = b_opts, desc = 'LSP prev diagnostic' })
+  legend.keymap({ '<C-n>', ':lua vim.diagnostic.goto_next()<CR>', opts = b_opts, desc = 'LSP next diagnostic' })
+  --legend.keymap({'<Leader>w', ':lua vim.lsp.diagnostic.set_loclist()<CR>', opts= b_opts, desc=''})
+  --legend.keymap({'<Leader>w', ':TroubleToggle loclist<CR>', opts= b_opts, desc=''})
+  legend.keymap({ 'gF', ':Format<CR>', opts = b_opts, desc = 'LSP format' })
 
   -- Create a command `:Format` local to the LSP buffer
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
@@ -596,7 +572,7 @@ require 'nvim-treesitter.configs'.setup {
     enable = true,
     additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
-  ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql' },
+  ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell' },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -689,15 +665,6 @@ if exists('g:started_by_firenvim')
   au TextChangedI * ++nested call Delay_My_Write()
 
 endif
-
-" Statusline
-function! LspStatus() abort
-  if luaeval('#vim.lsp.buf_get_clients() > 0')
-    return luaeval("require('lsp-status').status()")
-  endif
-
-  return ''
-endfunction
 
 ]])
 
