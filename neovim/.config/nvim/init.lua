@@ -62,6 +62,8 @@ require('packer').startup(function()
   }
 
   -- Utilities
+  use 'ojroques/nvim-osc52'
+  use 'kosayoda/nvim-lightbulb'
   use 'stevearc/dressing.nvim'
   use 'kevinhwang91/nvim-bqf' -- Preview windows for qf list, etc
   use 'nvim-lua/plenary.nvim'
@@ -250,9 +252,10 @@ require('legendary').setup({
     --{ '<Leader>cr', ':Telescope lsp_range_code_actions<CR>', desc = '', opts = l_opts },
     --
     { '<Leader>b', ':Telescope buffers<CR>', desc = 'Select buffer', opts = l_opts },
-    { '<Leader>l', ':Telescope find_files<CR>', desc = 'Find file', opts = l_opts },
+    { '<Leader>l', ':Legendary<CR>', desc = 'Legend', opts = l_opts },
     { '<Leader>ff', ':Telescope live_grep<CR>', desc = 'Grep for text', opts = l_opts },
     { '<Leader>fw', ':Telescope grep_string<CR>', desc = 'Grep for word under cursor', opts = l_opts },
+    { '<Leader>fr', ':Telescope resume<CR>', desc = 'Resume most recect telescope search', opts = l_opts },
     { '<Leader>gg', ':Telescope git_status<CR>', desc = 'Find modified git files', opts = l_opts },
     { '<C-l>', ':Telescope find_files<CR>', desc = 'Find file', opts = l_opts },
 
@@ -308,6 +311,9 @@ require('legendary').setup({
     { '<F12>', ':FloatermToggle<CR>', desc = 'Floaterm toggle', opts = { noremap = true, silent = true } },
     { '<F12>', [[<C-\><C-n>:FloatermToggle<CR>]], desc = 'Floaterm toggle', opts = { noremap = true, silent = true },
       mode = 't' },
+    { '<Leader>y', require('osc52').copy_operator, opts = { expr = true } },
+    { '<Leader>yy', '<Leader>y_', opts = { remap = true } },
+    { '<Leader>y', require('osc52').copy_visual, mode = 'v' },
 
   },
   -- TODO autocommands
@@ -610,6 +616,8 @@ require('orgmode').setup({
   org_agenda_files = { '~/Documents/org/*' },
   org_default_notes_file = '~/Documents/org/refile.org',
 })
+
+require('nvim-lightbulb').setup({autocmd = {enabled = true}})
 
 -- autocommands
 --https://old.reddit.com/r/neovim/comments/p5is1h/how_to_open_a_file_in_the_last_place_you_editied/
