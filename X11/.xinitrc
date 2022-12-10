@@ -10,7 +10,12 @@ xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0
 xrdb -merge  ~/.Xresources
 #[ "$XDG_CURRENT_DESKTOP" = "KDE" ] || [ "$XDG_CURRENT_DESKTOP" = "GNOME" ] || export QT_QPA_PLATFORMTHEME="qt5ct"
 feh --bg-scale ~/my_settings/background.jpg
+<<<<<<< Updated upstream
 
+=======
+xmodmap ~/.Xmodmap
+export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+>>>>>>> Stashed changes
 # Taken from default xinit
 # start some nice programs
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then

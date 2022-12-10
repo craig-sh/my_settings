@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -eu
+
+VENV_NAME=$1
+
+VENV_BASE_PATH=${HOME}/pyvenvs
+FULL_VENV_PATH="$VENV_BASE_PATH/$VENV_NAME"
+
+mkdir -p ~/pyvenvs
+if [ -d "$FULL_VENV_PATH" ]; then
+  echo "$FULL_VENV_PATH already exists. Remove to reinstall"
+else
+  echo "Creating $FULL_VENV_PATH"
+  python -m venv $FULL_VENV_PATH --system-site-packages
+fi
+source $FULL_VENV_PATH/bin/activate
