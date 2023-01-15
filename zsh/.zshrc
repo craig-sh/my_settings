@@ -123,10 +123,6 @@ source "${ZINIT_HOME}/zinit.zsh"
 zinit ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
 zinit light trapd00r/LS_COLORS
 zinit light MichaelAquilina/zsh-auto-notify
-export NVM_SYMLINK_CURRENT="true" # nvm use should make a symlink
-export NVM_DIR="$HOME/.nvm"
-export NVM_LAZY_LOAD=true
-zinit light lukechilds/zsh-nvm # This load nvm on first use of node, npm, etc
 zinit ice silent wait blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
 zinit ice silent wait atinit"zpcompinit; zpcdreplay"

@@ -53,6 +53,7 @@ alias netroam='netconnect Zerus'
 alias nethome='netconnect Eriador'
 alias nethomepalan='netconnect palantir'
 alias netleander='netconnect Overmind'
+alias netadmin='netconnect Angainor'
 
 function transmission_dl {
     transmission-cli --download-dir="/home/craig/Downloads" --encryption-required $1

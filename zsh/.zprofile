@@ -1,6 +1,7 @@
 export PYENV_ROOT="$HOME/.pyenv"
 typeset -U PATH path
 path=(
+  "$HOME/.nix-profile/bin"
   "$PYENV_ROOT/bin"
   "$HOME/.poetry/bin"
   "$HOME/.cargo/bin"
