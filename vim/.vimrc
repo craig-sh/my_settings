@@ -28,7 +28,6 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set background=dark
   set t_Co=256
-  colorscheme slate
   set guioptions-=m  "menu bar
   set guioptions-=T  "toolbar
   set guioptions-=r  "scrollbar
