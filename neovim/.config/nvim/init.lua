@@ -247,8 +247,7 @@ require('legendary').setup({
     { '<Leader>tw', ':Telescope treesiter<CR>', desc = 'LSP References', opts = l_opts },
     { '<Leader>m', ':Telescope lsp_document_symbols<CR>', desc = 'LSP Document Symbols', opts = l_opts },
 
-    -- Removed
-    --{ '<Leader>ca', ':Telescope lsp_code_actions<CR>', desc = '', opts = l_opts },
+    { '<Leader>ca', vim.lsp.buf.code_action, desc = 'Code Action', opts = l_opts },
     --{ '<Leader>cr', ':Telescope lsp_range_code_actions<CR>', desc = '', opts = l_opts },
     --
     { '<Leader>b', ':Telescope buffers<CR>', desc = 'Select buffer', opts = l_opts },
