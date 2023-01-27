@@ -124,6 +124,8 @@ require('packer').startup(function()
     'hoob3rt/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
+  use 'dbinagi/nomodoro'
+  use 'rcarriga/nvim-notify'
   use { 'dracula/vim', as = 'dracula' }
   --use 'joshdick/onedark.vim'
   use 'navarasu/onedark.nvim'
@@ -275,6 +277,8 @@ require('legendary').setup({
     { '<Leader><Leader>pl', ':! pylint %<CR>', desc = 'Pylint', opts = l_opts },
     { '<Leader><Leader>pf', '::! pyflakes %<CR>', desc = 'Pyflakes', opts = l_opts },
     { '<Leader><Leader>mp', '::! mypy % --follow-imports=silent<CR> %<CR>', desc = 'mp', opts = l_opts },
+    { '<Leader><Leader>pc', ':!pre-commit run --file %<CR>', desc = 'Run pre-commit on current file', opts = l_opts },
+
 
     -- Gitsigns
     { '<Leader>hs', ':lua require"gitsigns".stage_hunk()<CR>', desc = 'Stage hunk', opts = l_opts },
@@ -347,6 +351,14 @@ require('lualine').setup {
     component_separators = { '|', '|' },
     section_separators = { '', '' },
   },
+  sections = {
+      lualine_x = {
+        require('nomodoro').status,
+        'encoding',
+        'fileformat',
+        'filetype'
+      }
+  }
 }
 
 -- LSP
@@ -468,6 +480,25 @@ end
 
 -- Turn on status information
 require('fidget').setup()
+
+vim.notify = require("notify")
+-- Poromodo timer
+require('nomodoro').setup({
+  on_work_complete = function()
+    vim.cmd([[NomoStop]])
+    vim.notify("Break time")
+    vim.cmd([[silent ! spd-say "Break time"]])
+    vim.cmd([[silent ! notify-send "Break Time" ]])
+    --vim.cmd([[NomoBreak]])
+  end,
+  on_break_complete = function()
+    vim.cmd([[NomoStop]])
+    vim.notify("Back to Work")
+    vim.cmd([[silent ! spd-say "Back to Work"]])
+    vim.cmd([[silent ! notify-send "Back to work"]])
+  end
+})
+
 
 -- Example custom configuration for lua
 --
