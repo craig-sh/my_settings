@@ -9,7 +9,7 @@ For usrlocalbins/systemd do
 
 For installing via nix.
 
-bash```
+```
 sh <(curl -L https://nixos.org/nix/install) --no-daemon
 . ${HOME}/.nix-profile/etc/profile.d/nix.sh
 
@@ -20,10 +20,10 @@ nix-shell '<home-manager>' -A install
 
 cd ~/my_settings
 stow nix
-symlink home.nix to point to desired config
+#symlink home.nix to point to desired config
 home-manager switch
 
-# To set default shell its kinda manual stills
+# To set default shell its kinda manual still
 sudo -i
 echo /home/craig/.nix-profile/bin/zsh >> /etc/shells
 chsh --shell /home/craig/.nix-profile/bin/zsh craig
