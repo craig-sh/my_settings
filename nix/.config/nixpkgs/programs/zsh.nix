@@ -34,6 +34,8 @@
 unsetopt BEEP
 source ~/.zsh_aliases
 
+fpath+=(${pkgs.exa}/share/zsh/site-functions)
+
 autoload edit-command-line; zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
 
@@ -79,8 +81,9 @@ key[ShiftTab]="''${terminfo[kcbt]}"
 [[ -n "''${key[PageDown]}"  ]] && bindkey -- "''${key[PageDown]}"  end-of-buffer-or-history
 [[ -n "''${key[ShiftTab]}"  ]] && bindkey -- "''${key[ShiftTab]}"  reverse-menu-complete
 
-# Finally, make sure the terminal is in application mode, when zle is
-# active. Only then are the values from ''$terminfo valid.
+
+## Finally, make sure the terminal is in application mode, when zle is
+## active. Only then are the values from ''$terminfo valid.
 if (( ''${+terminfo[smkx]} && ''${+terminfo[rmkx]} )); then
     autoload -Uz add-zle-hook-widget
     function zle_application_mode_start {
@@ -105,12 +108,12 @@ zstyle ':completion:*' list-colors "''${(s.:.)LS_COLORS}"
 
 zstyle ':completion:*' menu select # select completions with arrow keys
 zstyle ':completion:*' group-name '''''' # group results by category
-zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
+#zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
     '';
 
     shellAliases = {
-      ls = "exa --colour=auto";
+      ls = "${pkgs.exa}/bin/exa --colour=auto";
     };
 
     sessionVariables = {
