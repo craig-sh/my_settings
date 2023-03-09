@@ -279,7 +279,6 @@ require('legendary').setup({
     { '<Leader><Leader>mp', '::! mypy % --follow-imports=silent<CR> %<CR>', desc = 'mp', opts = l_opts },
     { '<Leader><Leader>pc', ':!pre-commit run --file %<CR>', desc = 'Run pre-commit on current file', opts = l_opts },
 
-
     -- Gitsigns
     { '<Leader>hs', ':lua require"gitsigns".stage_hunk()<CR>', desc = 'Stage hunk', opts = l_opts },
     { '<Leader>hs', ':lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', desc = 'Stage hunk',
@@ -471,6 +470,9 @@ for _, lsp in ipairs(servers) do
           },
           flake8 = {
             maxLineLength = 200,
+          },
+          ruff = {
+            lineLength = 200,
           }
         }
       }
@@ -499,7 +501,6 @@ require('nomodoro').setup({
   end
 })
 
-
 -- Example custom configuration for lua
 --
 -- Make runtime files discoverable to the server
@@ -507,7 +508,7 @@ require('nomodoro').setup({
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
-require('lspconfig').sumneko_lua.setup {
+require('lspconfig').lua_ls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
