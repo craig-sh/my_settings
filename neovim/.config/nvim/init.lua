@@ -22,6 +22,7 @@ require('packer').startup(function()
     },
   }
 
+  use { 'j-hui/fidget.nvim', tag = 'legacy'}
   use 'SirVer/ultisnips'
   use { 'honza/vim-snippets', rtp = '.', requires = { 'SirVer/ultisnips' } }
 
@@ -129,6 +130,7 @@ require('packer').startup(function()
   use { 'dracula/vim', as = 'dracula' }
   --use 'joshdick/onedark.vim'
   use 'navarasu/onedark.nvim'
+  -- use 'folke/tokyonight.nvim'
 
   if is_bootstrap then
     require('packer').sync()
@@ -219,6 +221,7 @@ require('onedark').setup {
   toggle_style_key = '<leader>cs',
 }
 vim.cmd [[colorscheme onedark]]
+--vim.cmd[[colorscheme tokyonight]]
 
 vim.g.indentLine_char = '▏'
 
@@ -328,14 +331,26 @@ vim.cmd([[ command! W w ]])
 
 local gitsigns = require('gitsigns')
 gitsigns.setup {
-  keymaps = {
-    -- Default keymap options
-    noremap = true,
-    ['n <C-j>'] = { expr = true, buffer = true,
-      "&diff ? '<C-j>' : '<cmd>lua require\"gitsigns.actions\".next_hunk({wrap=false})<CR>'" },
-    ['n <C-k>'] = { expr = true, buffer = true,
-      "&diff ? '<C-k>' : '<cmd>lua require\"gitsigns.actions\".prev_hunk({wrap=false})<CR>'" },
-  },
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+    -- Navigation
+    map('n', '<C-j>', function()
+      if vim.wo.diff then return '<C-j>' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '<C-k>', function()
+      if vim.wo.diff then return '<C-k>' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+  end,
   current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
   current_line_blame_opts = {
     virt_text = true,
@@ -472,6 +487,7 @@ for _, lsp in ipairs(servers) do
             maxLineLength = 200,
           },
           ruff = {
+            enabled = true,
             lineLength = 200,
           }
         }
