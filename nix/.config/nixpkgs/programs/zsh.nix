@@ -3,7 +3,9 @@
 {
   programs.zsh = {
     enable = true;
-    enableSyntaxHighlighting = false;
+    syntaxHighlighting = {
+      enable = false;
+    };
     enableAutosuggestions = true;
     enableCompletion = true;
     autocd = true;
@@ -26,7 +28,7 @@
         { name = "MichaelAquilina/zsh-auto-notify"; }
         { name = "zdharma-continuum/fast-syntax-highlighting"; }
         { name = "zpm-zsh/ls"; }
-        { name = "zpm-zsh/material-colors"; }
+        #{ name = "zpm-zsh/dircolors-neutral"; }
       ];
     };
 
