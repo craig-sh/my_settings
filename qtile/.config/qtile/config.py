@@ -554,7 +554,7 @@ floating_layout = layout.Floating(float_rules=[
     Match(title='pinentry'),  # GPG key password entry
 ])
 auto_fullscreen = True
-focus_on_window_activation = "smart"
+focus_on_window_activation = "focus"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
@@ -590,6 +590,14 @@ def _preset_screens(qtile: Qtile):
     go_to_group("1")(qtile)
 
 # Hooks
+
+@hook.subscribe.client_new
+def handle_client_new(client):
+    if "KeePassXC".lower() in client.name.lower():
+        # Any keepass window should be moved to current screen
+        # usually pop-ups
+        client.cmd_toscreen()
+
 
 
 @hook.subscribe.current_screen_change
