@@ -42,12 +42,12 @@
       merge = { tool = "meld"; };
       mergetool = {
         meld = {
-          cmd = ''cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
+          cmd = ''cmd = /usr/bin/meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
         };
       };
       difftool = { 
         prompt = "false";
-        meld = { cmd = ''meld "$LOCAL" "$REMOTE" ''; };
+        meld = { cmd = ''/usr/bin/meld "$LOCAL" "$REMOTE" ''; };
       };
     };
   };
