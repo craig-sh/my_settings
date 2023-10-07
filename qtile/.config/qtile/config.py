@@ -405,7 +405,7 @@ layouts = [
 ]
 
 widget_defaults = dict(
-    font="FantasqueSansMono Nerd Font Mono",
+    font="FantasqueSansM Nerd Font Mono",
     fontsize=20,
     padding=3,
     background=theme.bar_bg,
