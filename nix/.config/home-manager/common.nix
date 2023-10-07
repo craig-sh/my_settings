@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -47,14 +47,35 @@
       enableZshIntegration = true;
     };
     bat.enable = true;
+    neovim = {
+      enable=true;
+      viAlias = true;
+      vimAlias = true;
+      plugins = [
+         (pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
+            p.org
+            p.python
+            p.bash
+            p.vim
+            p.lua
+            p.javascript
+            p.sql
+            p.haskell
+        ]))
+      ];
+    };
   };
 
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file.".profile".source = programs/zsh/.profile;
-  home.file.".zprofile".source = programs/zsh/.zprofile;
-  home.file.".zsh_aliases".source = programs/zsh/.zsh_aliases;
+  home.file = {
+    ".config/nvim/init.lua".source = config.lib.file.mkOutOfStoreSymlink "/home/craig/my_settings/nix/.config/home-manager/programs/neovim/init.lua";
+    ".profile".source = programs/zsh/.profile;
+    ".zprofile".source = programs/zsh/.zprofile;
+    ".zsh_aliases".source = programs/zsh/.zsh_aliases;
+  };
+
 
   # You can also manage environment variables but you will have to manually
   # source
