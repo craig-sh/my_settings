@@ -1,8 +1,9 @@
+{lib, ...}:
 {
   programs.git = {
     enable = true;
     userName = "craig-sh";
-    userEmail = "craig.s.henriques@gmail.com";
+    userEmail = lib.mkDefault "craig.s.henriques@gmail.com";
     aliases = {
 	# https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
 	# Undo last commit
