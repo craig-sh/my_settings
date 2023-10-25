@@ -35,6 +35,7 @@
     pkgs.tree-sitter
     pkgs.nodejs
     pkgs.nodePackages.npm
+    pkgs.kubernetes-helm
   ];
 
   programs = {
@@ -64,6 +65,7 @@
         ]))
       ];
     };
+    k9s.enable = true;
   };
 
 

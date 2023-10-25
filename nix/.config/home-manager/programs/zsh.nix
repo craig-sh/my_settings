@@ -23,10 +23,10 @@
     zplug = {
       enable = true;
       plugins = [
-        { name = "MichaelAquilina/zsh-auto-notify"; }
+        # { name = "MichaelAquilina/zsh-auto-notify"; }
         { name = "zdharma-continuum/fast-syntax-highlighting"; }
         { name = "zpm-zsh/ls"; }
-        { name = "zpm-zsh/material-colors"; }
+        { name = "zpm-zsh/dircolors-neutral"; }
       ];
     };
 
@@ -123,6 +123,7 @@ zstyle ':completion:*' group-name '''''' # group results by category
       ARCHFLAGS="-arch x86_64";
       FZF_DEFAULT_OPTS = ''--prompt \" λ \"'';
       LANG="en_US.UTF-8";
+      KUBECONFIG="/etc/rancher/k3s/k3s.yaml";
     };
   };
 }

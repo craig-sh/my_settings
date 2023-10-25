@@ -122,7 +122,9 @@ ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 source "${ZINIT_HOME}/zinit.zsh"
 zinit ice atclone"dircolors -b LS_COLORS > c.zsh" atpull'%atclone' pick"c.zsh" nocompile'!'
 zinit light trapd00r/LS_COLORS
-zinit light MichaelAquilina/zsh-auto-notify
+if command -v notify-send 1>/dev/null 2>&1; then
+  zinit light MichaelAquilina/zsh-auto-notify
+fi
 zinit ice silent wait blockf atpull'zinit creinstall -q .'
 zinit light zsh-users/zsh-completions
 zinit ice silent wait atinit"zpcompinit; zpcdreplay"
