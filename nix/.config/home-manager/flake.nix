@@ -29,6 +29,7 @@
              nixpkgs.overlays = overlays;
           }
           ./home.nix
+          ./virtserver.nix
         ];
 
         # Optionally use extraSpecialArgs

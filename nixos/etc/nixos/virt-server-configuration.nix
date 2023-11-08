@@ -5,10 +5,7 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      /etc/nixos/hardware-configuration.nix
-    ];
+  imports = [  ];
 
   #### Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
@@ -18,11 +15,16 @@
   boot.loader.grub.enable = true;
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+  boot.supportedFilesystems = [ "nfs" ];
 
   networking.hostName = "virtnix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  #networking.extraHosts =
+  #''
+  #  127.0.0.1 beelink.localdomain
+  #'';
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -56,6 +58,8 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # for k8s nfs
+  services.rpcbind.enable = true;
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.craig = {
     isNormalUser = true;
@@ -73,6 +77,7 @@
     wget
     git
     k3s
+    nfs-utils
   ];
   environment.shells = with pkgs; [ zsh ];
 
@@ -98,7 +103,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  security.pki.certificateFiles = [ /root/certs/ca.crt ];
+  security.pki.certificateFiles = [ ./ca.crt ];
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';
@@ -112,8 +117,9 @@
   services.k3s.role = "server";
   services.k3s.extraFlags = toString [
     " --disable=traefik" # Optionally add additional args to k3s
-    " --write-kubeconfig-mode=644"
+    " --write-kubeconfig-mode=0644"
   ];
+  services.qemuGuest.enable = true;
   
 
   # Copy the NixOS configuration file and link it from the resulting system
