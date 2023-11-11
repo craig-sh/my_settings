@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
@@ -6,6 +6,7 @@
     ./programs/git.nix
     ./programs/tmux.nix
     ./programs/zsh.nix
+    inputs.sops-nix.homeManagerModules.sops
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.

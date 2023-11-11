@@ -5,11 +5,17 @@ hostname := `cat /etc/hostname`
 default:
   just --list
 
-build-os:
+switch-os:
     sudo nixos-rebuild switch --flake .#{{hostname}}
 
-build-hm:
+switch-hm:
     home-manager switch --flake .#craig@{{hostname}}
+
+get-age-key server:
+    nix shell 'nixpkgs#ssh-to-age' --command  sh -c "ssh-keyscan {{server}} | ssh-to-age"
+
+ignore-secrets:
+    git update-index --skip-worktree secrets/os-secrets.yaml
 
 gc:
     sudo nix store gc --debug

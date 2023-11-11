@@ -23,6 +23,11 @@
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # `outputs` are all the build result of the flake.
@@ -35,8 +40,8 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
-  let 
+  outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs:
+  let
     inherit (self) outputs;
   in {
     nixosConfigurations = {
@@ -57,6 +62,8 @@
           # Import the configuration.nix here, so that the
           # old configuration file can still take effect.
           # Note: configuration.nix itself is also a Nix Module,
+          sops-nix.nixosModules.sops
+          ./nixos/sops.nix
           ./nixos/virtnix-hardware-configuration.nix
           ./nixos/virt-server-configuration.nix
         ];

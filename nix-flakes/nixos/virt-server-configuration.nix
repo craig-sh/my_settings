@@ -80,6 +80,8 @@
     git
     k3s
     nfs-utils
+    age
+    sops
   ];
   environment.shells = with pkgs; [ zsh ];
 
@@ -112,7 +114,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  security.pki.certificateFiles = [ ./ca.crt ];
+  security.pki.certificateFiles = [ config.sops.secrets.ca_pub_cert.path ];
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';
@@ -129,7 +131,6 @@
     " --write-kubeconfig-mode=0644"
   ];
   services.qemuGuest.enable = true;
-  
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

@@ -1,0 +1,9 @@
+keys:
+  - &craig_virtnix age1vj946f97ggdr053zuc9ur6z7ruzc9724pjdjvuvfrh7cx66jgy3s9eay0h
+  - &craig_virtnix2 age154d4qygfmgeyx35jfexlu4j475fnpafmr9xwpthcrzsfmqq3usashqwe87
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+    - age:
+      - *craig_virtnix
+      - *craig_virtnix2
