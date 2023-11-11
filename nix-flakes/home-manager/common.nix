@@ -44,6 +44,9 @@
     fzf = {
       enable = true;
       enableZshIntegration = true;
+      tmux = {
+        enableShellIntegration = true;
+      };
     };
     dircolors = {
       enable = true;

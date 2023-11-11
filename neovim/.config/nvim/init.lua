@@ -26,18 +26,29 @@ require('lazy').setup({
     },
   },
 
-  { 'j-hui/fidget.nvim',                           version = 'legacy' },
+  {
+    'j-hui/fidget.nvim',
+    opts = {}
+  },
   'SirVer/ultisnips',
   {
     'honza/vim-snippets',
     dependencies = { 'SirVer/ultisnips' },
     config = function(plugin)
-      vim.opt.rtp:append(plugin.dir .. "/custom-rtp")
+      vim.opt.rtp:append(plugin.dir .. "/custom-rtp") 
     end
   },
 
-  { 'nvim-treesitter/nvim-treesitter',             build = ':TSUpdate' },
-  { 'nvim-treesitter/nvim-treesitter-textobjects', dependencies = { 'nvim-treesitter/nvim-treesitter' } },
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate'
+  },
+  {
+    'nvim-treesitter/nvim-treesitter-textobjects',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter'
+    }
+  },
   'nvim-treesitter/playground',
   'nvim-orgmode/orgmode',
 
@@ -66,11 +77,18 @@ require('lazy').setup({
   'rhysd/git-messenger.vim',
   'Glench/Vim-Jinja2-Syntax',
   'lukas-reineke/indent-blankline.nvim',
-  { 'norcalli/nvim-colorizer.lua',              config = true },
+  { 'norcalli/nvim-colorizer.lua', config = true },
 
   -- Utilities
   'ojroques/nvim-osc52',
-  'kosayoda/nvim-lightbulb',
+  {
+    'kosayoda/nvim-lightbulb',
+    config = true,
+    opts = {
+      autocmd = {
+        enabled = true }
+    }
+  },
   'stevearc/dressing.nvim',
   'kevinhwang91/nvim-bqf', -- Preview windows for qf list, etc
   'nvim-lua/plenary.nvim',
@@ -81,7 +99,11 @@ require('lazy').setup({
     dependencies = 'kkharji/sqlite.lua'
   },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
-  { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make', cond = vim.fn.executable 'make' == 1 },
+  {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    build = 'make',
+    cond = vim.fn.executable 'make' == 1
+  },
   'tpope/vim-sensible', -- Super common settings
   'tpope/vim-sleuth',   --  Indentation settings
   {
@@ -117,7 +139,7 @@ require('lazy').setup({
     opts = {}
   },
   'voldikss/vim-floaterm',
-  { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  { 'sindrets/diffview.nvim',      dependencies = 'nvim-lua/plenary.nvim' },
   --
   -- Visuals
   {
@@ -137,7 +159,7 @@ require('lazy').setup({
   },
   'dbinagi/nomodoro',
   'rcarriga/nvim-notify',
-  { 'dracula/vim',            name = 'dracula' },
+  { 'dracula/vim', name = 'dracula' },
   'navarasu/onedark.nvim',
   --'joshdick/onedark.vim'
   --'folke/tokyonight.nvim'
@@ -232,76 +254,202 @@ vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips', 'mysnips' }
 local l_opts = { noremap = true }
 require('legendary').setup({
   keymaps = {
-    { '<Leader>ts',         ':Telescope treesiter<CR>',                     desc = 'Treesitter symbols',                  opts =
-    l_opts },
-    { '<Leader>tt',         ':Telescope lsp_dynamic_workspace_symbols<CR>', desc = 'LSP Workspace symbols',               opts =
-    l_opts },
-    { '<Leader>tw',         ':Telescope treesiter<CR>',                     desc = 'LSP References',                      opts =
-    l_opts },
-    { '<Leader>m',          ':Telescope lsp_document_symbols<CR>',          desc = 'LSP Document Symbols',                opts =
-    l_opts },
-
-    { '<Leader>ca',         vim.lsp.buf.code_action,                        desc = 'Code Action',                         opts =
-    l_opts },
+    {
+      '<Leader>ts',
+      ':Telescope treesiter<CR>',
+      desc = 'Treesitter symbols',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>tt',
+      ':Telescope lsp_dynamic_workspace_symbols<CR>',
+      desc = 'LSP Workspace symbols',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>tw',
+      ':Telescope treesiter<CR>',
+      desc = 'LSP References',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>m',
+      ':Telescope lsp_document_symbols<CR>',
+      desc = 'LSP Document Symbols',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>ca',
+      vim.lsp.buf.code_action,
+      desc = 'Code Action',
+      opts =
+          l_opts
+    },
     --{ '<Leader>cr', ':Telescope lsp_range_code_actions<CR>', desc = '', opts = l_opts },
     --
-    { '<Leader>b',          ':Telescope buffers<CR>',                       desc = 'Select buffer',                       opts =
-    l_opts },
-    { '<Leader>l',          ':Legendary<CR>',                               desc = 'Legend',                              opts =
-    l_opts },
-    { '<Leader>ff',         ':Telescope live_grep<CR>',                     desc = 'Grep for text',                       opts =
-    l_opts },
-    { '<Leader>fw',         ':Telescope grep_string<CR>',                   desc = 'Grep for word under cursor',
-                                                                                                                            opts =
-      l_opts },
-    { '<Leader>fr',         ':Telescope resume<CR>',                        desc = 'Resume most recect telescope search',
-                                                                                                                            opts =
-      l_opts },
-    { '<Leader>gg',         ':Telescope git_status<CR>',                    desc = 'Find modified git files',
-                                                                                                                            opts =
-      l_opts },
-    { '<C-l>',              ':Telescope find_files<CR>',                    desc = 'Find file',                           opts =
-    l_opts },
+    {
+      '<Leader>b',
+      ':Telescope buffers<CR>',
+      desc = 'Select buffer',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>l',
+      ':Legendary<CR>',
+      desc = 'Legend',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>ff',
+      ':Telescope live_grep<CR>',
+      desc = 'Grep for text',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>fw',
+      ':Telescope grep_string<CR>',
+      desc = 'Grep for word under cursor',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>fr',
+      ':Telescope resume<CR>',
+      desc = 'Resume most recect telescope search',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>gg',
+      ':Telescope git_status<CR>',
+      desc = 'Find modified git files',
+      opts =
+          l_opts
+    },
+    {
+      '<C-l>',
+      ':Telescope find_files<CR>',
+      desc = 'Find file',
+      opts =
+          l_opts
+    },
+    {
+      '<F3>',
+      '::NvimTreeFindFileToggle<CR>',
+      desc = 'Tree finder',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>ev',
+      ':e $MYVIMRC<CR>',
+      desc = 'Edit nvim config',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>sv',
+      ':source $MYVIMRC<CR>',
+      desc = 'Source nvim config',
+      opts =
+          l_opts
+    },
 
-    { '<F3>',               '::NvimTreeFindFileToggle<CR>',                 desc = 'Tree finder',                         opts =
-    l_opts },
-    { '<Leader>ev',         ':e $MYVIMRC<CR>',                              desc = 'Edit nvim config',                    opts =
-    l_opts },
-    { '<Leader>sv',         ':source $MYVIMRC<CR>',                         desc = 'Source nvim config',                  opts =
-    l_opts },
-
-    { '<Leader>cf',         [[:let @+=expand("%")<CR>]],                    desc = 'Copy relative path of file',
-                                                                                                                            opts =
-      l_opts },
-    { '<Leader>pwd',        ':! pwd<CR>',                                   desc = 'Print the pwd',                       opts =
-    l_opts },
-    { '<Leader>ss',         ':syntax sync fromstart<CR>',                   desc = 'Resync syntax',                       opts =
-    l_opts },
-    { '<Leader><Leader>dt', [[<C-R>=strftime('%Y%m%d')<CR>]],               desc = 'Insert current date',                 opts =
-    l_opts,                                                                                                                              mode =
-    'i' },
-    { '<Leader><Leader>dd', ':! meld % &<CR>',                              desc = 'Git current file diff',               opts =
-    l_opts },
-
-    { '<Leader><Leader>fd', ':! meld $(pwd) &<CR>',                         desc = 'Git working tree diff',               opts =
-    l_opts },
-    { '<Leader><Leader>fm', ':! git dirdiff master &<CR>',                  desc = 'Git diff against master',
-                                                                                                                            opts =
-      l_opts },
-
-    { '<Leader><Leader>pl', ':! pylint %<CR>',                              desc = 'Pylint',                              opts =
-    l_opts },
-    { '<Leader><Leader>pf', '::! pyflakes %<CR>',                           desc = 'Pyflakes',                            opts =
-    l_opts },
-    { '<Leader><Leader>mp', '::! mypy % --follow-imports=silent<CR> %<CR>', desc = 'mp',                                  opts =
-    l_opts },
-    { '<Leader><Leader>pc', ':!pre-commit run --file %<CR>',                desc = 'Run pre-commit on current file',
-                                                                                                                            opts =
-      l_opts },
+    {
+      '<Leader>cf',
+      [[:let @+=expand("%")<CR>]],
+      desc = 'Copy relative path of file',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>pwd',
+      ':! pwd<CR>',
+      desc = 'Print the pwd',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>ss',
+      ':syntax sync fromstart<CR>',
+      desc = 'Resync syntax',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>dt',
+      [[<C-R>=strftime('%Y%m%d')<CR>]],
+      desc = 'Insert current date',
+      opts =
+          l_opts,
+      mode =
+      'i'
+    },
+    {
+      '<Leader><Leader>dd',
+      ':! meld % &<CR>',
+      desc = 'Git current file diff',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>fd',
+      ':! meld $(pwd) &<CR>',
+      desc = 'Git working tree diff',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>fm',
+      ':! git dirdiff master &<CR>',
+      desc = 'Git diff against master',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>pl',
+      ':! pylint %<CR>',
+      desc = 'Pylint',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>pf',
+      '::! pyflakes %<CR>',
+      desc = 'Pyflakes',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>mp',
+      '::! mypy % --follow-imports=silent<CR> %<CR>',
+      desc = 'mp',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader><Leader>pc',
+      ':!pre-commit run --file %<CR>',
+      desc = 'Run pre-commit on current file',
+      opts =
+          l_opts
+    },
 
     -- Gitsigns
-    { '<Leader>hs',         ':lua require"gitsigns".stage_hunk()<CR>',      desc = 'Stage hunk',                          opts =
-    l_opts },
+    {
+      '<Leader>hs',
+      ':lua require"gitsigns".stage_hunk()<CR>',
+      desc = 'Stage hunk',
+      opts =
+          l_opts
+    },
     {
       '<Leader>hs',
       ':lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
@@ -309,75 +457,178 @@ require('legendary').setup({
       opts = l_opts,
       mode = 'v'
     },
-    { '<Leader>hu', ':lua require"gitsigns".undo_stage_hunk()<CR>',    desc = 'Undo stage hunk',             opts =
-    l_opts },
-    { '<Leader>hr', ':lua require"gitsigns".reset_hunk()<CR>',         desc = 'Reset hunk',                  opts =
-    l_opts },
-    { '<Leader>hr', ':lua require"gitsigns".reset_hunk()<CR>',         desc = 'Reset hunk',                  opts =
-    l_opts,                                                                                                                                           mode =
-    'v' },
-    { '<Leader>hR', ':lua require"gitsigns".reset_buffer()<CR>',       desc = 'Reset buffer',                opts =
-    l_opts },
-    { '<Leader>hp', ':lua require"gitsigns".preview_hunk()<CR>',       desc = 'Preview hunk',                opts =
-    l_opts },
-    { '<Leader>hb', ':lua require"gitsigns".blame_line()<CR>',         desc = 'Blame line',                  opts =
-    l_opts },
-    { '<Leader>hS', ':lua require"gitsigns".stage_buffer()<CR>',       desc = 'Stage buffer',                opts =
-    l_opts },
-    { '<Leader>hU', ':lua require"gitsigns".reset_buffer_index()<CR>', desc = 'Reset buffer index',          opts =
-    l_opts },
+    {
+      '<Leader>hu',
+      ':lua require"gitsigns".undo_stage_hunk()<CR>',
+      desc = 'Undo stage hunk',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>hr',
+      ':lua require"gitsigns".reset_hunk()<CR>',
+      desc = 'Reset hunk',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>hr',
+      ':lua require"gitsigns".reset_hunk()<CR>',
+      desc = 'Reset hunk',
+      opts =
+          l_opts,
+      mode =
+      'v'
+    },
+    {
+      '<Leader>hR',
+      ':lua require"gitsigns".reset_buffer()<CR>',
+      desc = 'Reset buffer',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>hp',
+      ':lua require"gitsigns".preview_hunk()<CR>',
+      desc = 'Preview hunk',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>hb',
+      ':lua require"gitsigns".blame_line()<CR>',
+      desc = 'Blame line',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>hS',
+      ':lua require"gitsigns".stage_buffer()<CR>',
+      desc = 'Stage buffer',
+      opts =
+          l_opts
+    },
+    {
+      '<Leader>hU',
+      ':lua require"gitsigns".reset_buffer_index()<CR>',
+      desc = 'Reset buffer index',
+      opts =
+          l_opts
+    },
+    {
+      'jj',
+      '<Esc>',
+      desc = 'Change to normal mode',
+      mode = 'i',
+      opts = {
+        noremap = true, silent = true }
+    },
+    {
+      '<F5>',
+      [[%s/\s\+$//e]],
+      desc = 'Remove trailing white space',
+      opts = {
+        noremap = true, expr = true }
+    },
+    {
+      '<A-k>',
+      ':wincmd k<CR>',
+      desc = 'Window: Move up',
+      opts = {
+        noremap = true, silent = true }
+    },
+    {
+      '<A-j>',
+      ':wincmd j<CR>',
+      desc = 'Window: Move down',
+      opts = {
+        noremap = true, silent = true }
+    },
+    {
+      '<A-h>',
+      ':wincmd h<CR>',
+      desc = 'Window: Move left',
+      opts = {
+        noremap = true, silent = true }
+    },
+    {
+      '<A-l>',
+      ':wincmd l<CR>',
+      desc = 'Window: Move right',
+      opts = {
+        noremap = true, silent = true }
+    },
+    {
+      '<Esc>',
+      [[<C-\><C-n>]],
+      desc = 'Term: normal mode',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
+    {
+      '<M-[>',
+      '<Esc>',
+      desc = 'Term: send esc',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
+    {
+      '<C-v><Esc>',
+      '<Esc>',
+      desc = 'Term: send esc',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
+    {
+      '<A-h>',
+      [[<C-\><C-n><C-w>h]],
+      desc = 'Term: (window) move left',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
+    {
+      '<A-j>',
+      [[<C-\><C-n><C-w>j]],
+      desc = 'Term: (window) move down',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
+    {
+      '<A-k>',
+      [[<C-\><C-n><C-w>k]],
+      desc = 'Term: (window) move up',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
+    {
+      '<A-l>',
+      [[<C-\><C-n><C-w>l]],
+      desc = 'Term: (window) move right',
+      opts = {
+        noremap = true },
+      mode =
+      't'
+    },
 
-
-    { 'jj',         '<Esc>',                                           desc = 'Change to normal mode',       mode = 'i',
-                                                                                                                                                        opts = {
-        noremap = true, silent = true } },
-    { '<F5>',       [[%s/\s\+$//e]],                                   desc = 'Remove trailing white space',
-                                                                                                               opts = {
-        noremap = true, expr = true } },
-    { '<A-k>',      ':wincmd k<CR>',                                   desc = 'Window: Move up',
-                                                                                                               opts = {
-        noremap = true, silent = true } },
-    { '<A-j>',      ':wincmd j<CR>',                                   desc = 'Window: Move down',
-                                                                                                               opts = {
-        noremap = true, silent = true } },
-    { '<A-h>',      ':wincmd h<CR>',                                   desc = 'Window: Move left',
-                                                                                                               opts = {
-        noremap = true, silent = true } },
-    { '<A-l>',      ':wincmd l<CR>',                                   desc = 'Window: Move right',
-                                                                                                               opts = {
-        noremap = true, silent = true } },
-    { '<Esc>',      [[<C-\><C-n>]],                                    desc = 'Term: normal mode',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-    { '<M-[>',      '<Esc>',                                           desc = 'Term: send esc',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-    { '<C-v><Esc>', '<Esc>',                                           desc = 'Term: send esc',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-    { '<A-h>',      [[<C-\><C-n><C-w>h]],                              desc = 'Term: (window) move left',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-    { '<A-j>',      [[<C-\><C-n><C-w>j]],                              desc = 'Term: (window) move down',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-    { '<A-k>',      [[<C-\><C-n><C-w>k]],                              desc = 'Term: (window) move up',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-    { '<A-l>',      [[<C-\><C-n><C-w>l]],                              desc = 'Term: (window) move right',
-                                                                                                               opts = {
-        noremap = true },                                                                                                                             mode =
-    't' },
-
-    { '<F12>',      ':FloatermToggle<CR>',                             desc = 'Floaterm toggle',
-                                                                                                               opts = {
-        noremap = true, silent = true } },
+    {
+      '<F12>',
+      ':FloatermToggle<CR>',
+      desc = 'Floaterm toggle',
+      opts = {
+        noremap = true, silent = true }
+    },
     {
       '<F12>',
       [[<C-\><C-n>:FloatermToggle<CR>]],
@@ -706,7 +957,7 @@ require 'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
   -- This will be handled by nixos now
-  --ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell' },
+  --ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config' },
   incremental_selection = {
     enable = true,
     keymaps = {
@@ -743,7 +994,37 @@ require 'nvim-treesitter.configs'.setup {
 require('orgmode').setup({
   org_agenda_files = { '~/Documents/org/*' },
   org_default_notes_file = '~/Documents/org/refile.org',
+  mappings = {
+    org = {
+      org_next_visible_heading = 'g}}',
+      org_previous_visible_heading = 'g{{'
+    }
+  },
 })
+
+function UpdateMasonCustom()
+  local venv = vim.fn.stdpath("data") .. "/mason/packages/python-lsp-server/venv"
+  local job = require("plenary.job")
+
+  job:new({
+    command = venv .. "/bin/pip",
+    args = {
+      "install",
+      "-U",
+      "--disable-pip-version-check",
+      "pylsp-mypy",
+      "python-lsp-ruff",
+    },
+    cwd = venv,
+    env = { VIRTUAL_ENV = venv },
+    on_exit = function()
+      vim.notify("Finished installing pylsp modules.")
+    end,
+    on_start = function()
+      vim.notify("Installing pylsp modules...")
+    end,
+  }):start()
+end
 
 require('nvim-lightbulb').setup({ autocmd = { enabled = true } })
 
