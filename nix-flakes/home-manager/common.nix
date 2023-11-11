@@ -74,7 +74,7 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".config/nvim/init.lua".source = config.lib.file.mkOutOfStoreSymlink "/home/craig/my_settings/nix/.config/home-manager/programs/neovim/init.lua";
+    ".config/nvim/init.lua".source = config.lib.file.mkOutOfStoreSymlink "/home/craig/my_settings/neovim/.config/nvim/init.lua";
     ".profile".source = programs/zsh/.profile;
     ".zprofile".source = programs/zsh/.zprofile;
     ".zsh_aliases".source = programs/zsh/.zsh_aliases;

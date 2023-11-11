@@ -139,6 +139,13 @@
           ./home-manager/virtserver.nix
         ];
       };
+      "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
+        extraSpecialArgs = {inherit inputs outputs;};
+        modules = [
+          ./home-manager/common.nix
+        ];
+      };
     };
   };
 }
