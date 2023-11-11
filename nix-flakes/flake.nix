@@ -59,14 +59,23 @@
       "virtnix" = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
-          # Import the configuration.nix here, so that the
-          # old configuration file can still take effect.
-          # Note: configuration.nix itself is also a Nix Module,
           sops-nix.nixosModules.sops
           ./nixos/sops.nix
-          ./nixos/virtnix-hardware-configuration.nix
-          ./nixos/virt-server-configuration.nix
+          ./nixos/virt-hardware-configuration.nix
+          ./nixos/virt-base-configuration.nix
+          ./nixos/virt-k3s-controller.nix
         ];
+      };
+      "virtnix2" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          sops-nix.nixosModules.sops
+          ./nixos/sops.nix
+          ./nixos/virt-hardware-configuration.nix
+          ./nixos/virt-base-configuration.nix
+          ./nixos/virt-k3s-agent.nix
+        ];
+      };
         # The Nix module system can modularize configuration,
         # improving the maintainability of configuration.
         #
@@ -106,19 +115,25 @@
         # you must use `specialArgs` by uncomment the following line:
         #
         # specialArgs = {...};  # pass custom arguments into all sub module.
-      };
     };
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
       "craig@virtnix" = home-manager.lib.homeManagerConfiguration {
-        # Home-manager requires 'pkgs' instance
         #pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
         #overlays = [
         #  inputs.neovim-nightly-overlay.overlay
         #];
+        modules = [
+          ./home-manager/common.nix
+          ./home-manager/virtserver.nix
+        ];
+      };
+      "craig@virtnix2" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = {inherit inputs outputs;};
         modules = [
           ./home-manager/common.nix
           ./home-manager/virtserver.nix

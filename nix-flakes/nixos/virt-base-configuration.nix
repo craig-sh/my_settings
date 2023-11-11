@@ -19,7 +19,7 @@
   boot.loader.grub.configurationLimit = 10;
 
 
-  networking.hostName = "virtnix"; # Define your hostname.
+  #networking.hostName = "virtnix"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -84,6 +84,9 @@
     sops
   ];
   environment.shells = with pkgs; [ zsh ];
+  environment.sessionVariables = {
+    SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+  };
 
   nix = {
     package = pkgs.nixFlakes;
@@ -123,13 +126,13 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
-  services.k3s.enable = true;
-  services.k3s.role = "server";
-  services.k3s.extraFlags = toString [
-    " --disable=traefik" # Optionally add additional args to k3s
-    " --write-kubeconfig-mode=0644"
-  ];
+  #networking.firewall.enable = false;
+  #services.k3s.enable = true;
+  #services.k3s.role = "server";
+  #services.k3s.extraFlags = toString [
+  #  " --disable=traefik" # Optionally add additional args to k3s
+  #  " --write-kubeconfig-mode=0644"
+  #];
   services.qemuGuest.enable = true;
 
   # Copy the NixOS configuration file and link it from the resulting system
