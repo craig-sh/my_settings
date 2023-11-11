@@ -1,0 +1,15 @@
+set shell := ["zsh", "-uc"]
+
+hostname := `cat /etc/hostname`
+
+default:
+  just --list
+
+build-os:
+    sudo nixos-rebuild switch --flake .#{{hostname}}
+
+build-hm:
+    home-manager switch --flake .#craig@{{hostname}}
+
+gc:
+    sudo nix store gc --debug

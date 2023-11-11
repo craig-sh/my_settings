@@ -13,6 +13,7 @@
 
     # Official NixOS package source, using nixos-unstable branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     # home-manager, used for managing user configuration
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -35,7 +36,8 @@
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
-  let inherit (self) outputs;
+  let 
+    inherit (self) outputs;
   in {
     nixosConfigurations = {
       # By default, NixOS will try to refer the nixosConfiguration with
@@ -102,10 +104,14 @@
     # Standalone home-manager configuration entrypoint
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
-      # FIXME replace with your username@hostname
       "craig@virtnix" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        # Home-manager requires 'pkgs' instance
+        #pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
+        #overlays = [
+        #  inputs.neovim-nightly-overlay.overlay
+        #];
         modules = [
           ./home-manager/common.nix
           ./home-manager/virtserver.nix

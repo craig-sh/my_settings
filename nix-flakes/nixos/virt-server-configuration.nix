@@ -16,6 +16,8 @@
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
   boot.supportedFilesystems = [ "nfs" ];
+  boot.loader.grub.configurationLimit = 10;
+
 
   networking.hostName = "virtnix"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -87,6 +89,13 @@
       experimental-features = nix-command flakes
     '';
   };
+  # Perform garbage collection weekly to maintain low disk usage
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 1w";
+  };
+  nix.settings.auto-optimise-store = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

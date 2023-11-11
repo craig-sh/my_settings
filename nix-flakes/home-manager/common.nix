@@ -36,6 +36,7 @@
     pkgs.nodejs
     pkgs.nodePackages.npm
     pkgs.kubernetes-helm
+    pkgs.just
   ];
 
   programs = {
