@@ -26,7 +26,7 @@
         # { name = "MichaelAquilina/zsh-auto-notify"; }
         { name = "zdharma-continuum/fast-syntax-highlighting"; }
         { name = "zpm-zsh/ls"; }
-        { name = "zpm-zsh/dircolors-neutral"; }
+        #{ name = "zpm-zsh/dircolors-neutral"; }
       ];
     };
 

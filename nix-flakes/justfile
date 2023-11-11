@@ -18,5 +18,8 @@ get-age-key server:
 ignore-secrets:
     git update-index --skip-worktree secrets/os-secrets.yaml
 
+reset-secrets:
+    git update-index --no-skip-worktree secrets/os-secrets.yaml
+
 gc:
     sudo nix store gc --debug
