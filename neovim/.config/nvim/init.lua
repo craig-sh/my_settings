@@ -35,7 +35,7 @@ require('lazy').setup({
     'honza/vim-snippets',
     dependencies = { 'SirVer/ultisnips' },
     config = function(plugin)
-      vim.opt.rtp:append(plugin.dir .. "/custom-rtp") 
+      vim.opt.rtp:append(plugin.dir .. "/custom-rtp")
     end
   },
 
@@ -245,10 +245,11 @@ hi FloatermBorderNF guibg='#14151b' guifg=green
 ]]
 )
 
--- snips
-vim.g.UltiSnipsExpandTrigger = '<C-k>'
-vim.g.UltiSnipsJumpForwardTrigger = '<C-k>'
-vim.g.UltiSnipsJumpBackwardTrigger = '<c-b>'
+-- snips. Don't set keymaps here, set them in cmp instead. Even when there are enabled
+-- there are issues with hitting Tab
+-- vim.g.UltiSnipsExpandTrigger = '<C-k>'
+-- vim.g.UltiSnipsJumpForwardTrigger = '<C-k>'
+-- vim.g.UltiSnipsJumpBackwardTrigger = '<c-b>'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips', 'mysnips' }
 
 local l_opts = { noremap = true }
@@ -882,13 +883,14 @@ require('lspconfig').lua_ls.setup {
 -- Compe setup
 vim.o.completeopt = 'menuone,noselect'
 local cmp = require('cmp')
+local cmp_ultisnips_mappings = require("cmp_nvim_ultisnips.mappings")
 cmp.setup {
   snippet = {
     expand = function(args)
       vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
     end,
   },
-  sources = {
+  sources = cmp.config.sources({
     { name = 'path' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
@@ -903,7 +905,7 @@ cmp.setup {
       }
     },
     { name = 'orgmode' },
-  },
+  }),
   mapping = {
     ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
     ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
@@ -912,36 +914,32 @@ cmp.setup {
     ['<C-l>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
     ['<CR>'] = cmp.mapping.confirm(),
-    ['<Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-n>', true, true, true), 'n')
-        --elseif luasnip.expand_or_jumpable() then
-        --  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-expand-or-jump', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
-    ['<S-Tab>'] = function(fallback)
-      if vim.fn.pumvisible() == 1 then
-        vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<C-p>', true, true, true), 'n')
-        --elseif luasnip.jumpable(-1) then
-        --  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('<Plug>luasnip-jump-prev', true, true, true), '')
-      else
-        fallback()
-      end
-    end,
+    ["<C-k>"] = cmp.mapping(
+      function(fallback)
+        cmp_ultisnips_mappings.expand_or_jump_forwards(fallback)
+      end,
+      { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+    ),
+    ["<C-j"] = cmp.mapping(
+      function(fallback)
+        cmp_ultisnips_mappings.jump_backwards(fallback)
+      end,
+      { "i", "s", --[[ "c" (to enable the mapping in command mode) ]] }
+    ),
   },
 }
 
--- Use buffer source for `/`.
-cmp.setup.cmdline('/', {
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = {
     { name = 'buffer' }
   }
 })
 
--- Use cmdline & path source for ':'.
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
 cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
