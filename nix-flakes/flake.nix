@@ -41,41 +41,42 @@
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
   outputs = { self, nixpkgs, home-manager, sops-nix, ... }@inputs:
-  let
-    inherit (self) outputs;
-  in {
-    nixosConfigurations = {
-      # By default, NixOS will try to refer the nixosConfiguration with
-      # its hostname, so the system named `virtnix` will use this one.
-      # However, the configuration name can also be specified using:
-      #   sudo nixos-rebuild switch --flake /path/to/flakes/directory#<name>
-      #
-      # The `nixpkgs.lib.nixosSystem` function is used to build this
-      # configuration, the following attribute set is its parameter.
-      #
-      # Run the following command in the flake's directory to
-      # deploy this configuration on any NixOS system:
-      #   sudo nixos-rebuild switch --flake .#nixos-test
-      "virtnix" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          sops-nix.nixosModules.sops
-          ./nixos/sops.nix
-          ./nixos/virt-hardware-configuration.nix
-          ./nixos/virt-base-configuration.nix
-          ./nixos/virt-k3s-controller.nix
-        ];
-      };
-      "virtnix2" = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          sops-nix.nixosModules.sops
-          ./nixos/sops.nix
-          ./nixos/virt-hardware-configuration.nix
-          ./nixos/virt-base-configuration.nix
-          ./nixos/virt-k3s-agent.nix
-        ];
-      };
+    let
+      inherit (self) outputs;
+    in
+    {
+      nixosConfigurations = {
+        # By default, NixOS will try to refer the nixosConfiguration with
+        # its hostname, so the system named `virtnix` will use this one.
+        # However, the configuration name can also be specified using:
+        #   sudo nixos-rebuild switch --flake /path/to/flakes/directory#<name>
+        #
+        # The `nixpkgs.lib.nixosSystem` function is used to build this
+        # configuration, the following attribute set is its parameter.
+        #
+        # Run the following command in the flake's directory to
+        # deploy this configuration on any NixOS system:
+        #   sudo nixos-rebuild switch --flake .#nixos-test
+        "virtnix" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            ./nixos/sops.nix
+            ./nixos/virt-hardware-configuration.nix
+            ./nixos/virt-base-configuration.nix
+            ./nixos/virt-k3s-controller.nix
+          ];
+        };
+        "virtnix2" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            ./nixos/sops.nix
+            ./nixos/virt-hardware-configuration.nix
+            ./nixos/virt-base-configuration.nix
+            ./nixos/virt-k3s-agent.nix
+          ];
+        };
         # The Nix module system can modularize configuration,
         # improving the maintainability of configuration.
         #
@@ -115,37 +116,37 @@
         # you must use `specialArgs` by uncomment the following line:
         #
         # specialArgs = {...};  # pass custom arguments into all sub module.
+      };
+      # Standalone home-manager configuration entrypoint
+      # Available through 'home-manager --flake .#your-username@your-hostname'
+      homeConfigurations = {
+        "craig@virtnix" = home-manager.lib.homeManagerConfiguration {
+          #pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          #overlays = [
+          #  inputs.neovim-nightly-overlay.overlay
+          #];
+          modules = [
+            ./home-manager/common.nix
+            ./home-manager/virtserver.nix
+          ];
+        };
+        "craig@virtnix2" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/common.nix
+            ./home-manager/virtserver.nix
+          ];
+        };
+        "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlay ]; };
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/common.nix
+          ];
+        };
+      };
     };
-    # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      "craig@virtnix" = home-manager.lib.homeManagerConfiguration {
-        #pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-        #overlays = [
-        #  inputs.neovim-nightly-overlay.overlay
-        #];
-        modules = [
-          ./home-manager/common.nix
-          ./home-manager/virtserver.nix
-        ];
-      };
-      "craig@virtnix2" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          ./home-manager/common.nix
-          ./home-manager/virtserver.nix
-        ];
-      };
-      "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          ./home-manager/common.nix
-        ];
-      };
-    };
-  };
 }

@@ -1,12 +1,12 @@
-{lib, ...}:
+{ lib, ... }:
 {
   programs.git = {
     enable = true;
     userName = "craig-sh";
     userEmail = lib.mkDefault "craig.s.henriques@gmail.com";
     aliases = {
-	# https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
-	# Undo last commit
+      # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt
+      # Undo last commit
       undo = "reset --soft HEAD^";
 
       # We wanna grab those pesky un-added files!
@@ -46,7 +46,7 @@
           cmd = ''cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED'';
         };
       };
-      difftool = { 
+      difftool = {
         prompt = "false";
         meld = { cmd = ''meld "$LOCAL" "$REMOTE" ''; };
       };

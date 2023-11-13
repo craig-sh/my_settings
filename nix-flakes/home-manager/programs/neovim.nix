@@ -2,7 +2,7 @@
 
 {
   programs.neovim = {
-    enable=true;
+    enable = true;
     viAlias = true;
     vimAlias = true;
     extraPackages = [
