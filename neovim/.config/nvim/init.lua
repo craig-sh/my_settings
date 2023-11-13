@@ -67,7 +67,7 @@ require('lazy').setup({
   -- 'romgrk/nvim-treesitter-context'
 
   -- Movement
-  'ggandor/lightspeed.nvim',
+  'ggandor/leap.nvim',
 
   -- Code feedback
   'tpope/vim-fugitive',
@@ -251,7 +251,7 @@ hi FloatermBorderNF guibg='#14151b' guifg=green
 -- vim.g.UltiSnipsJumpForwardTrigger = '<C-k>'
 -- vim.g.UltiSnipsJumpBackwardTrigger = '<c-b>'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips', 'mysnips' }
-
+require('leap').add_default_mappings()
 local l_opts = { noremap = true }
 require('legendary').setup({
   keymaps = {
