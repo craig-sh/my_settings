@@ -6,6 +6,7 @@
     ./programs/git.nix
     ./programs/tmux.nix
     ./programs/zsh.nix
+    ./programs/neovim.nix
     inputs.sops-nix.homeManagerModules.sops
   ];
   # Home Manager needs a bit of information about you and the paths it should
@@ -26,18 +27,14 @@
   # environment.
   # Packages to install
   home.packages = [
-    #  TODO nerdfont here
-    # pkgs is the set of all packages in the default home.nix implementation
     pkgs.zsh
     pkgs.ripgrep
     # todo integrate with zsh
     pkgs.eza
-    # neovim dependencies
-    pkgs.tree-sitter
-    pkgs.nodejs
-    pkgs.nodePackages.npm
     pkgs.kubernetes-helm
     pkgs.just
+    pkgs.nixpkgs-fmt
+    pkgs.gcc # For neovim treesitter to compile parsers
   ];
 
   programs = {
@@ -53,23 +50,6 @@
       enableZshIntegration = true;
     };
     bat.enable = true;
-    neovim = {
-      enable=true;
-      viAlias = true;
-      vimAlias = true;
-      plugins = [
-         (pkgs.vimPlugins.nvim-treesitter.withPlugins (p: [
-            p.org
-            p.python
-            p.bash
-            p.vim
-            p.lua
-            p.javascript
-            p.sql
-            p.haskell
-        ]))
-      ];
-    };
     k9s.enable = true;
   };
 
@@ -77,7 +57,6 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".config/nvim/init.lua".source = config.lib.file.mkOutOfStoreSymlink "/home/craig/my_settings/neovim/.config/nvim/init.lua";
     ".profile".source = programs/zsh/.profile;
     ".zprofile".source = programs/zsh/.zprofile;
     ".zsh_aliases".source = programs/zsh/.zsh_aliases;

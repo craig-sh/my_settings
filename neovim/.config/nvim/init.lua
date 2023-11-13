@@ -73,7 +73,7 @@ require('lazy').setup({
   'tpope/vim-fugitive',
   'Shougo/echodoc.vim',
   'lifepillar/pgsql.vim',
-  'psf/black',
+  --'psf/black',
   'rhysd/git-messenger.vim',
   'Glench/Vim-Jinja2-Syntax',
   'lukas-reineke/indent-blankline.nvim',
@@ -805,7 +805,7 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
-local servers = { "hls", "pylsp", "rust_analyzer", "bashls", "vuels", "ansiblels" }
+local servers = { "hls", "pylsp", "rust_analyzer", "bashls", "volar", "ansiblels", "nixd" }
 for _, lsp in ipairs(servers) do
   nvim_lsp[lsp].setup {
     on_attach = on_attach,
@@ -824,7 +824,7 @@ for _, lsp in ipairs(servers) do
             lineLength = 200,
           }
         }
-      }
+      },
     }
   }
 end
@@ -949,13 +949,14 @@ cmp.setup.cmdline(':', {
 
 require('orgmode').setup_ts_grammar()
 
+require("nvim-treesitter.install").compilers = { require("tools").gcc }
 require 'nvim-treesitter.configs'.setup {
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
   -- This will be handled by nixos now
-  --ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config' },
+  ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config', 'nix' },
   incremental_selection = {
     enable = true,
     keymaps = {
