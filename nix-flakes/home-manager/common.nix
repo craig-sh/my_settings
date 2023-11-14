@@ -36,6 +36,8 @@
     pkgs.nixpkgs-fmt
     pkgs.gcc # For neovim treesitter to compile parsers
     pkgs.mypy
+    pkgs.btop
+    pkgs.htop
   ];
 
   programs = {
