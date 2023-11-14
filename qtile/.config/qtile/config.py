@@ -152,15 +152,15 @@ def move_to_next_screen(qtile, direction=1):
 def go_to_group(name: str) -> Callable:
     def _inner(qtile: Qtile) -> None:
         if len(qtile.screens) == 1:
-            qtile.groups_map[name].cmd_toscreen()
+            qtile.groups_map[name].toscreen()
             return
 
         if name in '12345':
             qtile.focus_screen(LEFT_SCREEN_IDX)
-            qtile.groups_map[name].cmd_toscreen()
+            qtile.groups_map[name].toscreen()
         else:
             qtile.focus_screen(RIGHT_SCREEN_IDX)
-            qtile.groups_map[name].cmd_toscreen()
+            qtile.groups_map[name].toscreen()
 
     return _inner
 
@@ -173,9 +173,9 @@ def go_next_group(direction: int) -> Callable:
             raise RuntimeError
         if len(qtile.screens) == 1:
             if direction == 1:
-                qtile.current_screen.cmd_next_group()
+                qtile.current_screen.next_group()
             else:
-                qtile.current_screen.cmd_prev_group()
+                qtile.current_screen.prev_group()
             return
 
         # TODO map screen to nums
@@ -212,10 +212,10 @@ def toggle_max_layout() -> Callable:
         cur_layout = qtile.current_group.current_layout
         prev_layout = PREV_TOGGLE_LAYOUTS.get(qtile.current_screen.index, MONAD_TALL_LAYOUT.idx)
         if cur_layout == MAX_LAYOUT.idx:
-            qtile.cmd_to_layout_index(prev_layout)
+            qtile.to_layout_index(prev_layout)
         else:
             PREV_TOGGLE_LAYOUTS[qtile.current_screen.index] = cur_layout
-            qtile.cmd_to_layout_index(MAX_LAYOUT.idx)
+            qtile.to_layout_index(MAX_LAYOUT.idx)
     return _inner
 
 
@@ -223,17 +223,17 @@ def focus_left() -> Callable:
     def _inner(qtile: Qtile) -> None:
         """Call focus_left but jump screens if necessary """
         if len(qtile.screens) == 1 or qtile.current_screen.index == LEFT_SCREEN_IDX:
-            qtile.current_layout.cmd_left()
+            qtile.current_layout.left()
             return
 
         cur_layout = qtile.current_group.current_layout
         if cur_layout == MAX_LAYOUT.idx:
-            qtile.cmd_next_screen()
+            qtile.next_screen()
         else:
             cur_window = qtile.current_window
-            qtile.current_layout.cmd_left()
+            qtile.current_layout.left()
             if cur_window == qtile.current_window:
-                qtile.cmd_next_screen()
+                qtile.next_screen()
     return _inner
 
 
@@ -241,17 +241,17 @@ def focus_right() -> Callable:
     def _inner(qtile: Qtile) -> None:
         """Call focus_right but jump screens if necessary """
         if len(qtile.screens) == 1 or qtile.current_screen.index == RIGHT_SCREEN_IDX:
-            qtile.current_layout.cmd_right()
+            qtile.current_layout.right()
             return
 
         cur_layout = qtile.current_group.current_layout
         if cur_layout == MAX_LAYOUT.idx:
-            qtile.cmd_next_screen()
+            qtile.next_screen()
         else:
             cur_window = qtile.current_window
-            qtile.current_layout.cmd_right()
+            qtile.current_layout.right()
             if cur_window == qtile.current_window:
-                qtile.cmd_next_screen()
+                qtile.next_screen()
     return _inner
 
 
@@ -367,7 +367,6 @@ if not is_laptop():
         Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2%"), desc="Lower Volume"),
 
         # Music
-        Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
         Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
         Key([], "XF86AudioPrev", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"), desc="Previous song"),
         Key([], "XF86AudioStop", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop"), desc="Stop music"),
@@ -596,7 +595,7 @@ def handle_client_new(client):
     if "KeePassXC".lower() in client.name.lower():
         # Any keepass window should be moved to current screen
         # usually pop-ups
-        client.cmd_toscreen()
+        client.toscreen()
 
 
 
@@ -621,8 +620,8 @@ def restart_on_randr(ev):
     from datetime import datetime
     logger.error(f"SCREEN change called at {datetime.now()}: {num_screens_changed=}")
     if num_screens_changed:
-        imported_qtile.cmd_restart()
-        # imported_qtile.cmd_reload_config()
+        imported_qtile.restart()
+        # imported_qtile.reload_config()
         # _preset_screens(imported_qtile)
 
 
