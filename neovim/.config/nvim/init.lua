@@ -252,6 +252,11 @@ hi FloatermBorderNF guibg='#14151b' guifg=green
 -- vim.g.UltiSnipsJumpBackwardTrigger = '<c-b>'
 vim.g.UltiSnipsSnippetDirectories = { 'UltiSnips', 'mysnips' }
 require('leap').add_default_mappings()
+-- https://github.com/ggandor/leap.nvim#faq
+-- Disablee the x/X mappings in leap
+vim.keymap.del({'x', 'o'}, 'x')
+vim.keymap.del({'x', 'o'}, 'X')
+--
 local l_opts = { noremap = true }
 require('legendary').setup({
   keymaps = {
