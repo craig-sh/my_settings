@@ -117,7 +117,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  security.pki.certificateFiles = [ config.sops.secrets.ca_pub_cert.path ];
+  security.pki.certificateFiles = [ ../secrets/ca.crt ];
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';
