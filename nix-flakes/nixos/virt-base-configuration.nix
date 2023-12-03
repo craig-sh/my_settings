@@ -82,6 +82,7 @@
     nfs-utils
     age
     sops
+    restic
   ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {
