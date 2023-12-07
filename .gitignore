@@ -9,7 +9,6 @@ setup.sublime-workspace
 .vim
 Sublime3Settings/Packages/User/Projects/
 neovim/.config/nvim/.netrwhist
-neovim/.config/nvim/after/
 neovim/.config/nvim/plugged/
 spotifyd/.config/spotifyd/.spotify_pw
 neovim/.config/nvim/plugin/packer_compiled.lua
