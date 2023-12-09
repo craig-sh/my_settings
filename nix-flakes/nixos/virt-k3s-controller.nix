@@ -9,5 +9,34 @@
     " --disable=traefik" # Optionally add additional args to k3s
     " --write-kubeconfig-mode=0644"
   ];
+
+  # k8s backupscript still needs some hardcoded setup like keys to backup server
+  systemd.timers."k3s-backup" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "20:24";
+      Unit = "k3s-backup.service";
+    };
+  };
+
+  systemd.services."k3s-backup" = {
+    path = [
+      pkgs.bash
+      pkgs.restic
+      pkgs.k3s
+      pkgs.hostname
+      pkgs.openssh
+    ];
+    script = ''
+      set -eu
+      cd /home/craig/homelab/backup
+      ./restic_run
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+  };
+
 }
 

@@ -20,6 +20,12 @@
       fsType = "ext4";
     };
 
+  fileSystems."/mnt/k8sconfig" =
+    {
+      device = "/dev/disk/by-label/k8sconfig";
+      fsType = "ext4";
+    };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

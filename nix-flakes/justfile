@@ -16,10 +16,10 @@ get-age-key server:
     nix shell 'nixpkgs#ssh-to-age' --command  sh -c "ssh-keyscan {{server}} | ssh-to-age"
 
 ignore-secrets:
-    git update-index --skip-worktree secrets/os-secrets.yaml
+    git update-index --skip-worktree secrets/os-secrets.yaml; git update-index --skip-worktree secrets/ca.crt
 
 reset-secrets:
-    git update-index --no-skip-worktree secrets/os-secrets.yaml
+    git update-index --no-skip-worktree secrets/os-secrets.yaml; git update-index --no-skip-worktree secrets/ca.crt
 
 gc:
     sudo nix store gc --debug
