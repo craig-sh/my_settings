@@ -14,7 +14,7 @@
   systemd.timers."k3s-backup" = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "20:24";
+      OnCalendar = "04:00";
       Unit = "k3s-backup.service";
     };
   };
