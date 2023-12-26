@@ -12,6 +12,9 @@ switch-os:
 switch-hm target=hostname:
     home-manager switch --flake .#craig@{{target}}
 
+flake-update:
+    nix flake update
+
 get-age-key server:
     nix shell 'nixpkgs#ssh-to-age' --command  sh -c "ssh-keyscan {{server}} | ssh-to-age"
 
