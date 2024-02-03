@@ -38,6 +38,7 @@
     pkgs.mypy
     pkgs.btop
     pkgs.htop
+    pkgs.fd
   ];
 
   programs = {

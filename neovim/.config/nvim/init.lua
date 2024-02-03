@@ -113,7 +113,7 @@ require('lazy').setup({
   'tpope/vim-repeat',
   {
     'kyazdani42/nvim-tree.lua',
-    requires = 'kyazdani42/nvim-web-devicons',
+    dependencies = 'kyazdani42/nvim-web-devicons',
     config = true,
     opts = {
       hijack_directories = {
@@ -949,6 +949,7 @@ cmp.setup.cmdline(':', {
     { name = 'path' }
   }, {
     { name = 'cmdline' }
+    ,{ name = 'orgmode' }
   })
 })
 
@@ -998,6 +999,7 @@ require 'nvim-treesitter.configs'.setup {
 require('orgmode').setup({
   org_agenda_files = { '~/Documents/org/*' },
   org_default_notes_file = '~/Documents/org/refile.org',
+  org_startup_indented = true,
   mappings = {
     org = {
       org_next_visible_heading = 'g}}',

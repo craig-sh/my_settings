@@ -540,7 +540,8 @@ mouse = [
 dgroups_key_binder = None
 dgroups_app_rules = []  # type: List
 follow_mouse_focus = True
-bring_front_click = False
+bring_front_click = "floating_only"
+floats_kept_above = True
 cursor_warp = True
 floating_layout = layout.Floating(float_rules=[
     # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -553,7 +554,7 @@ floating_layout = layout.Floating(float_rules=[
     Match(title='pinentry'),  # GPG key password entry
 ])
 auto_fullscreen = True
-focus_on_window_activation = "focus"
+focus_on_window_activation = "smart"
 reconfigure_screens = True
 
 # If things like steam games want to auto-minimize themselves when losing
@@ -594,8 +595,13 @@ def _preset_screens(qtile: Qtile):
 def handle_client_new(client):
     if "KeePassXC".lower() in client.name.lower():
         # Any keepass window should be moved to current screen
-        # usually pop-ups
+        # usually pop-ups. Should also be dsplayed on top of everything
+        client.toggle_floating()
         client.toscreen()
+        client.bring_to_front()
+        client.focus()
+        client.toggle_floating()
+        client.focus()
 
 
 
