@@ -161,6 +161,22 @@ require('lazy').setup({
   'rcarriga/nvim-notify',
   { 'dracula/vim', name = 'dracula' },
   'navarasu/onedark.nvim',
+  {
+    'giusgad/pets.nvim',
+    dependencies = { 'MunifTanjim/nui.nvim', 'giusgad/hologram.nvim' },
+  },
+  {
+    'mikesmithgh/kitty-scrollback.nvim',
+    enabled = true,
+    lazy = true,
+    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
+    event = { 'User KittyScrollbackLaunch' },
+    -- version = '*', -- latest stable version, may have breaking changes if major version changed
+    -- version = '^4.0.0', -- pin major version, include fixes and features that do not have breaking changes
+    config = function()
+      require('kitty-scrollback').setup()
+    end,
+  }
   --'joshdick/onedark.vim'
   --'folke/tokyonight.nvim'
 })
@@ -837,6 +853,10 @@ end
 -- Turn on status information
 require('fidget').setup()
 
+require("pets").setup({
+  random = false,
+  death_animation = false,
+})
 vim.notify = require("notify")
 -- Poromodo timer
 require('nomodoro').setup({
