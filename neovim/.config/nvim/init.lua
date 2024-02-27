@@ -162,10 +162,6 @@ require('lazy').setup({
   { 'dracula/vim', name = 'dracula' },
   'navarasu/onedark.nvim',
   {
-    'giusgad/pets.nvim',
-    dependencies = { 'MunifTanjim/nui.nvim', 'giusgad/hologram.nvim' },
-  },
-  {
     'mikesmithgh/kitty-scrollback.nvim',
     enabled = true,
     lazy = true,
@@ -853,10 +849,6 @@ end
 -- Turn on status information
 require('fidget').setup()
 
-require("pets").setup({
-  random = false,
-  death_animation = false,
-})
 vim.notify = require("notify")
 -- Poromodo timer
 require('nomodoro').setup({
