@@ -43,7 +43,7 @@
       merge = { tool = "meld"; };
       mergetool = {
         meld = {
-          cmd = ''cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED'';
+          cmd = ''meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
         };
       };
       difftool = {
