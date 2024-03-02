@@ -27,6 +27,7 @@
       pkgs.hostname
       pkgs.openssh
       pkgs.gzip
+      pkgs.curl
     ];
     script = ''
       set -eu
