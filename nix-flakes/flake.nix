@@ -66,6 +66,7 @@
             ./nixos/virt-hardware-configuration.nix
             ./nixos/virt-base-configuration.nix
             ./nixos/virt-k3s-controller.nix
+            ./nixos/virt-tailscale.nix
           ];
         };
         "virtnix2" = nixpkgs.lib.nixosSystem {

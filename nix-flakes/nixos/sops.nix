@@ -9,4 +9,7 @@
   sops.secrets.k3s-server-token = {
     format = "yaml";
   };
+  sops.secrets.virtnix-tailscale-key = {
+    format = "yaml";
+  };
 }
