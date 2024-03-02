@@ -40,7 +40,7 @@
       fi
 
       # otherwise authenticate with tailscale
-      ${tailscale}/bin/tailscale up -authkey $(cat "${config.sops.secrets.virtnix-tailscale-key.path}")
+      ${tailscale}/bin/tailscale up -authkey $(cat "${config.sops.secrets.virtnix-tailscale-key.path}") --accept-dns=false
     '';
   };
   # Workaround fix for nm-online-service from stalling on Wireguard interface.
