@@ -76,7 +76,11 @@ require('lazy').setup({
   --'psf/black',
   'rhysd/git-messenger.vim',
   'Glench/Vim-Jinja2-Syntax',
-  'lukas-reineke/indent-blankline.nvim',
+  { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {},
+    config = function()
+      require("ibl").setup()
+      end
+  },
   { 'norcalli/nvim-colorizer.lua', config = true },
 
   -- Utilities
@@ -138,6 +142,7 @@ require('lazy').setup({
     end,
     opts = {}
   },
+  { 'numToStr/Comment.nvim', opts = {} },
   'voldikss/vim-floaterm',
   { 'sindrets/diffview.nvim',      dependencies = 'nvim-lua/plenary.nvim' },
   --
@@ -224,6 +229,8 @@ vim.o.hidden = true -- Switch buffers without saving
 vim.o.scrolloff = 5
 vim.o.sidescrolloff = 15
 vim.o.showmode = false -- for echodoc, also we display our mode in status line anyway
+-- vim.opt.list = true
+-- vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
 vim.o.autoindent = true
 vim.o.smartindent = true
@@ -947,24 +954,24 @@ cmp.setup {
 }
 
 -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline({ '/', '?' }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = {
-    { name = 'buffer' }
-  }
-})
-
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' }
-  }, {
-    { name = 'cmdline' }
-    ,{ name = 'orgmode' }
-  })
-})
-
+--cmp.setup.cmdline({ '/', '?' }, {
+--  mapping = cmp.mapping.preset.cmdline(),
+--  sources = {
+--    { name = 'buffer' }
+--  }
+--})
+--
+---- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+--cmp.setup.cmdline(':', {
+--  mapping = cmp.mapping.preset.cmdline(),
+--  sources = cmp.config.sources({
+--    { name = 'path' }
+--  }, {
+--    { name = 'cmdline' }
+--    ,{ name = 'orgmode' }
+--  })
+--})
+--
 require('orgmode').setup_ts_grammar()
 
 require("nvim-treesitter.install").compilers = { require("tools").gcc }

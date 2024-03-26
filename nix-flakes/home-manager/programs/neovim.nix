@@ -5,9 +5,10 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
-    extraPackages = [
-      pkgs.nixd
-    ];
+    # Commented out because of nixd security issue since its tied to old nix version
+    #extraPackages = [
+    #  pkgs.nixd
+    #];
   };
 
   home.file = {
