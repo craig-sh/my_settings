@@ -50,7 +50,7 @@ require('lazy').setup({
     }
   },
   'nvim-treesitter/playground',
-  'nvim-orgmode/orgmode',
+  {'nvim-orgmode/orgmode', event='VeryLazy'},
 
   'hrsh7th/nvim-cmp',
   'hrsh7th/cmp-buffer',
@@ -972,7 +972,6 @@ cmp.setup {
 --  })
 --})
 --
-require('orgmode').setup_ts_grammar()
 
 require("nvim-treesitter.install").compilers = { require("tools").gcc }
 require 'nvim-treesitter.configs'.setup {
@@ -981,7 +980,7 @@ require 'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
   -- This will be handled by nixos now
-  ensure_installed = { 'org', 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config', 'nix' },
+  ensure_installed = { 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config', 'nix' },
   incremental_selection = {
     enable = true,
     keymaps = {
