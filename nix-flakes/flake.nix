@@ -12,12 +12,15 @@
     # which represents the GitHub repository URL + branch/commit-id/tag.
 
     # Official NixOS package source, using nixos-unstable branch here
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay = { 
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     # home-manager, used for managing user configuration
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
@@ -143,14 +146,14 @@
           ];
         };
         "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlay ]; };
+          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlays.default ]; };
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix
           ];
         };
         "craig@carbonarch" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlay ]; };
+          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlays.default ]; };
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix

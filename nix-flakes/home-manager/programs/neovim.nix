@@ -5,6 +5,8 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
+    # Currently breaking. When below is set we actually use the latest neovim from git
+    # package = pkgs.neovim;
     extraPackages = [
       pkgs.nixd
     ];

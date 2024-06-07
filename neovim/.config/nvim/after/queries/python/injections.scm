@@ -10,8 +10,8 @@
 ;		(interpolation)?
 ;		(#match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
 ;		(#set! injection.language "sql")
-;		;(#set! injection.include-children)
-;		(#set! injection.combined)
+;		(#set! injection.include-children)
+;		;(#set! injection.combined)
 ;	)
 ;)
 
@@ -33,7 +33,7 @@
       (string_content)
       ( (interpolation) (string_content))*
     ) @injection.content
-    (#any-match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
+    (#match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
     (#set! injection.language "sql")
     ;(#set! injection.include-children)
     ;(#set! injection.combined)
