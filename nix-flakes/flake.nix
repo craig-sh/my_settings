@@ -150,13 +150,16 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix
+            ./home-manager/programs/neovim_git.nix
           ];
         };
         "craig@carbonarch" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlays.default ]; };
+          #pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlays.default ]; };
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix
+            ./home-manager/programs/neovim_git.nix
           ];
         };
       };
