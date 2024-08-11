@@ -126,12 +126,8 @@
       # Available through 'home-manager --flake .#your-username@your-hostname'
       homeConfigurations = {
         "craig@virtnix" = home-manager.lib.homeManagerConfiguration {
-          #pkgs = nixpkgs.legacyPackages.x86_64-linux // {overlays = [inputs.neovim-nightly-overlay.overlay];};
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
-          #overlays = [
-          #  inputs.neovim-nightly-overlay.overlay
-          #];
           modules = [
             ./home-manager/common.nix
             ./home-manager/virtserver.nix
@@ -146,7 +142,7 @@
           ];
         };
         "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlays.default ]; };
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix
@@ -154,7 +150,6 @@
           ];
         };
         "craig@carbonarch" = home-manager.lib.homeManagerConfiguration {
-          #pkgs = nixpkgs.legacyPackages.x86_64-linux // { overlays = [ inputs.neovim-nightly-overlay.overlays.default ]; };
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
