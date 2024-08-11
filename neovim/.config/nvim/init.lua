@@ -973,6 +973,7 @@ cmp.setup {
 --})
 --
 
+-- Lazy can cache an old version of gcc for treesitter. Run `rm ~/.cache/nvim/luac` to fix
 require("nvim-treesitter.install").compilers = { require("tools").gcc }
 require 'nvim-treesitter.configs'.setup {
   highlight = {
@@ -1071,9 +1072,9 @@ local autocmds = {
   restore_cursor = {
     { 'BufRead', '*', [[call setpos(".", getpos("'\""))]] },
   },
-  lua_highlight = {
-    { "TextYankPost", "*", [[silent! lua vim.highlight.on_yank() {higroup="IncSearch", timeout=400}]] },
-  },
+--  lua_highlight = {
+--    { "TextYankPost", "*", [[silent! lua vim.highlight.on_yank() {higroup="IncSearch", timeout=400}]] },
+--  },
 }
 nvim_create_augroups(autocmds)
 
