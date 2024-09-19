@@ -43,7 +43,7 @@
       bind | split-window -h -c "#{pane_current_path}"
 
       # reload config file (change file location to your the tmux.conf you want to use)
-      bind r source-file ~/config/tmux/.tmux.conf
+      bind r source-file ~/.config/tmux/tmux.conf
 
       # Use Alt-vim keys without prefix key to switch panes
       bind -n M-h select-pane -L
