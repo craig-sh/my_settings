@@ -9,6 +9,9 @@ default:
 switch-os:
     sudo nixos-rebuild switch --flake .#{{hostname}}
 
+switch-boot-os:
+    sudo nixos-rebuild boot --flake .#{{hostname}}
+
 switch-os-dry-run:
     sudo nixos-rebuild dry-activate --flake .#{{hostname}}
 
