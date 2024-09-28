@@ -39,6 +39,7 @@ alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML
 alias diskspace='sudo ncdu -x /'
 alias music='systemctl restart spotifyd.service --user && spt'
 alias wakehyper='wol bc:5f:f4:36:33:f4'
+alias screenshot='scrot --select - | xclip -selection clipboard -t image/png -i &'
 if [[ "$TERM" == "screen-256color" ]]; then
   alias ssh="TERM=screen ssh"
 elif [[ "$TERM" == "xterm-kitty" ]]; then
