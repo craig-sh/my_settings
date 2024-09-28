@@ -23,6 +23,7 @@
   # release notes.
   home.stateVersion = "23.05"; # Please read the comment before changing.
 
+  fonts.fontconfig.enable = true;
   # The home.packages option allows you to install Nix packages into your
   # environment.
   # Packages to install
@@ -33,12 +34,22 @@
     pkgs.eza
     pkgs.kubernetes-helm
     pkgs.just
+    pkgs.kubectl
+    pkgs.ruff
+    (pkgs.python312.withPackages (ppkgs: [
+      ppkgs.mypy
+      ppkgs.python-lsp-server
+      ppkgs.pylsp-mypy
+      ppkgs.python-lsp-ruff
+    ]))
     pkgs.nixpkgs-fmt
     pkgs.gcc # For neovim treesitter to compile parsers
-    pkgs.mypy
     pkgs.btop
     pkgs.htop
     pkgs.fd
+    pkgs.nodePackages.bash-language-server
+    pkgs.lua-language-server
+    (pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
   ];
 
   programs = {

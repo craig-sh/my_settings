@@ -1,9 +1,3 @@
-export PYENV_VERSION="system"
-
-if command -v pyenv 1>/dev/null 2>&1; then
-   eval "$(pyenv init -)"
-fi
-
 [ -f "/home/craig/.ghcup/env" ] && source "/home/craig/.ghcup/env" # ghcup-env
 
 if [[ -n $VIRTUAL_ENV && -e "${VIRTUAL_ENV}/bin/activate" ]]; then

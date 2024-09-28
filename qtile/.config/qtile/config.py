@@ -260,13 +260,15 @@ class MyVolume(Volume):
     def _update_drawer(self):
         if self.volume <= 0:
             self.volume = '0%'
-            self.text = '婢 ' + str(self.volume)
-        elif self.volume < 30:
-            self.text = '奔 ' + str(self.volume) + '%'
+            self.text = '󰖁 ' + str(self.volume)
+        elif self.volume < 15:
+            self.text = '󰕿 ' + str(self.volume) + '%'
+        elif self.volume < 50:
+            self.text = '󰖀' + str(self.volume) + '%'
         elif self.volume < 80:
-            self.text = '墳 ' + str(self.volume) + '%'
+            self.text = '󰕾' + str(self.volume) + '%'
         else:  # self.volume >=80:
-            self.text = ' ' + str(self.volume) + '%'
+            self.text = '' + str(self.volume) + '%'
 
     def restore(self):
         self.timer_setup()
@@ -362,9 +364,9 @@ if not is_laptop():
     # bug with how keys are captured on laptop with Xmodmap
     keys += [
         # Sound
-        Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle Mute"),
-        Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +2%"), desc="Raise Volume"),
-        Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2%"), desc="Lower Volume"),
+        Key([], "XF86AudioMute", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc="Toggle Mute"),
+        Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"), desc="Raise Volume"),
+        Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"), desc="Lower Volume"),
 
         # Music
         Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
@@ -488,7 +490,7 @@ widget_list += [
     make_icon("", background=theme.color6, foreground=theme.inactive_tab_foreground),
     widget.Memory(format='{MemPercent}%', background=theme.color6, foreground=theme.inactive_tab_foreground),
     widget.Sep(**sep_args, background=theme.color6),  # make_sep_icon(),
-    make_icon("﬙", background=theme.color16, foreground=theme.inactive_tab_foreground),
+    make_icon("", background=theme.color16, foreground=theme.inactive_tab_foreground),
     widget.CPU(format='{freq_current}GHz {load_percent}%', background=theme.color16, foreground=theme.inactive_tab_foreground),
     widget.Sep(**sep_args, background=theme.color4),  # make_sep_icon(),
     MyVolume(fontsize="25", background=theme.color4, foreground=theme.color0),
