@@ -12,6 +12,7 @@
     # If markup is not allowed, those tags will be stripped out of the
     # message.
     markup = full
+    plain_text = no
 
     # The format of the message.  Possible variables are:
     #   %a  appname
@@ -33,7 +34,7 @@
 
     # Alignment of message text.
     # Possible values are "left", "center" and "right".
-    alignment = left
+    alignment = center
 
     # The frequency with wich text that is longer than the notification
     # window allows bounces back and forth.
@@ -53,6 +54,9 @@
     # Ignore newlines '\n' in notifications.
     ignore_newline = no
 
+    # Hide duplicate's count and stack them
+    stack_duplicates = yes
+    hide_duplicate_count = yes
 
     # The geometry of the window:
     #   [{width}]x{height}[+/-{x}+/-{y}]
@@ -76,7 +80,7 @@
     # The transparency of the window.  Range: [0; 100].
     # This option will only work if a compositing windowmanager is
     # present (e.g. xcompmgr, compiz, etc.).
-    transparency = 0
+    transparency = 5
 
     # Don't remove messages, if the user is idle (no mouse or keyboard input)
     # for longer than idle_threshold seconds.
@@ -112,7 +116,7 @@
     # The height of a single line.  If the height is smaller than the
     # font height, it will get raised to the font height.
     # This adds empty space above and under the text.
-    line_height = 0
+    line_height = 3
 
     # Draw a line of "separatpr_height" pixel height between two
     # notifications.
@@ -154,8 +158,8 @@
     icon_path = /usr/share/icons/breeze/status/64/:/usr/share/icons/breeze/apps/64/:/usr/share/icons/breeze/actions/64/
 
 [frame]
-    width = 3
-    color = "#aaaaaa"
+  width = 3
+  color = "#8EC07C"
 
 [shortcuts]
 
@@ -178,22 +182,39 @@
     # Context menu.
     context = ctrl+shift+period
 
+[global]
+frame_color = "#1e66f5"
+separator_color= frame
+
 [urgency_low]
-    # IMPORTANT: colors have to be defined in quotation marks.
-    # Otherwise the "#" and following would be interpreted as a comment.
-    background = "#dfdfdf"
-    foreground = "#888888"
-    timeout = 10
+background = "#eff1f5"
+foreground = "#4c4f69"
 
 [urgency_normal]
-    background = "#ffffff"
-    foreground = "#333"
-    timeout = 10
+background = "#eff1f5"
+foreground = "#4c4f69"
 
 [urgency_critical]
-    background = "#900000"
-    foreground = "#ffffff"
-    timeout = 0
+background = "#eff1f5"
+foreground = "#4c4f69"
+frame_color = "#fe640b"
+
+#[urgency_low]
+#    # IMPORTANT: colors have to be defined in quotation marks.
+#    # Otherwise the "#" and following would be interpreted as a comment.
+#    background = "#dfdfdf"
+#    foreground = "#888888"
+#    timeout = 10
+#
+#[urgency_normal]
+#    background = "#ffffff"
+#    foreground = "#333"
+#    timeout = 10
+#
+#[urgency_critical]
+#    background = "#900000"
+#    foreground = "#ffffff"
+#    timeout = 0
 
 # Every section that isn't one of the above is interpreted as a rules to
 # override settings for certain messages.

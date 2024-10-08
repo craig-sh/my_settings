@@ -40,6 +40,10 @@ from libqtile.lazy import lazy
 from libqtile.log_utils import logger  # noqa
 from libqtile.widget.volume import Volume
 
+import socket
+
+HOSTNAME = socket.gethostname()
+
 # HELPERS ###################
 # Onedark kitty theme - from https://github.com/ful1e5/dotfiles/blob/main/kitty/.config/kitty/themes/onedark.conf#L9
 THEME = {
@@ -360,13 +364,13 @@ keys = [
 
 ]
 
-if not is_laptop():
+if not is_laptop() and HOSTNAME != 'hypernix':
     # bug with how keys are captured on laptop with Xmodmap
     keys += [
         # Sound
-        Key([], "XF86AudioMute", lazy.spawn("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), desc="Toggle Mute"),
-        Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%+"), desc="Raise Volume"),
-        Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_AUDIO_SINK@ 2%-"), desc="Lower Volume"),
+        Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle Mute"),
+        Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +2%"), desc="Raise Volume"),
+        Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2%"), desc="Lower Volume"),
 
         # Music
         Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),

@@ -82,6 +82,16 @@
             ./nixos/virt-k3s-agent.nix
           ];
         };
+        "hypernix" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            ./nixos/sops.nix
+            ./nixos/hypernix-hardware-configuration.nix
+            ./nixos/desktop-base-configuration.nix
+            ./nixos/hypernix-configuration.nix
+          ];
+        };
         # The Nix module system can modularize configuration,
         # improving the maintainability of configuration.
         #
@@ -155,6 +165,14 @@
           modules = [
             ./home-manager/common.nix
             ./home-manager/programs/neovim_git.nix
+          ];
+        };
+        "craig@hypernix" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/common.nix
+            ./home-manager/gui.nix
           ];
         };
       };

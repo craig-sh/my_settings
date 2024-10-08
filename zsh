@@ -1,0 +1,1 @@
+nix-flakes/home-manager/programs/zsh
