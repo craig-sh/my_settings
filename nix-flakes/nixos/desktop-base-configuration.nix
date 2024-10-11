@@ -61,6 +61,7 @@ in {
   #   keyMap = "us";
   #   useXkbConfig = true; # use xkbOptions in tty.
   # };
+  nixpkgs.config.allowUnfree = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -68,13 +69,14 @@ in {
     enable = true;
     extraPackages = python3Packages: with python3Packages; [
       qtile-extras
+      pulsectl-asyncio
     ];
-    configFile = ./config.py;
+    configFile = "/home/craig/.config/qtile/config.py";
   };
   #services.xserver.displayManager.sddm.enable = true;
   services.displayManager.defaultSession = "none+qtile";
-  #services.displayManager.autoLogin.enable = true;
-  #services.displayManager.autoLogin.user = "craig";
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "craig";
   services.xserver.displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${myCustomLayout}";
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -104,6 +106,14 @@ in {
     sops
     kitty
     firefox
+    keepassxc
+    xclip
+    xsel
+    iwd
+    usbutils
+    pciutils
+    xdg-utils
+    xdg-launch
     (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
   ];
   environment.shells = with pkgs; [ zsh ];
@@ -139,6 +149,7 @@ in {
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.fwupd.enable = true;
 
   security.pki.certificateFiles = [ ../secrets/ca.crt ];
   security.sudo.extraConfig = ''

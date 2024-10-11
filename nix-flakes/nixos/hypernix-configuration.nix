@@ -2,11 +2,9 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ];
-
-  #### Use the systemd-boot EFI boot loader.
-  #boot.loader.systemd-boot.enable = true;
-  #boot.loader.efi.canTouchEfiVariables = true;
+  imports = [
+    ./gaming.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -21,5 +19,9 @@
   #''
   #  127.0.0.1 beelink.localdomain
   #'';
+  services.flatpak.enable = true;
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.config.common.default = [ "gnome" ];
 
 }

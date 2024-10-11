@@ -15,8 +15,6 @@ path=(
   "$HOME/wm/panels"
   "$HOME/.local/bin"
   "$HOME/my_settings/my_scripts"
-  "$HOME/.local/share/flatpak/exports/share"
-  "/var/lib/flatpak/exports/share"
   "$path[@]"
 )
 export PATH

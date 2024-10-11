@@ -1,0 +1,66 @@
+# Common Commands
+## Colorize the ls output ##
+alias ls='exa --color=auto'
+## Use a long listing format ##
+alias ll='ls -la'
+alias vim='nvim'
+
+alias bspwm_config='vim ~/.config/bspwm/bspwmrc'
+alias sxhkd_config='vim ~/.config/sxhkd/sxhkdrc'
+alias bar_config='vim ~/.config/polybar/shades/config.ini'
+
+alias launch_bar='bash $HOME/.config/polybar/launch.sh --shades' #alias gos="cd /home/craig/Documents/GeorgiaTech/6300SoftwareProcess"
+#alias gos="source /home/craig/Documents/GeorgiaTech/7637KBAI/kbai/bin/activate && cd /home/craig/Documents/GeorgiaTech/7637KBAI/Project-Code-Python"
+alias yy="xclip -selection clipboard"
+alias yi=" tr -d '\n' | xclip -selection clipboard"
+alias gos="cd /home/craig/Documents/GeorgiaTech/8803_AI4R"
+alias gor="cd /home/craig/my_gits/learning_rust && source $HOME/.cargo/env"
+alias conthing="source /home/craig/anaconda3/etc/profile.d/conda.sh"
+alias gogains="cd /home/craig/my_gits/gains; source venv/bin/activate"
+alias gohearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate"
+alias golol="cd /home/craig/my_gits/WinrateForFamiliarChamps"
+alias goai="cd /home/craig/my_gits/ai_block_battle && source .venv/bin/activate && export PYTHONPATH=/home/craig/my_gits/ai_block_battle/src:$PYTHONPATH"
+alias goansi="cd /home/craig/Documents/ansible && source ~/pyvenvs/ansible/bin/activate"
+alias gofeud="source ~/pyvenvs/rfeud/bin/activate && cd /home/craig/my_gits/rfeud"
+alias gowin="/home/craig/my_gits/window_restore && source ~/pyvenvs/win_restore/bin/activate"
+alias gomygits="cd /home/craig/my_gits"
+alias gopylint="pyenv shell 3.8.1 && source ~/pyvenvs/pylint_env/bin/activate && cd ~/my_gits/pylint/"
+alias gokeep="pyenv shell 3.8.1 && source ~/pyvenvs/keep_env/bin/activate && cd ~/my_gits/gkeep_to_gcal/"
+alias gosecret="pyenv shell ${PYENV_VERSION} && source /home/craig/my_gits/secrethandles/secret_env/bin/activate && cd /home/craig/my_gits/secrethandles/"
+alias goorg="cd ~/Documents/org && vim ."
+alias mess="source ~/pyvenvs/messy/bin/activate"
+alias startgains="cd /home/craig/my_gits/gains; source venv/bin/activate; cd dj_gains; python manage.py runserver"
+alias starthearth="cd /home/craig/my_gits/hearthstone-tourney && source flask/bin/activate && python run.py -d;"
+alias pycharm="wmname LG3D; source /home/craig/Downloads/pycharm.sh"
+alias send_to_phone="kdeconnect-cli --device ddb2c5878488731a --share"
+alias set_audio_sink="pactl list sinks short | awk '{print \$1}' > /tmp/audio_sink"
+alias powux="powerline-config tmux setup"
+alias jy="java -jar /home/craig/Documents/GeorgiaTech/7641MachineLearning/7641ML/Assignment2/jython/jython.jar"
+alias diskspace='sudo ncdu -x /'
+alias music='systemctl restart spotifyd.service --user && spt'
+alias wakehyper='wol bc:5f:f4:36:33:f4'
+alias screenshot='scrot --select - | xclip -selection clipboard -t image/png -i &'
+if [[ "$TERM" == "screen-256color" ]]; then
+  alias ssh="TERM=screen ssh"
+elif [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh="kitty +kitten ssh"
+fi
+#laptop specific
+function netconnect {
+    sudo iwctl station wlan0 scan
+    sudo iwctl station wlan0 connect $1
+}
+alias netroam='netconnect Zerus'
+alias nethome='netconnect Eriador'
+alias nethomepalan='netconnect palantir'
+alias netleander='netconnect Overmind'
+alias netadmin='netconnect Angainor'
+
+function transmission_dl {
+    transmission-cli --download-dir="/home/craig/Downloads" --encryption-required $1
+}
+function convert_media {
+    for f in *.$1;
+        do ffmpeg -i "${f}" "${f%%.*}.mp4";
+    done
+}

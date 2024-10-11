@@ -38,7 +38,7 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger  # noqa
-from libqtile.widget.pulse_volume import PulseVolume
+from libqtile.widget.volume import Volume
 
 import socket
 
@@ -135,8 +135,8 @@ COL_LAYOUT = MyLayout(layout.Columns(**_border_colors), 3)
 NUM_SCREENS = get_num_screens()
 IS_LAPTOP = is_laptop()
 
-LEFT_SCREEN_IDX = 0
-RIGHT_SCREEN_IDX = 1
+LEFT_SCREEN_IDX = 1
+RIGHT_SCREEN_IDX = 0
 
 PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 
@@ -260,7 +260,7 @@ def focus_right() -> Callable:
 
 
 # Audio Volume/still needs work | replacing widget.Volume
-class MyVolume(PulseVolume):
+class MyVolume(Volume):
     def _update_drawer(self):
         if self.volume <= 0:
             self.volume = '0%'
@@ -364,13 +364,13 @@ keys = [
 
 ]
 
-if not is_laptop():
+if not is_laptop() and HOSTNAME != 'hypernix':
     # bug with how keys are captured on laptop with Xmodmap
     keys += [
         # Sound
-        Key([], "XF86AudioMute", lazy.spawn("wpctl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle Mute"),
-        Key([], "XF86AudioRaiseVolume", lazy.spawn("wpctl set-volume @DEFAULT_SINK@ 2%+"), desc="Raise Volume"),
-        Key([], "XF86AudioLowerVolume", lazy.spawn("wpctl set-volume @DEFAULT_SINK@ 2%-"), desc="Lower Volume"),
+        Key([], "XF86AudioMute", lazy.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle"), desc="Toggle Mute"),
+        Key([], "XF86AudioRaiseVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ +2%"), desc="Raise Volume"),
+        Key([], "XF86AudioLowerVolume", lazy.spawn("pactl set-sink-volume @DEFAULT_SINK@ -2%"), desc="Lower Volume"),
 
         # Music
         Key([], "XF86AudioNext", lazy.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"), desc="Next song"),
@@ -489,7 +489,7 @@ if IS_LAPTOP:
 
 widget_list += [
     make_icon("", background=theme.color2, foreground=theme.inactive_tab_foreground),
-    widget.Wlan(background=theme.color2, foreground=theme.color0, interface="wlp14s0f3u1"),
+    widget.Wlan(background=theme.color2, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color2),  # make_sep_icon(),
     make_icon("", background=theme.color6, foreground=theme.inactive_tab_foreground),
     widget.Memory(format='{MemPercent}%', background=theme.color6, foreground=theme.inactive_tab_foreground),
@@ -517,7 +517,7 @@ screens = [
 
 if NUM_SCREENS > 1:
     screens.insert(
-        1,
+        0,
         Screen(
             top=bar.Bar(
                 [
@@ -633,7 +633,7 @@ def restart_on_randr(ev):
     logger.error(f"SCREEN change called at {datetime.now()}: {num_screens_changed=}")
     if num_screens_changed:
         imported_qtile.restart()
-        # imported_qtile.reload_config()wpctl set-volume @DEFAULT_SINK@ .03
+        # imported_qtile.reload_config()
         # _preset_screens(imported_qtile)
 
 

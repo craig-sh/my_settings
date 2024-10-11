@@ -173,6 +173,7 @@
           modules = [
             ./home-manager/common.nix
             ./home-manager/gui.nix
+            ./home-manager/gaming.nix
           ];
         };
       };
