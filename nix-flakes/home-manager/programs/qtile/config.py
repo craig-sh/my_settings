@@ -44,6 +44,37 @@ import socket
 
 HOSTNAME = socket.gethostname()
 
+class HostSpecifics(NamedTuple):
+    name: str
+    left_screen_idx: int = 0
+    right_screen_idx: int = 1
+    add_media_keys: bool|None = None
+    xrandr_cmd: str|None = None
+    network_interface: str|None = None
+    wireless: bool = False
+
+host_specifics = {
+    "hypernix": HostSpecifics(
+        name = "hypernix",
+        left_screen_idx = 1,
+        right_screen_idx = 0,
+        add_media_keys = True,
+        xrandr_cmd = "",
+        network_interface = "wlp14s0f3u1",
+        wireless = True,
+    ),
+    "carbonarch": HostSpecifics(
+        name = "carbonarch",
+        add_media_keys = False,
+        wireless = True,
+        network_interface = "wlan0"
+    )
+}
+
+gernric_host = HostSpecifics(name="generic")
+
+host_config = host_specifics.get(HOSTNAME, gernric_host)
+
 # HELPERS ###################
 # Onedark kitty theme - from https://github.com/ful1e5/dotfiles/blob/main/kitty/.config/kitty/themes/onedark.conf#L9
 THEME = {
@@ -364,7 +395,7 @@ keys = [
 
 ]
 
-if not is_laptop():
+if not IS_LAPTOP or host_config.add_media_keys:
     # bug with how keys are captured on laptop with Xmodmap
     keys += [
         # Sound
@@ -487,10 +518,14 @@ if IS_LAPTOP:
         widget.Backlight(background=theme.color11, foreground=theme.color0, brightness_file='/sys/class/backlight/intel_backlight/brightness', max_brightness_file='/sys/class/backlight/intel_backlight/max_brightness'),
     ]
 
+if host_config.wireless:
+    widget_list += [
+        make_icon("", background=theme.color2, foreground=theme.inactive_tab_foreground),
+        widget.Wlan(background=theme.color2, foreground=theme.color0, interface=host_config.network_interface),
+        widget.Sep(**sep_args, background=theme.color2),  # make_sep_icon(),
+    ]
+
 widget_list += [
-    make_icon("", background=theme.color2, foreground=theme.inactive_tab_foreground),
-    widget.Wlan(background=theme.color2, foreground=theme.color0, interface="wlp14s0f3u1"),
-    widget.Sep(**sep_args, background=theme.color2),  # make_sep_icon(),
     make_icon("", background=theme.color6, foreground=theme.inactive_tab_foreground),
     widget.Memory(format='{MemPercent}%', background=theme.color6, foreground=theme.inactive_tab_foreground),
     widget.Sep(**sep_args, background=theme.color6),  # make_sep_icon(),
