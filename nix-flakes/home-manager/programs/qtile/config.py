@@ -52,6 +52,7 @@ class HostSpecifics(NamedTuple):
     xrandr_cmd: str|None = None
     network_interface: str|None = None
     wireless: bool = False
+    cputhermal: str|None = None
 
 host_specifics = {
     "hypernix": HostSpecifics(
@@ -62,6 +63,7 @@ host_specifics = {
         xrandr_cmd = "",
         network_interface = "wlp14s0f3u1",
         wireless = True,
+        cputhermal = "Tctl",
     ),
     "carbonarch": HostSpecifics(
         name = "carbonarch",
@@ -531,6 +533,13 @@ widget_list += [
     widget.Sep(**sep_args, background=theme.color6),  # make_sep_icon(),
     make_icon("", background=theme.color16, foreground=theme.inactive_tab_foreground),
     widget.CPU(format='{freq_current}GHz {load_percent}%', background=theme.color16, foreground=theme.inactive_tab_foreground),
+]
+if host_config.cputhermal:
+    widget_list += [
+        widget.ThermalSensor(background=theme.color16, foreground=theme.inactive_tab_foreground, threshold=80.0, tag_sensor=host_config.cputhermal, format='{temp:.0f}{unit}'),
+    ]
+
+widget_list += [
     widget.Sep(**sep_args, background=theme.color4),  # make_sep_icon(),
     MyVolume(fontsize="25", background=theme.color4, foreground=theme.color0),
     widget.Sep(**sep_args, background=theme.color5),  # make_sep_icon(),

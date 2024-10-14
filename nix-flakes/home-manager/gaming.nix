@@ -1,7 +1,6 @@
 {pkgs, ... }:
 {
 
-  nixpkgs.config.allowUnfree = true;
   programs = {
     mangohud = {
       enable = true;

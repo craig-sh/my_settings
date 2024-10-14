@@ -37,7 +37,9 @@ let
       keysym BackSpace = BackSpace BackSpace Delete
     '';
 in {
-  imports = [ ];
+  imports = [
+    ./syncthing.nix
+  ];
 
   users.users.craig = {
     isNormalUser = true;
@@ -77,7 +79,8 @@ in {
   services.displayManager.defaultSession = "none+qtile";
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "craig";
-  services.xserver.displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${myCustomLayout}";
+  #   this should be only on laptop?
+  # services.xserver.displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${myCustomLayout}";
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";
@@ -111,6 +114,8 @@ in {
     xsel
     iwd
     usbutils
+    lm_sensors
+    libnotify
     pciutils
     xdg-utils
     xdg-launch

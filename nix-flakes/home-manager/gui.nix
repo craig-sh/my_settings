@@ -1,6 +1,9 @@
 { config, pkgs, lib, inputs, ... }:
 
 {
+
+  nixpkgs.config.allowUnfree = true;
+
   programs = {
     rofi = {
       enable = true;
@@ -19,16 +22,10 @@
 
   home.packages = [
     pkgs.pwvucontrol
+    pkgs.spotify
   ];
 
   xsession.enable = true;
-  #xsession.windowManager.command = "";
-
-  #xdg.configFile."qtile" = {
-  #  source = programs/qtile;
-  #  recursive = true;
-  #};
-
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
