@@ -5,7 +5,7 @@
     enable = true;
     syntaxHighlighting.enable = false;
     autosuggestion.enable = true;
-    enableCompletion = true;
+    enableCompletion = false; # zplug will call compinit
     autocd = true;
     defaultKeymap = "viins";
 
@@ -29,6 +29,14 @@
         #{ name = "zpm-zsh/dircolors-neutral"; }
       ];
     };
+
+# Uncomment to profile
+#    initExtraFirst = ''
+#      zmodload zsh/zprof
+#    '';
+#    initExtra = ''
+#      zprof
+#    '';
 
     initExtraBeforeCompInit = ''
       unsetopt BEEP

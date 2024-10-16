@@ -40,6 +40,7 @@ from libqtile.lazy import lazy
 from libqtile.log_utils import logger  # noqa
 from libqtile.widget.pulse_volume import PulseVolume
 
+from datetime import datetime
 import socket
 
 HOSTNAME = socket.gethostname()
@@ -158,7 +159,6 @@ def get_num_screens() -> int:
 
 def is_laptop() -> bool:
     return os.path.isdir("/proc/acpi/button/lid")
-
 
 MONAD_TALL_LAYOUT = MyLayout(layout.MonadTall(**_border_colors), 0)
 MAX_LAYOUT = MyLayout(layout.Max(), 1)
@@ -291,6 +291,18 @@ def focus_right() -> Callable:
                 qtile.next_screen()
     return _inner
 
+@lazy.function
+def switch_monitors(qtile, setup):
+    if setup == "work":
+        display1 = "0x10"
+        display2 = "0x11"
+    elif setup == "personal":
+        display1 = "0x11"
+        display2 = "0x10"
+
+    subprocess.run(f"ddcutil --display 1 setvcp 60 {display1}", shell=True)
+    subprocess.run(f"ddcutil --display 2 setvcp 60 {display2}", shell=True)
+
 
 # Audio Volume/still needs work | replacing widget.Volume
 class MyVolume(PulseVolume):
@@ -375,6 +387,14 @@ keys = [
     Key(["control"], "Tab", lazy.screen.toggle_group()),
     Key([mod], "bracketright", lazy.function(go_next_group(1))),
     Key([mod], "bracketleft", lazy.function(go_next_group(-1))),
+
+    # Notifications
+    Key([mod], "y", lazy.spawn("dunstctl history-pop"), desc="show last notification"),
+    Key([mod], "t", lazy.spawn("dunstctl close"), desc="close most recent notifications"),
+    Key([mod], "n", lazy.spawn("dunstctl close-all"), desc="close all notifications"),
+
+    Key([mod, "mod1"], "w", switch_monitors(setup="work"), desc="Switch monitor to work inputs"),
+    Key([mod, "mod1"], "p", switch_monitors(setup="personal"), desc="Switch monitor to personal inputs"),
 
     # Screen
     Key([mod], "backslash", lazy.next_screen(), desc="Move to next scren"),
@@ -671,10 +691,8 @@ def screen_change():
 
 @hook.subscribe.screen_change
 def restart_on_randr(ev):
-    # TODO only if numbers of screens changed
     num_screens_changed = NUM_SCREENS != get_num_screens()
-    from datetime import datetime
-    logger.error(f"SCREEN change called at {datetime.now()}: {num_screens_changed=}")
+    logger.info(f"SCREEN change called at {datetime.now()}: {num_screens_changed=}")
     if num_screens_changed:
         imported_qtile.restart()
         # imported_qtile.reload_config()wpctl set-volume @DEFAULT_SINK@ .03
@@ -684,12 +702,11 @@ def restart_on_randr(ev):
 @hook.subscribe.startup_complete
 def on_start():
     _preset_screens(imported_qtile)
-    from datetime import datetime
     num_screens_chaned = NUM_SCREENS != get_num_screens()
-    logger.error(f"ON START  called at {datetime.now()}: {num_screens_chaned=}")
+    logger.info(f"ON START  called at {datetime.now()}: {num_screens_chaned=}")
 
 
 @hook.subscribe.startup_once
 def start_once():
     # Runs startup applications
-    subprocess.call(["./autostart.sh"])
+    subprocess.call("bash /home/craig/.config/qtile/autostart.sh", shell=True)

@@ -10,6 +10,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelModules = ["i2c-dev"];
+  hardware.i2c.enable = true;
 
   networking.hostName = "hypernix"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -19,6 +21,10 @@
   #''
   #  127.0.0.1 beelink.localdomain
   #'';
+  environment.systemPackages = [
+    pkgs.ddcutil
+  ];
+
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
