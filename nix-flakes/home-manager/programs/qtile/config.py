@@ -692,5 +692,4 @@ def on_start():
 @hook.subscribe.startup_once
 def start_once():
     # Runs startup applications
-    home = os.path.expanduser('~/.config/qtile/autostart.sh')
-    subprocess.call([home])
+    subprocess.call(["./autostart.sh"])
