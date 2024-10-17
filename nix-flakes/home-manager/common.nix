@@ -76,11 +76,7 @@
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = {
-    ".profile".source = programs/zsh/.profile;
-    ".zprofile".source = programs/zsh/.zprofile;
-    ".zsh_aliases".source = programs/zsh/.zsh_aliases;
-  };
+  home.file = { };
 
 
   # You can also manage environment variables but you will have to manually

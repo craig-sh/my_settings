@@ -133,5 +133,13 @@
       LANG = "en_US.UTF-8";
     };
   };
+
+  # Home Manager is pretty good at managing dotfiles. The primary way to manage
+  # plain files is through 'home.file'.
+  home.file = {
+    ".profile".source = zsh/.profile;
+    ".zprofile".source = zsh/.zprofile;
+    ".zsh_aliases".source = zsh/.zsh_aliases;
+  };
 }
 
