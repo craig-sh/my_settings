@@ -123,6 +123,8 @@
 
     shellAliases = {
       ls = "${pkgs.eza}/bin/eza --colour=auto";
+      gonix = ''cd ''${HOME}/my_settings/nix-flakes '';
+      eqt = ''vim ''${HOME}/my_settings/nix-flakes/home-manager/programs/qtile/config.py'';
     };
 
     sessionVariables = {
