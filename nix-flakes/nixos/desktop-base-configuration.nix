@@ -121,6 +121,7 @@ in {
     xdg-utils
     xdg-launch
     (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    dconf # for gnome themes
   ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {

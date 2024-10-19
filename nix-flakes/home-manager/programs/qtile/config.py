@@ -709,4 +709,11 @@ def on_start():
 @hook.subscribe.startup_once
 def start_once():
     # Runs startup applications
-    subprocess.call("bash /home/craig/.config/qtile/autostart.sh", shell=True)
+    go_to_group("0")(imported_qtile)
+    sleep(0.5)
+    subprocess.Popen("qtile run-cmd -g 0 keepassxc", shell=True)
+    subprocess.Popen("qtile run-cmd -g 5 spotify", shell=True)
+    subprocess.Popen("qtile run-cmd -g 6 firefox", shell=True)
+    subprocess.Popen("qtile run-cmd -g 1 kitty", shell=True)
+    go_to_group("6")(imported_qtile)
+    #subprocess.call("bash /home/craig/.config/qtile/autostart.sh", shell=True)
