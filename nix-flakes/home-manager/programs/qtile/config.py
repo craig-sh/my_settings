@@ -38,7 +38,15 @@ from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, 
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger  # noqa
-from libqtile.widget.pulse_volume import PulseVolume
+from libqtile.widget.volume import Volume
+
+try:
+    from libqtile.widget.pulse_volume import PulseVolume
+except ModuleNotFoundError:
+    # Until we migrate to pipewire + pulse completely this is ok
+    DEFAULT_VOLUME_CLASS = Volume
+else:
+    DEFAULT_VOLUME_CLASS = PulseVolume
 
 from datetime import datetime
 import socket
@@ -57,6 +65,7 @@ class _HostSpecifics(NamedTuple):
     network_interface: str | None = None
     wireless: bool = False
     cputhermal: str | None = None
+    volumeClass: type[Volume] =  DEFAULT_VOLUME_CLASS
 
 
 class _KeyMap(NamedTuple):
@@ -157,7 +166,7 @@ RIGHT_SCREEN_IDX = 1
 PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 
 # "xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0"
-_host_specifics = {
+_host_specifics: dict[str, _HostSpecifics] = {
     "hypernix": _HostSpecifics(
         name="hypernix",
         left_screen_idx=1,
@@ -167,12 +176,12 @@ _host_specifics = {
         wireless=True,
         cputhermal="Tctl",
     ),
-    "carbonarch": _HostSpecifics(name="carbonarch", add_media_keys=False, wireless=True, network_interface="wlan0"),
+    "carbonarch": _HostSpecifics(name="carbonarch", add_media_keys=False, wireless=True, network_interface="wlan0", volumeClass=Volume),
 }
 
-_gernric_host = _HostSpecifics(name="generic", add_media_keys=not IS_LAPTOP)
+_generic_host = _HostSpecifics(name="generic", add_media_keys=not IS_LAPTOP)
 
-_host_config = _host_specifics.get(HOSTNAME, _gernric_host)
+_host_config: _HostSpecifics = _host_specifics.get(HOSTNAME, _generic_host)
 
 
 def move_to_next_screen(qtile, direction=1):
@@ -306,7 +315,7 @@ def switch_monitors(qtile, setup):
 
 
 # Audio Volume/still needs work | replacing widget.Volume
-class MyVolume(PulseVolume):
+class MyVolume(_host_config.volumeClass):
     def _update_drawer(self):
         if self.volume <= 0:
             self.volume = "0%"
