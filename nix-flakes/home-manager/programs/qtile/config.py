@@ -34,7 +34,7 @@ from typing import Callable, Dict, NamedTuple
 from libqtile import bar, hook, layout
 from libqtile import qtile as imported_qtile
 from libqtile import widget
-from libqtile.config import Click, Drag, Group, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.core.manager import Qtile
 from libqtile.lazy import lazy
 from libqtile.log_utils import logger  # noqa
@@ -302,8 +302,8 @@ def switch_monitors(qtile, setup):
         display1 = "0x11"
         display2 = "0x10"
 
-    subprocess.run(f"ddcutil --display 1 setvcp 60 {display1}", shell=True)
-    subprocess.run(f"ddcutil --display 2 setvcp 60 {display2}", shell=True)
+    subprocess.Popen(f"ddcutil --display 1 setvcp 60 {display1}", shell=True)
+    subprocess.Popen(f"ddcutil --display 2 setvcp 60 {display2}", shell=True)
 
 
 # Audio Volume/still needs work | replacing widget.Volume
@@ -328,6 +328,35 @@ class MyVolume(PulseVolume):
 ### GROUPS
 groups = [Group(i) for i in "1234567890"]
 
+# Add in scratchpad groups
+groups.append(
+    ScratchPad(
+        "scratchpad", [
+            DropDown(
+                "org",
+                ["kitty", "--hold", "-d", "~/Documents/org", "vim", "todo.org"],
+                on_focus_lost_hide=True,
+                warp_pointer=True,
+                height=0.8,
+            ),
+            DropDown(
+                "keepassxc",
+                ["keepassxc"],
+                on_focus_lost_hide=True,
+                warp_pointer=True,
+                height=0.8,
+            ),
+            DropDown(
+                "spotify",
+                ["spotify"],
+                on_focus_lost_hide=True,
+                warp_pointer=True,
+                height=0.8,
+                match=Match(wm_class="spotify"),
+            ),
+        ]
+    )
+)
 #####
 
 
@@ -355,7 +384,7 @@ _mod_shift_keys = [
 ]
 _mod_shift_keys += [
     (i.name, lazy.window.togroup(i.name), f"Move window to group {i.name}")
-    for i in groups
+    for i in groups if not isinstance(i, ScratchPad)
 ]
 _mod_shift = [_KeyMap([mod, _shift], *k) for k in _mod_shift_keys]
 
@@ -363,14 +392,16 @@ _mod_shift = [_KeyMap([mod, _shift], *k) for k in _mod_shift_keys]
 # mod + alt
 #################
 _mod_alt_keys = [
+    # Change windows
+    ("s", lazy.window.toggle_floating(), "Toggle floating"),
+    ("f", lazy.window.toggle_fullscreen(), "Toggle fullscreen"),
+    ("m", lazy.function(toggle_max_layout()), "Toggle max layout"),
+    ("w", lazy.window.kill(), "Kill focused window"),
     ("h", lazy.layout.grow_left(), "Grow window to the left"),
     ("l", lazy.layout.grow_right(), "Grow window to the right"),
     ("j", lazy.layout.grow_down(), "Grow window down"),
     ("k", lazy.layout.grow_up(), "Grow window up"),
     ("n", lazy.layout.normalize(), "Reset all window sizes"),
-    ("m", lazy.function(toggle_max_layout()), "Toggle max layout"),
-    ("w", switch_monitors(setup="work"), "Switch monitor to work inputs"),
-    ("p", switch_monitors(setup="personal"), "Switch monitor to personal inputs"),
     ("backslash", lazy.spawn(_host_config.xrandr_cmd), "Refresh screens"),
 ]
 _mod_alt = [_KeyMap([mod, _alt], *k) for k in _mod_alt_keys]
@@ -381,6 +412,8 @@ _mod_alt = [_KeyMap([mod, _alt], *k) for k in _mod_alt_keys]
 _mod_control_keys = [
     ("r", lazy.reload_config(), "Reload the config"),
     ("q", lazy.shutdown(), "Shutdown Qtile"),
+    ("w", switch_monitors(setup="work"), "Switch monitor to work inputs"),
+    ("p", switch_monitors(setup="personal"), "Switch monitor to personal inputs"),
 ]
 _mod_control = [_KeyMap([mod, _control], *k) for k in _mod_control_keys]
 
@@ -398,10 +431,6 @@ _mod_keys = [
     ("k", lazy.layout.up(), "Move focus up"),
     ("c", lazy.layout.next(), "Move window focus to other window"),
     ("backslash", lazy.next_screen(), "Move to next scren"),
-    # Change windows
-    ("w", lazy.window.kill(), "Kill focused window"),
-    ("s", lazy.window.toggle_floating(), "Toggle floating"),
-    ("f", lazy.window.toggle_fullscreen(), "Toggle fullscreen"),
     # Groups
     ("bracketright", lazy.function(go_next_group(1)), "Focus next group"),
     ("bracketleft", lazy.function(go_next_group(-1)), "Focus prev group"),
@@ -410,8 +439,11 @@ _mod_keys = [
     ("y", lazy.spawn("dunstctl history-pop"), "show last notification"),
     ("t", lazy.spawn("dunstctl close"), "close most recent notifications"),
     ("n", lazy.spawn("dunstctl close-all"), "close all notifications"),
+    ("o", lazy.group['scratchpad'].dropdown_toggle("org"), "activate org dropdown"),
+    ("p", lazy.group['scratchpad'].dropdown_toggle("keepassxc"), "activate keepassxc dropdown"),
+    ("m", lazy.group['scratchpad'].dropdown_toggle("spotify"), "activate spotify dropdown"),
 ]
-_mod_keys += [(i.name, lazy.function(go_to_group(i.name)), f"Go to group {i.name}") for i in groups]
+_mod_keys += [(i.name, lazy.function(go_to_group(i.name)), f"Go to group {i.name}") for i in groups if not isinstance(i, ScratchPad)]
 
 _mod_only = [_KeyMap([mod], *k) for k in _mod_keys]
 
@@ -461,6 +493,7 @@ for kmap_group in _all_keys:
 #    #layout.VerticalTile(),
 #    #layout.Zoomy(),
 # ]
+
 
 
 layouts = [
@@ -676,17 +709,18 @@ def _preset_screens(qtile: Qtile):
 # Hooks
 
 
-@hook.subscribe.client_new
-def handle_client_new(client):
-    if "KeePassXC".lower() in client.name.lower():
-        # Any keepass window should be moved to current screen
-        # usually pop-ups. Should also be dsplayed on top of everything
-        client.toggle_floating()
-        client.toscreen()
-        client.bring_to_front()
-        client.focus()
-        client.toggle_floating()
-        client.focus()
+#@hook.subscribe.client_new
+#def handle_client_new(client):
+#    if "KeePassXC".lower() in client.name.lower():
+#        pass
+#        # Any keepass window should be moved to current screen
+#        # usually pop-ups. Should also be dsplayed on top of everything
+#        #client.toggle_floating()
+#        #client.toscreen()
+#        #client.bring_to_front()
+#        #client.focus()
+#        #client.toggle_floating()
+#        #client.focus()
 
 
 @hook.subscribe.current_screen_change
@@ -723,11 +757,12 @@ def on_start():
 @hook.subscribe.startup_once
 def start_once():
     # Runs startup applications
-    go_to_group("0")(imported_qtile)
-    sleep(0.5)
-    subprocess.Popen("qtile run-cmd -g 0 keepassxc", shell=True)
+    #go_to_group("0")(imported_qtile)
+    #sleep(0.5)
+    #subprocess.Popen("qtile run-cmd -g 0 keepassxc", shell=True)
     subprocess.Popen("qtile run-cmd -g 5 spotify", shell=True)
-    subprocess.Popen("qtile run-cmd -g 6 firefox", shell=True)
+    #subprocess.Popen("qtile run-cmd -g 6 firefox", shell=True)
     subprocess.Popen("qtile run-cmd -g 1 kitty", shell=True)
+    subprocess.Popen("qtile run-cmd -g 7 kitty", shell=True)
     go_to_group("6")(imported_qtile)
     # subprocess.call("bash /home/craig/.config/qtile/autostart.sh", shell=True)
