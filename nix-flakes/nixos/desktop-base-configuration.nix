@@ -107,10 +107,6 @@ in {
     git
     age
     sops
-    kitty
-    firefox
-    keepassxc
-    kdenlive
     xclip
     xsel
     iwd

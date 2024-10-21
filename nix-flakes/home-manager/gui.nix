@@ -11,7 +11,9 @@
     kitty = {
       enable = true;
     };
-
+    firefox = {
+      enable = true;
+    };
   };
 
   services = {
@@ -42,6 +44,8 @@
   home.packages = [
     pkgs.pwvucontrol
     pkgs.spotify
+    pkgs.kdenlive
+    pkgs.keepassxc
   ];
 
   xsession.enable = true;
