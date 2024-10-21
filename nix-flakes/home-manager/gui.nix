@@ -46,6 +46,7 @@
     pkgs.spotify
     pkgs.kdenlive
     pkgs.keepassxc
+    pkgs.meld
   ];
 
   xsession.enable = true;

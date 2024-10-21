@@ -163,7 +163,6 @@ _host_specifics = {
         left_screen_idx=1,
         right_screen_idx=0,
         add_media_keys=True,
-        xrandr_cmd="",
         network_interface="wlp14s0f3u1",
         wireless=True,
         cputhermal="Tctl",
