@@ -66,6 +66,7 @@ class _HostSpecifics(NamedTuple):
     wireless: bool = False
     cputhermal: str | None = None
     volumeClass: type[Volume] =  DEFAULT_VOLUME_CLASS
+    orgNotes: str = "~/Documents/org"
 
 
 class _KeyMap(NamedTuple):
@@ -342,7 +343,7 @@ groups.append(
         "scratchpad", [
             DropDown(
                 "org",
-                ["kitty", "--hold", "-d", "~/Documents/org", "vim", "todo.org"],
+                ["kitty", "--hold", "-d", _host_config.orgNotes, "vim", "todo.org"],
                 on_focus_lost_hide=True,
                 warp_pointer=True,
                 height=0.8,
