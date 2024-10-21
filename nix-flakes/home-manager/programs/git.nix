@@ -2,7 +2,7 @@
 {
   programs.git = {
     enable = true;
-    userName = "craig-sh";
+    userName = lib.mkDefault "craig-sh";
     userEmail = lib.mkDefault "craig.s.henriques@gmail.com";
     aliases = {
       # https://git-scm.com/docs/git-reset#git-reset-emgitresetemltmodegtltcommitgt

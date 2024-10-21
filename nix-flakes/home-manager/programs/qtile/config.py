@@ -161,17 +161,14 @@ COL_LAYOUT = _MyLayout(layout.Columns(**_border_colors), 3)
 NUM_SCREENS = _get_num_screens()
 IS_LAPTOP = _is_laptop()
 
-LEFT_SCREEN_IDX = 0
-RIGHT_SCREEN_IDX = 1
-
 PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 
 # "xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0"
 _host_specifics: dict[str, _HostSpecifics] = {
     "hypernix": _HostSpecifics(
         name="hypernix",
-        left_screen_idx=1,
-        right_screen_idx=0,
+        left_screen_idx=0,
+        right_screen_idx=1,
         add_media_keys=True,
         network_interface="wlp14s0f3u1",
         wireless=True,
@@ -204,10 +201,10 @@ def go_to_group(name: str) -> Callable:
             return
 
         if name in '12345':
-            qtile.focus_screen(LEFT_SCREEN_IDX)
+            qtile.focus_screen(_host_config.left_screen_idx)
             qtile.groups_map[name].toscreen()
         else:
-            qtile.focus_screen(RIGHT_SCREEN_IDX)
+            qtile.focus_screen(_host_config.right_screen_idx)
             qtile.groups_map[name].toscreen()
 
     return _inner
@@ -228,13 +225,13 @@ def go_next_group(direction: int) -> Callable:
 
         # TODO map screen to nums
         cur_group = qtile.current_group.name
-        if qtile.current_screen.index == LEFT_SCREEN_IDX:
+        if qtile.current_screen.index == _host_config.left_screen_idx:
             if direction == 1 and cur_group == "5":
                 next_group = "1"
             elif direction == -1 and cur_group == "1":
                 next_group = "5"
             elif cur_group in "67890":
-                raise RuntimeError(f"EXPECTED SCREEN {LEFT_SCREEN_IDX}.CUR SCREEN {qtile.current_screen.index}. GROUP {cur_group}")
+                raise RuntimeError(f"EXPECTED SCREEN {_host_config.left_screen_idx}.CUR SCREEN {qtile.current_screen.index}. GROUP {cur_group}")
             else:
                 next_group = str(int(cur_group) + direction)
         else:
@@ -247,7 +244,7 @@ def go_next_group(direction: int) -> Callable:
             elif direction == -1 and cur_group == "6":
                 next_group = "0"
             elif cur_group in "12345":
-                raise RuntimeError(f"EXPECTED SCREEN {RIGHT_SCREEN_IDX}.CUR SCREEN {qtile.current_screen.index}. GROUP {cur_group}")
+                raise RuntimeError(f"EXPECTED SCREEN {_host_config.right_screen_idx}.CUR SCREEN {qtile.current_screen.index}. GROUP {cur_group}")
             else:
                 next_group = str(int(cur_group) + direction)
         qtile.current_screen.set_group(qtile.groups_map[next_group])
@@ -270,7 +267,7 @@ def toggle_max_layout() -> Callable:
 def focus_left() -> Callable:
     def _inner(qtile: Qtile) -> None:
         """Call focus_left but jump screens if necessary """
-        if len(qtile.screens) == 1 or qtile.current_screen.index == LEFT_SCREEN_IDX:
+        if len(qtile.screens) == 1 or qtile.current_screen.index == _host_config.left_screen_idx:
             qtile.current_layout.left()
             return
 
@@ -288,7 +285,7 @@ def focus_left() -> Callable:
 def focus_right() -> Callable:
     def _inner(qtile: Qtile) -> None:
         """Call focus_right but jump screens if necessary """
-        if len(qtile.screens) == 1 or qtile.current_screen.index == RIGHT_SCREEN_IDX:
+        if len(qtile.screens) == 1 or qtile.current_screen.index == _host_config.right_screen_idx:
             qtile.current_layout.right()
             return
 
@@ -311,8 +308,9 @@ def switch_monitors(qtile, setup):
         display1 = "0x11"
         display2 = "0x10"
 
-    subprocess.Popen(f"ddcutil --display 1 setvcp 60 {display1}", shell=True)
-    subprocess.Popen(f"ddcutil --display 2 setvcp 60 {display2}", shell=True)
+    # Tried Popen to parallelize but its flaky..didn't bother debugging why
+    subprocess.run(f"ddcutil --display 1 setvcp 60 {display1}", shell=True)
+    subprocess.run(f"ddcutil --display 2 setvcp 60 {display2}", shell=True)
 
 
 # Audio Volume/still needs work | replacing widget.Volume
@@ -636,7 +634,7 @@ screens = [
 
 if NUM_SCREENS > 1:
     screens.insert(
-        1,
+        _host_config.right_screen_idx,
         Screen(
             top=bar.Bar(
                 [
@@ -769,9 +767,9 @@ def start_once():
     #go_to_group("0")(imported_qtile)
     #sleep(0.5)
     #subprocess.Popen("qtile run-cmd -g 0 keepassxc", shell=True)
-    subprocess.Popen("qtile run-cmd -g 5 spotify", shell=True)
+    #subprocess.Popen("qtile run-cmd -g 5 spotify", shell=True)
     #subprocess.Popen("qtile run-cmd -g 6 firefox", shell=True)
     subprocess.Popen("qtile run-cmd -g 1 kitty", shell=True)
     subprocess.Popen("qtile run-cmd -g 7 kitty", shell=True)
-    go_to_group("6")(imported_qtile)
+    #go_to_group("6")(imported_qtile)
     # subprocess.call("bash /home/craig/.config/qtile/autostart.sh", shell=True)
