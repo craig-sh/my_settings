@@ -123,8 +123,15 @@
 
     shellAliases = {
       ls = "${pkgs.eza}/bin/eza --colour=auto";
+      ll = "ls -la";
+      vim = "nvim";
+      yy = "xclip -selection clipboard";
+      yi = " tr -d '\n' | xclip -selection clipboard";
+      diskspace = "sudo ncdu -x /";
+      goorg="cd ~/Documents/org && vim .";
       gonix = ''cd ''${HOME}/my_settings/nix-flakes '';
       eqt = ''vim ''${HOME}/my_settings/nix-flakes/home-manager/programs/qtile/config.py'';
+      screenshot = "scrot --select - | xclip -selection clipboard -t image/png -i &";
     };
 
     sessionVariables = {
@@ -139,8 +146,6 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".profile".source = zsh/.profile;
-    ".zprofile".source = zsh/.zprofile;
     ".zsh_aliases".source = zsh/.zsh_aliases;
   };
 }

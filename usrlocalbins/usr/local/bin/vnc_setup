@@ -5,6 +5,7 @@
 # Use xmodmap because the remote host's keyboard may not be configured in hardware
 xmodmap ~/.Xmodmap
 
-x11vnc -repeat -ncache 10 -noxrecord -noxdamage
+#x11vnc -repeat -ncache 10 -noxrecord -noxdamage
+x11vnc -ncache 10 -noxrecord -noxdamage -loop
 
 /usr/local/bin/vnc_teardown

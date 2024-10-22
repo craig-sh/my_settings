@@ -3,13 +3,13 @@ priority -10
 snippet debug "logging.error" b
 ########## DEBUG ################
 try:
-import logging
+    import logging
 except:
-pass
+    pass
 try:
-from pprint import pformat
+    from pprint import pformat
 except:
-pass
-logging.error('CRAIG: %s' % pformat(${1}))
+    pass
+logging.error(f"CRAIG: {pformat(${1})}') % pformat(${1}))
 ########## DEBUG ################
 endsnippet
