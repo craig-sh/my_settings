@@ -167,8 +167,8 @@ PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 _host_specifics: dict[str, _HostSpecifics] = {
     "hypernix": _HostSpecifics(
         name="hypernix",
-        left_screen_idx=0,
-        right_screen_idx=1,
+        left_screen_idx=1,
+        right_screen_idx=0,
         add_media_keys=True,
         network_interface="wlp14s0f3u1",
         wireless=True,
@@ -301,16 +301,23 @@ def focus_right() -> Callable:
 
 @lazy.function
 def switch_monitors(qtile, setup):
+    """ Example of getting current display input
+
+    ddcutil getvcp 60 --display 2
+
+    VCP code 0x60 (Input Source                  ): DisplayPort-2 (sl=0x10)
+    """
     if setup == "work":
         display1 = "0x10"
-        display2 = "0x11"
+        display2 = "0x12"
     elif setup == "personal":
-        display1 = "0x11"
-        display2 = "0x10"
+        #display1 = "0x11"
+        display1 = "0x12"
+        display2 = "0x0f"
 
     # Tried Popen to parallelize but its flaky..didn't bother debugging why
-    subprocess.run(f"ddcutil --display 1 setvcp 60 {display1}", shell=True)
-    subprocess.run(f"ddcutil --display 2 setvcp 60 {display2}", shell=True)
+    subprocess.run(f"bash -c 'ddcutil --display 1 setvcp 60 {display1}'", shell=True)
+    subprocess.run(f"bash -c 'ddcutil --display 2 setvcp 60 {display2}'", shell=True)
 
 
 # Audio Volume/still needs work | replacing widget.Volume
