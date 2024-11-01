@@ -354,13 +354,6 @@ groups.append(
                 height=0.8,
             ),
             DropDown(
-                "keepassxc",
-                ["keepassxc"],
-                on_focus_lost_hide=True,
-                warp_pointer=True,
-                height=0.8,
-            ),
-            DropDown(
                 "spotify",
                 ["spotify"],
                 on_focus_lost_hide=True,
@@ -454,7 +447,6 @@ _mod_keys = [
     ("t", lazy.spawn("dunstctl close"), "close most recent notifications"),
     ("n", lazy.spawn("dunstctl close-all"), "close all notifications"),
     ("o", lazy.group['scratchpad'].dropdown_toggle("org"), "activate org dropdown"),
-    ("p", lazy.group['scratchpad'].dropdown_toggle("keepassxc"), "activate keepassxc dropdown"),
     ("m", lazy.group['scratchpad'].dropdown_toggle("spotify"), "activate spotify dropdown"),
 ]
 _mod_keys += [(i.name, lazy.function(go_to_group(i.name)), f"Go to group {i.name}") for i in groups if not isinstance(i, ScratchPad)]
@@ -723,18 +715,17 @@ def _preset_screens(qtile: Qtile):
 # Hooks
 
 
-#@hook.subscribe.client_new
-#def handle_client_new(client):
-#    if "KeePassXC".lower() in client.name.lower():
-#        pass
-#        # Any keepass window should be moved to current screen
-#        # usually pop-ups. Should also be dsplayed on top of everything
-#        #client.toggle_floating()
-#        #client.toscreen()
-#        #client.bring_to_front()
-#        #client.focus()
-#        #client.toggle_floating()
-#        #client.focus()
+@hook.subscribe.client_new
+def handle_client_new(client):
+    if "KeePassXC".lower() in client.name.lower():
+        # Any keepass window should be moved to current screen
+        # usually pop-ups. Should also be dsplayed on top of everything
+        client.toggle_floating()
+        client.toscreen()
+        client.bring_to_front()
+        client.focus()
+        client.toggle_floating()
+        client.focus()
 
 
 @hook.subscribe.current_screen_change
