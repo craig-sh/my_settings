@@ -4,6 +4,7 @@
 {
   imports = [
     ./gaming.nix
+    #./gpu_passthrough.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -11,6 +12,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = ["i2c-dev"];
+  boot.supportedFilesystems = [ "ntfs" ];
   hardware.i2c.enable = true;
 
   networking.hostName = "hypernix"; # Define your hostname.

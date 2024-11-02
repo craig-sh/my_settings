@@ -1,0 +1,31 @@
+{pkgs, ... }:
+{
+  boot.initrd.availableKernelModules = [ "amdgpu" "vfio-pci" ];
+  boot.initrd.preDeviceCommands = ''
+    DEVS="0000:03:00.0 0000:03:00.1"
+    for DEV in $DEVS; do
+      echo "vfio-pci" > /sys/bus/pci/devices/$DEV/driver_override
+    done
+    modprobe -i vfio-pci
+  '';
+  # pcie_aspm is for power saving..we can test enabling it later. Leave if off for now
+  boot.kernelParams = [ "amd_iommu=on" "pcie_aspm=off" ];
+  #boot.kernelParams = [ "amd_iommu=on" ];
+  boot.kernelModules = [ "kvm-amd" ];
+
+  hardware.opengl.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    virt-manager
+  ];
+
+  virtualisation.spiceUSBRedirection.enable = true;
+
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.runAsRoot = false;
+    qemu.ovmf.enable = true;
+    onBoot = "ignore";
+    onShutdown = "shutdown";
+  };
+}

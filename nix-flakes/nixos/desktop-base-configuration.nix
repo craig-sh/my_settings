@@ -118,6 +118,7 @@ in {
     xdg-launch
     (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
     dconf # for gnome themes
+    nfs-utils
   ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {
