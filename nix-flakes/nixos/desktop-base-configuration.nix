@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs, ... }:
+{ config, pkgs,lib, ... }:
 
 let
     myCustomLayout = pkgs.writeText "xkb-layout" ''
@@ -99,6 +99,19 @@ in {
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  services.flatpak.enable = true;
+  services.flatpak.remotes = lib.mkOptionDefault [{
+    name = "flathub-beta";
+    location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+  }];
+  # This flatpak is our of date
+  services.flatpak.packages = [
+    { appId = "com.budgetwithbuckets.Buckets"; origin = "flathub-beta";  }
+  ];
+  programs.appimage = {
+    enable = true;
+    binfmt = true;
+  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
