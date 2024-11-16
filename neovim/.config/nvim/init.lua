@@ -981,7 +981,7 @@ require 'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
   },
   -- This will be handled by nixos now
-  ensure_installed = { 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config', 'nix' },
+  ensure_installed = { 'python', 'bash', 'vim', 'lua', 'javascript', 'sql', 'haskell', 'ssh_config', 'nix', 'org' },
   incremental_selection = {
     enable = true,
     keymaps = {

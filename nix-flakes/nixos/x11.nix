@@ -15,4 +15,8 @@
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "craig";
   services.xserver.xkb.layout = "us";
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.config.common.default = [ "gnome" ];
 }

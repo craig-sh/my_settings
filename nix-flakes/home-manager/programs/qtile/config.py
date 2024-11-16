@@ -174,7 +174,7 @@ _host_specifics: dict[str, _HostSpecifics] = {
         wireless=True,
         cputhermal="Tctl",
     ),
-    "carbonarch": _HostSpecifics(name="carbonarch", add_media_keys=False, wireless=True, network_interface="wlan0", volumeClass=Volume),
+    "carbonnix": _HostSpecifics(name="carbonnix", add_media_keys=False, wireless=True, network_interface="wlp0s20f3", volumeClass=Volume),
 }
 
 _generic_host = _HostSpecifics(name="generic", add_media_keys=not IS_LAPTOP)
@@ -455,8 +455,8 @@ _mod_only = [_KeyMap([mod], *k) for k in _mod_keys]
 
 _mod_none_keys = [
     # Brightness
-    ("XF86MonBrightnessUp", lazy.spawn("xbacklight -inc 5"), "Increate Brightness"),
-    ("XF86MonBrightnessDown", lazy.spawn("xbacklight -dec 5"), "Lower Brightness"),
+    ("XF86MonBrightnessUp", lazy.spawn("brightnessctl set 5%+"), "Increate Brightness"),
+    ("XF86MonBrightnessDown", lazy.spawn("brightnessctl set 5%-"), "Lower Brightness"),
     # Power
     ("XF86Sleep", lazy.spawn("sudo systemctl suspend"), "Suspend Computer"),
 ]
@@ -582,13 +582,15 @@ widget_list = [
 ]
 if IS_LAPTOP:
     widget_list += [
-        widget.Battery(background=_theme.cursor, foreground=_theme.color0, format="{char} {percent:2.0%} {hour:d}:{min:02d}", charge_char="", discharge_char="", full_char=""),
-        make_icon("", background=_theme.color11, foreground=_theme.inactive_tab_foreground),
+        widget.Battery(background=_theme.cursor, foreground=_theme.color0, format="{char} {percent:2.0%} {hour:d}:{min:02d}", charge_char="󰂉", discharge_char="󰁾", full_char="󰁹"),
+        make_icon("󰃝", background=_theme.color11, foreground=_theme.inactive_tab_foreground),
         widget.Backlight(
             background=_theme.color11,
             foreground=_theme.color0,
             brightness_file="/sys/class/backlight/intel_backlight/brightness",
             max_brightness_file="/sys/class/backlight/intel_backlight/max_brightness",
+            change_command="brightnessctl set {0}",
+            step=0.5,
         ),
     ]
 

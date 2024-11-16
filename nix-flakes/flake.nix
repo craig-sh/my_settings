@@ -95,6 +95,17 @@
           ];
           specialArgs = { inherit inputs username; };
         };
+        "carbonnix" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            nix-flatpak.nixosModules.nix-flatpak
+            ./nixos/sops.nix
+            ./nixos/carbonnix-hardware-configuration.nix
+            ./nixos/carbonnix-configuration.nix
+          ];
+          specialArgs = { inherit inputs username; };
+        };
         # The Nix module system can modularize configuration,
         # improving the maintainability of configuration.
         #
@@ -162,12 +173,11 @@
             ./home-manager/programs/neovim_git.nix
           ];
         };
-        "craig@carbonarch" = home-manager.lib.homeManagerConfiguration {
+        "craig@carbonnix" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs outputs; };
+          extraSpecialArgs = { inherit inputs outputs username; };
           modules = [
-            ./home-manager/common.nix
-            ./home-manager/programs/neovim_git.nix
+            ./home-manager/carbonnix.nix
           ];
         };
         "craig@hypernix" = home-manager.lib.homeManagerConfiguration {

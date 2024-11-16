@@ -1,4 +1,3 @@
-
 { config, pkgs, ... }:
 
 {
@@ -30,9 +29,6 @@
     pkgs.dmidecode
   ];
 
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  xdg.portal.config.common.default = [ "gnome" ];
   # Issues with suspend, disable pci and usbs from waking system...just use the power button
   services.udev.extraRules = ''
     ACTION=="add", SUBSYSTEM=="pci", DRIVERS=="pcieport", ATTR{power/wakeup}="disabled"
