@@ -91,7 +91,6 @@
             nix-flatpak.nixosModules.nix-flatpak
             ./nixos/sops.nix
             ./nixos/hypernix-hardware-configuration.nix
-            ./nixos/desktop-base-configuration.nix
             ./nixos/hypernix-configuration.nix
           ];
           specialArgs = { inherit inputs username; };
@@ -175,10 +174,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
           modules = [
-            ./home-manager/common.nix
-            ./home-manager/programs/neovim_git.nix
-            ./home-manager/gui.nix
-            ./home-manager/gaming.nix
+            ./home-manager/hypernix.nix
           ];
         };
       };

@@ -2,41 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, pkgs,lib, ... }:
+{ pkgs,lib, ... }:
 
-let
-    myCustomLayout = pkgs.writeText "xkb-layout" ''
-      ! Unmap capslock
-      clear Lock
-      keycode 66 = Mode_switch
-
-      !keycode 66 = Hyper_L
-      !! Leave mod4 as windows key _only_
-      !remove mod4 = Hyper_L
-      !! Set mod3 to capslock
-      !add mod3 = Hyper_L
-
-      keysym h = h H Left
-      keysym l = l L Right
-      keysym k = k K Up
-      keysym j = j J Down
-
-      keysym a = a A End
-      keysym b = b B Home
-      keysym d = d D Next
-      keysym u = u U Prior
-
-      !! Comment out until qtile bug is fixed
-      !! keysym t = t T XF86AudioRaiseVolume
-      !! keysym s = s S XF86AudioLowerVolume
-      !! keysym w = w W XF86AudioPlay
-      !! keysym q = q Q XF86AudioPrev
-      !! keysym e = e E XF86AudioNext
-
-      !! keysym grave = Escape asciitilde grave
-      keysym BackSpace = BackSpace BackSpace Delete
-    '';
-in {
+{
   imports = [
     ./syncthing.nix
   ];
@@ -65,24 +33,8 @@ in {
   # };
   nixpkgs.config.allowUnfree = true;
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.windowManager.qtile = {
-    enable = true;
-    extraPackages = python3Packages: with python3Packages; [
-      qtile-extras
-      pulsectl-asyncio
-    ];
-    configFile = "/home/craig/.config/qtile/config.py";
-  };
-  #services.xserver.displayManager.sddm.enable = true;
-  services.displayManager.defaultSession = "none+qtile";
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "craig";
   #   this should be only on laptop?
-  # services.xserver.displayManager.sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap ${myCustomLayout}";
   # Configure keymap in X11
-  services.xserver.xkb.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e,caps:escape";
 
   # Enable CUPS to print documents.
