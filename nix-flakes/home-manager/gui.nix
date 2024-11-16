@@ -68,6 +68,18 @@
       autoconnect = ["qemu:///system"];
       uris = ["qemu:///system"];
     };
+    "org/gnome/meld" = {
+      custom-font="FantasqueSansM Nerd Font Mono 12";
+      enable-space-drawer=true;
+      highlight-current-line=true;
+      highlight-syntax=true;
+      indent-width=4;
+      insert-spaces-instead-of-tabs=true;
+      prefer-dark-theme=true;
+      show-line-numbers=true;
+      style-scheme="meld-dark";
+      use-system-font=false;
+      wrap-mode="none";
+    };
   };
-
 }
