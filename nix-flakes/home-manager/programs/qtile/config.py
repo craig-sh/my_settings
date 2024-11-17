@@ -174,7 +174,7 @@ _host_specifics: dict[str, _HostSpecifics] = {
         wireless=True,
         cputhermal="Tctl",
     ),
-    "carbonnix": _HostSpecifics(name="carbonnix", add_media_keys=False, wireless=True, network_interface="wlp0s20f3", volumeClass=Volume),
+    "carbonnix": _HostSpecifics(name="carbonnix", add_media_keys=False, wireless=True, network_interface="wlp0s20f3", volumeClass=PulseVolume),
 }
 
 _generic_host = _HostSpecifics(name="generic", add_media_keys=not IS_LAPTOP)
