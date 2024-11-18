@@ -24,6 +24,10 @@
   #''
   #  127.0.0.1 beelink.localdomain
   #'';
+
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "craig";
+
   environment.systemPackages = [
     pkgs.ddcutil
     pkgs.dmidecode

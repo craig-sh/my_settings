@@ -30,4 +30,11 @@
        };
   };
   environment.systemPackages = with pkgs; [ brightnessctl ];
+
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=60min
+  '';
+  services.logind.lidSwitch = "suspend-then-hibernate";
+
 }
