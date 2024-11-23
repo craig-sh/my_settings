@@ -44,6 +44,11 @@
       Option "AsyncFlipSecondaries" "true"
   '';
 
+  # For steam play
+
+  networking.firewall.allowedTCPPorts = [ 27036 27037 ];
+  networking.firewall.allowedUDPPorts = [ 27031 27036 ];
+
   # VR https://wiki.nixos.org/wiki/VR
   services.monado = {
     enable = true;
