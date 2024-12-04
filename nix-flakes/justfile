@@ -1,5 +1,5 @@
 set shell := ["zsh", "-uc"]
-#nix run home-manager/release-24.05 -- switch --flake .#craig@hyperarch
+#nix run home-manager/release-24.11 -- switch --flake .#craig@hyperarch
 
 hostname := `cat /etc/hostname`
 

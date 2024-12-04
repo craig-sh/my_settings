@@ -9,6 +9,6 @@
     configFile = "/home/craig/.config/qtile/config.py";
   };
   #services.xserver.displayManager.sddm.enable = true;
-  services.displayManager.defaultSession = "none+qtile";
+  services.displayManager.defaultSession = "qtile";
 }
 

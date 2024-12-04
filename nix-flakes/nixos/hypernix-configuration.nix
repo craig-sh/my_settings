@@ -4,7 +4,7 @@
   imports = [
     ./desktop-base-configuration.nix
     ./x11.nix
-    ./qtile.nix
+    ./qtile-overlay.nix
     ./gaming.nix
     #./gpu_passthrough.nix
   ];
