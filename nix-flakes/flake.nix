@@ -33,6 +33,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak"; # unstable branch. Use github:gmodena/nix-flatpak/?ref=<tag> to pin releases.
+    qtile-flake = {
+      #url = "github:qtile/qtile/eed1e03c7fe22780cfb93689b5a58bdbc23deee0";
+      url = "github:qtile/qtile";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   # `outputs` are all the build result of the flake.
@@ -45,7 +50,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, home-manager, sops-nix, nix-flatpak,... }@inputs:
+  outputs = { self, nixpkgs, home-manager, sops-nix, nix-flatpak, ... }@inputs:
     let
       inherit (self) outputs;
       username = "craig";

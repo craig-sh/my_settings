@@ -3,11 +3,14 @@
 
 {
   imports = [
+    #./qtile-overlay.nix
+    ./qtile.nix
     ./desktop-base-configuration.nix
     ./x11.nix
     ./laptop.nix
   ];
 
+      #      (_: { nixpkgs.overlays = [ qtile-flake.overlays.default ]; })
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
