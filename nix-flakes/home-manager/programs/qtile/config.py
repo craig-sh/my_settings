@@ -313,7 +313,7 @@ def switch_monitors(qtile, setup):
     elif setup == "personal":
         #display1 = "0x11"
         display1 = "0x12"
-        display2 = "0x0f"
+        display2 = "0x10"
 
     # Tried Popen to parallelize but its flaky..didn't bother debugging why
     subprocess.run(f"bash -c 'ddcutil --display 1 setvcp 60 {display1}'", shell=True)

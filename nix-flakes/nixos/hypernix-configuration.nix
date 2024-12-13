@@ -40,10 +40,10 @@
     ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{power/wakeup}="disabled"
   '';
   services.logind.powerKey = "suspend";
-  services.xserver.deviceSection = ''
-      Option "VariableRefresh" "true"
-      Option "AsyncFlipSecondaries" "true"
-  '';
+  #services.xserver.deviceSection = ''
+  #    Option "VariableRefresh" "true"
+  #    Option "AsyncFlipSecondaries" "true"
+  #'';
 
   # For steam play
 
