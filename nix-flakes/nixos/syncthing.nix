@@ -38,14 +38,14 @@
 #                        addresses = "tcp://hypernix.localdomain:22000";
 #                    };
 #                };
-                folders = {
-                    "Documents" = {         # Name of folder in Syncthing, also the folder ID
-                        id = "ahef7-3ngex";
-                        path = "/home/${username}/Documents";    # Which folder to add to Syncthing
-#                        devices = [ "homelab" "craigpixel6" "carbonarch" "hypernix"];      # Which devices to share the folder with
-                        ignorePerms = false;
-                    };
-                };
+                #folders = {
+                #    "Documents" = {         # Name of folder in Syncthing, also the folder ID
+                #        id = "ahef7-3ngex";
+                #        path = "/home/${username}/Documents";    # Which folder to add to Syncthing
+#               #         devices = [ "homelab" "craigpixel6" "carbonarch" "hypernix"];      # Which devices to share the folder with
+                #        ignorePerms = false;
+                #    };
+                #};
             };
         };
     };
