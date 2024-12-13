@@ -26,7 +26,7 @@
     # https://github.com/lutris/docs/
     pkgs.gnutls
     pkgs.openldap
-    pkgs.libgpgerror
+    pkgs.libgpg-error
     pkgs.freetype
     pkgs.sqlite
     pkgs.libxml2
