@@ -163,7 +163,6 @@ IS_LAPTOP = _is_laptop()
 
 PREV_TOGGLE_LAYOUTS: Dict[int, int] = {}
 
-# "xrandr --output  DP-0 --auto --output HDMI-0 --auto --right-of DP-0"
 _host_specifics: dict[str, _HostSpecifics] = {
     "hypernix": _HostSpecifics(
         name="hypernix",
@@ -171,7 +170,7 @@ _host_specifics: dict[str, _HostSpecifics] = {
         right_screen_idx=0,
         add_media_keys=True,
         network_interface="wlp14s0f3u1",
-        wireless=True,
+        wireless=False,
         cputhermal="Tctl",
     ),
     "carbonnix": _HostSpecifics(name="carbonnix", add_media_keys=False, wireless=True, network_interface="wlp0s20f3", volumeClass=PulseVolume),
@@ -349,7 +348,7 @@ groups.append(
             DropDown(
                 "org",
                 ["kitty", "--hold", "-d", _host_config.orgNotes, "vim", "todo.org"],
-                on_focus_lost_hide=True,
+                on_focus_lost_hide=False,
                 warp_pointer=True,
                 height=0.8,
             ),
@@ -728,6 +727,7 @@ def handle_client_new(client):
         client.focus()
         client.toggle_floating()
         client.focus()
+        subprocess.run("""bash -c 'dunstify "Keepass window opened"' """, shell=True)
 
 
 @hook.subscribe.current_screen_change
@@ -770,6 +770,5 @@ def start_once():
     #subprocess.Popen("qtile run-cmd -g 5 spotify", shell=True)
     #subprocess.Popen("qtile run-cmd -g 6 firefox", shell=True)
     subprocess.Popen("qtile run-cmd -g 1 kitty", shell=True)
-    subprocess.Popen("qtile run-cmd -g 7 kitty", shell=True)
     #go_to_group("6")(imported_qtile)
     # subprocess.call("bash /home/craig/.config/qtile/autostart.sh", shell=True)
