@@ -89,6 +89,16 @@
             ./nixos/virt-k3s-agent.nix
           ];
         };
+        "beelink" = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            sops-nix.nixosModules.sops
+            ./nixos/sops.nix
+            ./nixos/beelink-hardware-configuration.nix
+            ./nixos/beelink-configuration.nix
+            #./nixos/virt-k3s-agent.nix
+          ];
+        };
         "hypernix" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
@@ -168,6 +178,14 @@
           modules = [
             ./home-manager/common.nix
             ./home-manager/virtserver.nix
+          ];
+        };
+        "craig@beelink" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs outputs; };
+          modules = [
+            ./home-manager/common.nix
+            #./home-manager/virtserver.nix
           ];
         };
         "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {

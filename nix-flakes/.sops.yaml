@@ -3,6 +3,7 @@ keys:
   - &craig_virtnix2 age154d4qygfmgeyx35jfexlu4j475fnpafmr9xwpthcrzsfmqq3usashqwe87
   - &craig_nixostest age1yc58hyvpxv3yny48cxcpzpk00mrgur3lhkmqvqnzhetddp65xvjq6mr2cn
   - &craig_carbonnix age1qqynfut5y2mk4v33jpcf0r4gaca6ydy3aqkc9ldm4g2ru6mhgyrqvvefu7
+  - &craig_beelink age1ej34rlvuee3maw34hw5lt2j5ar7y8qrcrjd9mmp7qz3544c28u2qx0qqsu
 creation_rules:
   - path_regex: secrets/[^/]+\.(yaml|json|env|ini)$
     key_groups:
@@ -11,3 +12,4 @@ creation_rules:
       - *craig_virtnix2
       - *craig_nixostest
       - *craig_carbonnix
+      - *craig_beelink
