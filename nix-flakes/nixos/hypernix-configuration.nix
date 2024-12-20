@@ -6,6 +6,7 @@
     ./x11.nix
     ./qtile-overlay.nix
     ./gaming.nix
+    ./sunshine.nix
     #./gpu_passthrough.nix
   ];
 
