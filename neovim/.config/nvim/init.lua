@@ -130,8 +130,7 @@ require('lazy').setup({
   'mbbill/undotree',
   {
     'glacambre/firenvim',
-    lazy = not vim.g.started_by_firenvim,
-    build = function() vim.fn['firenvim#install'](0) end
+    build = ":call firenvim#install(0)"
   },
   {
     "folke/which-key.nvim",
@@ -170,7 +169,7 @@ require('lazy').setup({
     'mikesmithgh/kitty-scrollback.nvim',
     enabled = true,
     lazy = true,
-    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth' },
+    cmd = { 'KittyScrollbackGenerateKittens', 'KittyScrollbackCheckHealth', 'KittyScrollbackGenerateCommandLineEditing' },
     event = { 'User KittyScrollbackLaunch' },
     -- version = '*', -- latest stable version, may have breaking changes if major version changed
     -- version = '^4.0.0', -- pin major version, include fixes and features that do not have breaking changes

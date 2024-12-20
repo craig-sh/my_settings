@@ -92,6 +92,7 @@
 
       # Browse tmux pane in nvim
       #bind [ run-shell 'kitty @ kitten /home/craig/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --env "TMUX=$TMUX" --env "TMUX_PANE=#{pane_id}" --nvim-args --clean --noplugin -n'
+      bind ] run-shell 'kitty @ kitten /home/craig/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --env "TMUX=$TMUX" --env "TMUX_PANE=#{pane_id}"'
 
       # Plugin Configs
       set -g @copycat_search_C-j '((maxtool|cxjobs).*)>?'

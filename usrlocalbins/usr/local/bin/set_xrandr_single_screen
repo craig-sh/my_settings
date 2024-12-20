@@ -6,6 +6,6 @@ if [[ $HOSTNAME  == "hyperarch" ]]; then
     xrandr --output DP-0 --off
     xrandr --output HDMI-0 --mode 1920x1200
 elif [[ $HOSTNAME == "craig-work-pc" ]]; then
-    xrandr --output HDMI-0 --off
-    xrandr --output DP-2 --mode 1920x1200
+    xrandr --output HDMI-0 --mode 1920x1200;
+    xrandr --output DP-2 --off;
 fi

@@ -45,8 +45,22 @@
       fpath+=(${pkgs.eza}/share/zsh/site-functions)
       fpath+=(/nix/var/nix/profiles/per-user/''$USER/home-manager/home-path/share/zsh/site-functions)
 
-      autoload edit-command-line; zle -N edit-command-line
-      bindkey -M vicmd v edit-command-line
+      #autoload edit-command-line; zle -N edit-command-line
+      #bindkey -M vicmd v edit-command-line
+      ##### KITTY NVIM PLUGIN#####
+      autoload -Uz edit-command-line
+      zle -N edit-command-line
+
+      function kitty_scrollback_edit_command_line() {
+        local VISUAL='/home/craig/.local/share/nvim/lazy/kitty-scrollback.nvim/scripts/edit_command_line.sh'
+        zle edit-command-line
+        zle kill-whole-line
+      }
+      zle -N kitty_scrollback_edit_command_line
+      bindkey -M vicmd v kitty_scrollback_edit_command_line
+      bindkey '^e' kitty_scrollback_edit_command_line
+      ##### KITTY NVIM PLUGIN#####
+
 
       bindkey -v
       bindkey '^P' up-history
