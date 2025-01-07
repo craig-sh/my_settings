@@ -96,6 +96,7 @@
       experimental-features = nix-command flakes
     '';
   };
+  nix.settings.trusted-users = [ "craig" ];
   # Perform garbage collection weekly to maintain low disk usage
   nix.gc = {
     automatic = true;
