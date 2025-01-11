@@ -28,8 +28,8 @@
   #  127.0.0.1 beelink.localdomain
   #'';
 
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "craig";
+  #services.displayManager.autoLogin.enable = true;
+  #services.displayManager.autoLogin.user = "craig";
 
   environment.systemPackages = [
     pkgs.ddcutil
@@ -42,10 +42,10 @@
     ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{power/wakeup}="disabled"
   '';
   services.logind.powerKey = "suspend";
-  #services.xserver.deviceSection = ''
-  #    Option "VariableRefresh" "true"
-  #    Option "AsyncFlipSecondaries" "true"
-  #'';
+  services.xserver.deviceSection = ''
+      Option "VariableRefresh" "true"
+      Option "AsyncFlipSecondaries" "true"
+  '';
 
   # For steam play
 
@@ -61,6 +61,11 @@
     STEAMVR_LH_ENABLE = "1";
     XRT_COMPOSITOR_COMPUTE = "1";
     WMR_HANDTRACKING = "0"; # disable handtrackiong for now
+  };
+
+  programs.envision = {
+    enable = true;
+    openFirewall = false; # This is set true by default
   };
 
 }
