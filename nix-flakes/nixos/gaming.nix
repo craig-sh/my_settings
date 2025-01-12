@@ -14,4 +14,30 @@
       ];
     };
   };
+  #programs.steam.gamescopeSession.enable = true;
+  programs.gamescope = {
+    enable = true;
+    #capSysNice = true;
+  };
+  hardware.graphics = {
+    enable32Bit = true;
+    extraPackages = [ pkgs.gamescope-wsi ];
+    extraPackages32 = [ pkgs.pkgsi686Linux.gamescope-wsi ];
+  };
+
+
+  # Manually renice process instead of capSysNice above because of issues with gamescope
+  # See: https://discourse.nixos.org/t/unable-to-activate-gamescope-capsysnice-option/37843/12
+
+  security.sudo.extraRules = [
+    { users = [ "craig" ];
+      runAs = "root";
+      commands = [
+        { command = "${pkgs.util-linux}/renice"; options = [ "NOPASSWD" ]; }
+        #{ command = "renice"; options = [ "NOPASSWD" ]; }
+      ];
+    }
+  ];
+
+  chaotic.hdr.enable = true;
 }

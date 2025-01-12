@@ -14,6 +14,7 @@
     # Official NixOS package source, using nixos-unstable branch here
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     neovim-nightly-overlay = { 
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -26,6 +27,14 @@
       # the `inputs.nixpkgs` of the current flake,
       # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager";
+      # The `follows` keyword in inputs is used for inheritance.
+      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
+      # the `inputs.nixpkgs` of the current flake,
+      # to avoid problems caused by different versions of nixpkgs.
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
     sops-nix = {
@@ -50,7 +59,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, home-manager, sops-nix, nix-flatpak, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, home-manager-unstable, nixpkgs-unstable, chaotic, sops-nix, nix-flatpak, ... }@inputs:
     let
       inherit (self) outputs;
       username = "craig";
@@ -99,7 +108,7 @@
             #./nixos/virt-k3s-agent.nix
           ];
         };
-        "hypernix" = nixpkgs.lib.nixosSystem {
+        "hypernix" = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             sops-nix.nixosModules.sops
@@ -107,6 +116,7 @@
             ./nixos/sops.nix
             ./nixos/hypernix-hardware-configuration.nix
             ./nixos/hypernix-configuration.nix
+            chaotic.nixosModules.default
           ];
           specialArgs = { inherit inputs username; };
         };
@@ -203,8 +213,8 @@
             ./home-manager/carbonnix.nix
           ];
         };
-        "craig@hypernix" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        "craig@hypernix" = home-manager-unstable.lib.homeManagerConfiguration {
+          pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
           modules = [
             ./home-manager/hypernix.nix

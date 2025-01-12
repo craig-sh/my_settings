@@ -81,9 +81,12 @@
     pciutils
     xdg-utils
     xdg-launch
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
+    #(nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
     dconf # for gnome themes
     nfs-utils
+  ];
+  fonts.packages = [
+    pkgs.nerd-fonts.fantasque-sans-mono
   ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {
