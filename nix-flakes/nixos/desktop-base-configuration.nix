@@ -81,13 +81,12 @@
     pciutils
     xdg-utils
     xdg-launch
-    (nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
     dconf # for gnome themes
     nfs-utils
   ];
-  #fonts.packages = [
-  #  pkgs.nerd-fonts.fantasque-sans-mono
-  #];
+  fonts.packages = [
+    pkgs.nerd-fonts.fantasque-sans-mono
+  ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {
     SOPS_AGE_KEY_FILE = "/home/craig/.config/sops/age/keys.txt";

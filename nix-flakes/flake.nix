@@ -125,7 +125,7 @@
           ];
           specialArgs = { inherit inputs username; };
         };
-        "carbonnix" = nixpkgs.lib.nixosSystem {
+        "carbonnix" = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             sops-nix.nixosModules.sops
@@ -212,8 +212,8 @@
             ./home-manager/programs/neovim_git.nix
           ];
         };
-        "craig@carbonnix" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        "craig@carbonnix" = home-manager-unstable.lib.homeManagerConfiguration {
+          pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
           modules = [
             ./home-manager/carbonnix.nix
