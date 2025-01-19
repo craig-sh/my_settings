@@ -49,8 +49,6 @@
     pkgs.fd
     pkgs.nodePackages.bash-language-server
     pkgs.lua-language-server
-    #(pkgs.nerdfonts.override { fonts = [ "FantasqueSansMono" ]; })
-    pkgs.nerd-fonts.fantasque-sans-mono
   ];
 
   programs = {

@@ -184,6 +184,7 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix
+            ./home-manager/common_stable.nix
             ./home-manager/virtserver.nix
           ];
         };
