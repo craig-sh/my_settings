@@ -3,7 +3,8 @@
 {
   imports = [
     ./desktop-base-configuration.nix
-    ./x11.nix
+    ./wayland.nix
+    #./x11.nix
     #./qtile-overlay.nix
     ./kde.nix
     ./gaming.nix
