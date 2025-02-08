@@ -4,6 +4,12 @@ return {
   { 'tpope/vim-repeat' },
   { 'tpope/vim-sleuth' }, --  Indentation settings
   { 'norcalli/nvim-colorizer.lua', opts = {} },
+  { 'farmergreg/vim-lastplace' },
+  { 'ggandor/leap.nvim',
+    config = function ()
+      require('leap').create_default_mappings()
+    end
+  },
   {
     'nvim-tree/nvim-tree.lua',
     opts = {
