@@ -70,6 +70,9 @@
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
+    lazygit = {
+      enable = true;
+    };
   };
 
 

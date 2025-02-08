@@ -59,6 +59,9 @@
       # Enable mouse mode (tmux 2.1 and above)
       set -g mouse on
 
+      # For passing through OSC52 copy/paste sequences
+      set -g allow-passthrough on
+
       set-option -ga terminal-overrides ",xterm-kitty:Tc"
 
       # Copy/Pasting

@@ -1,15 +1,16 @@
-priority -10
+snippet debug logging.error
+    ########## DEBUG ################
+    try:
+        import logging
+    except:
+        pass
+    from pprint import pformat as pf
+    logging.error(f"CRAIG: {pf(${1})}')
+    ########## DEBUG ################
 
-snippet debug "logging.error" b
-########## DEBUG ################
-try:
-    import logging
-except:
-    pass
-try:
-    from pprint import pformat
-except:
-    pass
-logging.error(f"CRAIG: {pformat(${1})}') % pformat(${1}))
-########## DEBUG ################
-endsnippet
+snippet argparse "import argparse"
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('site')
+    parser.add_argument('-v', '--verbose', action='store_true')
+    args = parser.parse_args()
