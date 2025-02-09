@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ pkgs,lib, ... }:
+{ pkgs,lib, options, ... }:
 
 {
   imports = [
@@ -116,6 +116,10 @@
   # };
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
+
+  # https://nix.dev/guides/faq#how-to-run-non-nix-executables
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = options.programs.nix-ld.libraries.default;
 
   # List services that you want to enable:
 

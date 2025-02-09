@@ -5,7 +5,7 @@
     enable = true;
     sensibleOnTop = false;
     plugins = with pkgs; [
-      tmuxPlugins.resurrect
+      #tmuxPlugins.resurrect
       tmuxPlugins.continuum
       tmuxPlugins.yank
       tmuxPlugins.copycat
