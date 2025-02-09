@@ -16,9 +16,16 @@ return {
       spec = {
         {
           noremap = true,
+          {
+            "<leader>ev",
+            function()
+              Snacks.picker.files({
+                dirs = {"$HOME/my_settings/neovim/.config/nvim/lua/plugins"}
+              })
+            end,
+            desc = "Find plugin files"
+          },
           { '<F3>',               '::NvimTreeFindFileToggle<CR>',                 desc = 'Tree finder' },
-          { '<leader>ev',         ':e $MYVIMRC<CR>',                              desc = 'Edit nvim config' },
-          { '<leader>sv',         ':source $MYVIMRC<CR>',                         desc = 'Source nvim config', },
           { '<leader>cf',         [[:let @+=expand("%")<CR>]],                    desc = 'Copy relative path of file', },
           { '<leader>pwd',        ':! pwd<CR>',                                   desc = 'Print the pwd', },
           { '<leader>ss',         ':syntax sync fromstart<CR>',                   desc = 'Resync syntax', },
