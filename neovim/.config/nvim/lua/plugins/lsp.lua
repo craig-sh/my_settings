@@ -50,7 +50,7 @@ return {
           {'gd', vim.lsp.buf.definition,  desc = "Go to definition"},
           {'gh', vim.lsp.buf.hover,  desc = "Hover"},
           {'gi', vim.lsp.buf.implementation,  desc = "Go to implementation"},           -- Buffer local mappings.
-          {'<C-k>', vim.lsp.buf.signature_help,  desc = "Help"},        -- See `:help vim.lsp.*` for documentation on any of the below functions
+          {'K', vim.lsp.buf.signature_help,  desc = "Help"},        -- See `:help vim.lsp.*` for documentation on any of the below functions
         -- {'<space>wa', vim.lsp.buf.add_workspace_folder,  desc = "Go to declaration"},
         -- {'<space>wr', vim.lsp.buf.remove_workspace_folder,  desc = "Go to declaration"},
         -- {'<space>wl', function()

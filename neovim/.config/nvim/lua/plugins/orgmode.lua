@@ -14,6 +14,13 @@ return {
           org_previous_visible_heading = 'g{{'
         }
       },
+      org_capture_templates = {
+        t = {
+          description = "Todo",
+          template = "* TODO [#%?]",
+          target = "/home/craig/workspace/grepo/scratch/org/todo.org",
+        },
+      },
       org_custom_exports = {
         f = {
           label = 'Export to Redmine format',

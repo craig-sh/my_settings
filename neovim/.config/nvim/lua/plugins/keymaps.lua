@@ -25,6 +25,15 @@ return {
             end,
             desc = "Find plugin files"
           },
+          {
+            "<leader>es",
+            function()
+              Snacks.picker.files({
+                dirs = {"/home/craig/my_settings/neovim/.config/nvim/mysnips/"}
+              })
+            end,
+            desc = "Find plugin files"
+          },
           { '<F3>',               '::NvimTreeFindFileToggle<CR>',                 desc = 'Tree finder' },
           { '<leader>cf',         [[:let @+=expand("%")<CR>]],                    desc = 'Copy relative path of file', },
           { '<leader>pwd',        ':! pwd<CR>',                                   desc = 'Print the pwd', },
