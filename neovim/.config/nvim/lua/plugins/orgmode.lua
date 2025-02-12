@@ -5,8 +5,8 @@ return {
   config = function()
     -- Setup orgmode
     require('orgmode').setup({
-      org_agenda_files = { '/home/craig/workspace/grepo/scratch/org/*' },
-      org_default_notes_file = '/home/craig/workspace/grepo/scratch/org/refile.org',
+      org_agenda_files = { '/home/craig/Documents/org/*' },
+      org_default_notes_file = '/home/craig/Documents/org/todo.org',
       org_startup_indented = true,
       mappings = {
         org = {
@@ -18,7 +18,7 @@ return {
         t = {
           description = "Todo",
           template = "* TODO [#%?]",
-          target = "/home/craig/workspace/grepo/scratch/org/todo.org",
+          target = "/home/craig/Documents/org/todo.org",
         },
       },
       org_custom_exports = {
