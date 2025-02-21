@@ -19,6 +19,20 @@
     enable = true;
     #capSysNice = true;
   };
+  # Workaround for capsysnice from https://github.com/NixOS/nixpkgs/issues/351516#issuecomment-2607156591
+ 
+  services.ananicy = {
+    enable = true;
+    package = pkgs.ananicy-cpp;
+    rulesProvider = pkgs.ananicy-cpp;
+    extraRules = [
+      {
+        "name" = "gamescope";
+        "nice" = -20;
+      }
+    ];
+  };
+
   hardware.graphics = {
     enable32Bit = true;
     extraPackages = [ pkgs.gamescope-wsi ];
