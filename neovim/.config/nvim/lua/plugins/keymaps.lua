@@ -23,7 +23,7 @@ return {
                 dirs = {"$HOME/my_settings/neovim/.config/nvim/lua/plugins"}
               })
             end,
-            desc = "Find plugin files"
+            desc = "Edit plugin files"
           },
           {
             "<leader>es",
@@ -32,7 +32,16 @@ return {
                 dirs = {"/home/craig/my_settings/neovim/.config/nvim/mysnips/"}
               })
             end,
-            desc = "Find plugin files"
+            desc = "Edit snippet files"
+          },
+          {
+            "<leader>en",
+            function()
+              Snacks.picker.files({
+                dirs = {"/home/craig/my_settings/nix-flakes/"}
+              })
+            end,
+            desc = "Edit nix files"
           },
           { '<F3>',               '::NvimTreeFindFileToggle<CR>',                 desc = 'Tree finder' },
           { '<leader>cf',         [[:let @+=expand("%")<CR>]],                    desc = 'Copy relative path of file', },

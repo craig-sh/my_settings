@@ -18,7 +18,7 @@
 
   home.packages = [
     pkgs.spotify
-    pkgs.kdenlive
+    #pkgs.kdenlive
     pkgs.keepassxc
     pkgs.meld
   ];

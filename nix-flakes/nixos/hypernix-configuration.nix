@@ -4,11 +4,12 @@
   imports = [
     ./desktop-base-configuration.nix
     ./wayland.nix
-    #./x11.nix
-    #./qtile-overlay.nix
+    ./x11.nix
+    ./qtile-overlay.nix
     ./kde.nix
     ./gaming.nix
     ./sunshine.nix
+    ./ai.nix
     #./gpu_passthrough.nix
   ];
 
