@@ -10,6 +10,7 @@
     ./gaming.nix
     ./sunshine.nix
     ./ai.nix
+    ./podman.nix
     #./gpu_passthrough.nix
   ];
 
@@ -71,5 +72,6 @@
     enable = true;
     openFirewall = false; # This is set true by default
   };
+
 
 }
