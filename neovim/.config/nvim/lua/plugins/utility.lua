@@ -36,6 +36,7 @@ return {
         lualine_x = {
           'encoding',
           'fileformat',
+          'lsp_status',
           'filetype'
         }
       }
