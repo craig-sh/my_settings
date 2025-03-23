@@ -71,6 +71,44 @@
     #  tree
     #];
   };
+  users.groups = {
+    media = {
+      gid = 995;
+    };
+    tandoor = {
+      gid = 451;
+    };
+    paperless = {
+      gid = 452;
+    };
+    homelab = {
+      gid = 453;
+    };
+  };
+  users.users.media = {
+    isNormalUser = false;
+    isSystemUser = true;
+    group = "media";
+    uid=995;
+  };
+  users.users.tandoor = {
+    isNormalUser = false;
+    isSystemUser = true;
+    group = "tandoor";
+    uid=451;
+  };
+  users.users.paperless = {
+    isNormalUser = false;
+    isSystemUser = true;
+    group = "paperless";
+    uid=452;
+  };
+  users.users.homelab = {
+    isNormalUser = false;
+    isSystemUser = true;
+    group = "homelab";
+    uid=453;
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
