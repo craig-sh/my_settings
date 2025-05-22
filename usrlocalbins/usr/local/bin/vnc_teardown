@@ -1,5 +1,5 @@
 #!/bin/bash
-pkill -f x11vnc
+DISPLAY=:1 pkill -f x11vnc
 # Reset keyboard layout (assumes the localhost has a hardware configured keyboard)
-setxkbmap -layout us
+DISPLAY=:1 setxkbmap -layout us
 /usr/local/bin/set_xrandr

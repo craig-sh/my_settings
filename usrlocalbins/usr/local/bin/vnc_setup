@@ -3,9 +3,9 @@
 /usr/local/bin/set_xrandr_single_screen
 
 # Use xmodmap because the remote host's keyboard may not be configured in hardware
-xmodmap ~/.Xmodmap
+DISPLAY=:1 xmodmap ~/.Xmodmap
 
 #x11vnc -repeat -ncache 10 -noxrecord -noxdamage
-x11vnc -ncache 10 -noxrecord -noxdamage -loop
+DISPLAY=:1 x11vnc -ncache 10 -noxrecord -noxdamage -loop -display :1
 
 /usr/local/bin/vnc_teardown
