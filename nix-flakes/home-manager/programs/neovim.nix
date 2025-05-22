@@ -7,8 +7,11 @@
     vimAlias = true;
     # Currently breaking. When below is set we actually use the latest neovim from git
     # package = pkgs.neovim;
+    # magick is for images in nvim
+    extraLuaPackages = ps: [ ps.magick ];
     extraPackages = [
       pkgs.nixd
+      pkgs.imagemagick
     ];
   };
 

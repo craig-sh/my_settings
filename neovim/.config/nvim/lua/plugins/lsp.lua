@@ -1,5 +1,6 @@
 return {
-  { 'kosayoda/nvim-lightbulb',
+  {
+    'kosayoda/nvim-lightbulb',
     opts = {
       autocmd = {
         enabled = true }
@@ -10,18 +11,15 @@ return {
     -- event = { "BufReadPost", "BufNewFile" },
     -- cmd = { "LspInfo", "LspInstall", "LspUninstall" },
     dependencies = {
-      {'j-hui/fidget.nvim',
-       opts = {}
+      {
+        'j-hui/fidget.nvim',
+        opts = {}
       }
     },
     config = function()
       vim.diagnostic.config({
-        virtual_text = {
-          source = "always", -- Or "if_many"
-        },
-        float = {
-          source = "always", -- Or "if_many"
-        },
+        virtual_text = true,
+        float = true
       })
 
       local nvim_lsp = require 'lspconfig'
@@ -45,25 +43,29 @@ return {
         wk.add({
           group = 'lsp',
           buffer = bufnr,
-          mode = {'n'},
-          {'gD', vim.lsp.buf.declaration,  desc = "Go to declaration"},
-          {'gd', vim.lsp.buf.definition,  desc = "Go to definition"},
-          {'gh', vim.lsp.buf.hover,  desc = "Hover"},
-          {'gi', vim.lsp.buf.implementation,  desc = "Go to implementation"},           -- Buffer local mappings.
-          {'K', vim.lsp.buf.signature_help,  desc = "Help"},        -- See `:help vim.lsp.*` for documentation on any of the below functions
-        -- {'<space>wa', vim.lsp.buf.add_workspace_folder,  desc = "Go to declaration"},
-        -- {'<space>wr', vim.lsp.buf.remove_workspace_folder,  desc = "Go to declaration"},
-        -- {'<space>wl', function()
-        --  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        -- end, desc = "Go to declaration"},
-        {'gt', vim.lsp.buf.type_definition,  desc = "Go do type definition"},
-        {'gR', vim.lsp.buf.rename,  desc = "Rename"},
-        {'gr', vim.lsp.buf.references,  desc = "Go to references"},
-        {'gF', function()
-          vim.lsp.buf.format { async = true }
-        end,  desc = "Format"},
-        {'<leader>ca', mode = { 'n', 'v' }, vim.lsp.buf.code_action,  desc = "Code Action"},
-      })
+          mode = { 'n' },
+          { 'gD', vim.lsp.buf.declaration,     desc = "Go to declaration" },
+          { 'gd', vim.lsp.buf.definition,      desc = "Go to definition" },
+          { 'gh', vim.lsp.buf.hover,           desc = "Hover" },
+          { 'gi', vim.lsp.buf.implementation,  desc = "Go to implementation" }, -- Buffer local mappings.
+          { 'K',  vim.lsp.buf.signature_help,  desc = "Help" },               -- See `:help vim.lsp.*` for documentation on any of the below functions
+          -- {'<space>wa', vim.lsp.buf.add_workspace_folder,  desc = "Go to declaration"},
+          -- {'<space>wr', vim.lsp.buf.remove_workspace_folder,  desc = "Go to declaration"},
+          -- {'<space>wl', function()
+          --  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          -- end, desc = "Go to declaration"},
+          { 'gt', vim.lsp.buf.type_definition, desc = "Go do type definition" },
+          { 'gR', vim.lsp.buf.rename,          desc = "Rename" },
+          { 'gr', vim.lsp.buf.references,      desc = "Go to references" },
+          {
+            'gF',
+            function()
+              vim.lsp.buf.format { async = true }
+            end,
+            desc = "Format"
+          },
+          { '<leader>ca', mode = { 'n', 'v' }, vim.lsp.buf.code_action, desc = "Code Action" },
+        })
       end
 
 

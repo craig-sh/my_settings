@@ -7,6 +7,7 @@ return {
     bigfile = { enabled = true },
     bufdelete = { enabled = true },
     dashboard = { enabled = true },
+    image = { enabled = true },
     indent = {
       enabled = true,
       --only_scope = true,
