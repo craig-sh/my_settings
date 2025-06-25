@@ -80,5 +80,8 @@
   };
   services.displayManager.sddm.enable = true;
   #services.displayManager.defaultSession = "qtile";
+  services.picom = {
+      enable = true;
+  };
 }
 

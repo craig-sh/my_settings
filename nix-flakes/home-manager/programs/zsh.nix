@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   programs.zsh = {
@@ -38,7 +38,7 @@
 #      zprof
 #    '';
 
-    initExtraBeforeCompInit = ''
+    initContent= lib.mkOrder 550 ''
       unsetopt BEEP
       source ~/.zsh_aliases
 
