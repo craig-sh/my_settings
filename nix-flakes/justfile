@@ -6,17 +6,25 @@ hostname := `cat /etc/hostname`
 default:
   just --list
 
-switch-os:
+old-switch-os:
     sudo nixos-rebuild switch --flake .#{{hostname}}
+switch-os:
+    nh os switch .
+
+old-switch-boot-os:
+    sudo nixos-rebuild boot --flake .#{{hostname}}
 
 switch-boot-os:
-    sudo nixos-rebuild boot --flake .#{{hostname}}
+    nh os boot .
 
 switch-os-dry-run:
     sudo nixos-rebuild dry-activate --flake .#{{hostname}}
 
-switch-hm target=hostname:
+old-switch-hm target=hostname:
     home-manager switch --flake .#craig@{{target}}
+
+switch-hm target=hostname:
+    nh home switch . -c craig@{{target}}
 
 flake-update:
     nix flake update
