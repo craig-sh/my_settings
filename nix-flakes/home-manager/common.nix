@@ -49,6 +49,7 @@
     pkgs.fd
     pkgs.nodePackages.bash-language-server
     pkgs.lua-language-server
+    pkgs.nodejs_24
   ];
 
   programs = {
