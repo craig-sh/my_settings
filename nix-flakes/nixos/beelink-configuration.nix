@@ -5,16 +5,43 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = [ ];
+  imports = [
+    #./steam-direct-login.nix
+    #./zoneminder.nix
+    # ./scrypted.nix
+    #./frigate.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "nfs" ];
+  boot.kernel.sysctl = {
+    # to allow rootless containers (frigate) to monitor performance
+    "kernel.perf_event_paranoid" = 0;
+  };
+
+
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  nixpkgs.config.allowUnfree = true;
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-media-sdk
+    ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [ intel-media-driver ];
+  };
+
 
   networking.hostName = "beelink"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  # For frigate pod
+  networking.firewall.allowedTCPPorts = [8971 8554 8555 8556];
+  networking.firewall.allowedUDPPorts = [8555];
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -58,7 +85,12 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.craig = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "video" "render"]; # Enable ‘sudo’ for the user. video/render is for hwaccell for rootless containers
+    # Quadlets
+    # required for auto start before user login
+    linger = true;
+    # required for rootless container with multiple users
+    autoSubUidGidRange = true;
   };
 
   # List packages installed in system profile. To search, run:
@@ -69,10 +101,18 @@
     git
     age
     sops
+    nfs-utils
   ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {
     SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+    LIBVA_DRIVER_NAME = "iHD";
+  };
+
+  #  help with podman debugging
+  environment.etc."systemd/user-generators/podman-user-generator" = {
+    source = "${pkgs.podman}/lib/systemd/user-generators/podman-user-generator";
+    target = "systemd/user-generators/podman-user-generator";
   };
   nix = {
     package = pkgs.nixVersions.stable;
@@ -89,6 +129,19 @@
 
   programs.zsh.enable = true;
   users.defaultUserShell = pkgs.zsh;
+  users.groups.containers = {};
+  users.users = {
+    containers = {
+      group = "containers";  # Assign the user to the group
+      isSystemUser = true;
+      subUidRanges = [
+        { startUid = 100000; count = 65536; }
+      ];
+      subGidRanges = [
+        { startGid = 100000; count = 65536; }
+      ];
+    };
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

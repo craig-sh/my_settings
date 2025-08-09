@@ -12,8 +12,9 @@
     # which represents the GitHub repository URL + branch/commit-id/tag.
 
     # Official NixOS package source, using nixos-unstable branch here
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     plasma-manager-unstable = {
       url = "github:nix-community/plasma-manager";
@@ -26,7 +27,7 @@
     };
     # home-manager, used for managing user configuration
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       # The `follows` keyword in inputs is used for inheritance.
       # Here, `inputs.nixpkgs` of home-manager is kept consistent with
       # the `inputs.nixpkgs` of the current flake,
@@ -64,7 +65,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, home-manager, home-manager-unstable, plasma-manager-unstable, nixpkgs-unstable, chaotic, sops-nix, nix-flatpak, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, home-manager-unstable, plasma-manager-unstable, nixpkgs-unstable, chaotic, sops-nix, nix-flatpak, quadlet-nix, ... }@inputs:
     let
       inherit (self) outputs;
       username = "craig";
@@ -110,6 +111,7 @@
             ./nixos/sops.nix
             ./nixos/beelink-hardware-configuration.nix
             ./nixos/beelink-configuration.nix
+            quadlet-nix.nixosModules.quadlet
             #./nixos/virt-k3s-agent.nix
           ];
         };
@@ -201,7 +203,7 @@
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
             ./home-manager/common.nix
-            #./home-manager/virtserver.nix
+            ./home-manager/beelink.nix
           ];
         };
         "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
