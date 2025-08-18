@@ -13,7 +13,7 @@
 
 
   services.k3s.enable = true;
-  services.k3s.package = pkgs.k3s_1_31;
+  services.k3s.package = pkgs.k3s_1_33;
   services.k3s.role = "server";
   services.k3s.extraFlags = toString [
     " --disable=traefik" # Optionally add additional args to k3s
@@ -33,7 +33,7 @@
     path = [
       pkgs.bash
       pkgs.restic
-      pkgs.k3s_1_31
+      pkgs.k3s_1_33
       pkgs.hostname
       pkgs.openssh
       pkgs.gzip
