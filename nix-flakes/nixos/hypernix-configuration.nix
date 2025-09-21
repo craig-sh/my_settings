@@ -5,7 +5,7 @@
     ./desktop-base-configuration.nix
     ./wayland.nix
     ./x11.nix
-    ./qtile-overlay.nix
+    ./qtile.nix
     ./kde.nix
     ./gaming.nix
     ./sunshine.nix

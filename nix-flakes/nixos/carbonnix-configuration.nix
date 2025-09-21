@@ -3,8 +3,8 @@
 
 {
   imports = [
-    ./qtile-overlay.nix
-    #./qtile.nix
+    #./qtile-overlay.nix
+    ./qtile.nix
     ./podman.nix
     ./desktop-base-configuration.nix
     ./x11.nix
