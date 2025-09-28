@@ -14,7 +14,8 @@ return {
       {
         'j-hui/fidget.nvim',
         opts = {}
-      }
+      },
+      { 'saghen/blink.cmp' },
     },
     config = function()
       vim.diagnostic.config({
@@ -24,7 +25,7 @@ return {
 
       local nvim_lsp = require 'lspconfig'
       local capabilities = vim.lsp.protocol.make_client_capabilities()
-      capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+      capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
       -- Global mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions
