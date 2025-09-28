@@ -430,6 +430,7 @@ _mod_keys = [
     # Program launch
     ("space", lazy.spawn("rofi -show run"), "Spawn a command using a prompt widget"),
     ("Return", lazy.spawn(terminal), "Launch terminal"),
+    ("s", lazy.spawn("scrot -s - | xclip -selection clipboard -t image/png"), "Take Screenshot"),
     # Switch between windows
     ("h", lazy.function(focus_left()), "Move focus to left"),
     ("l", lazy.function(focus_right()), "Move focus to right"),

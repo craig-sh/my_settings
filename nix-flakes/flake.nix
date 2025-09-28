@@ -15,7 +15,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     plasma-manager-unstable = {
       url = "github:nix-community/plasma-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -65,7 +64,7 @@
   # 
   # The `@` syntax here is used to alias the attribute set of the
   # inputs's parameter, making it convenient to use inside the function.
-  outputs = { self, nixpkgs, home-manager, home-manager-unstable, plasma-manager-unstable, nixpkgs-unstable, chaotic, sops-nix, nix-flatpak, quadlet-nix, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, home-manager-unstable, plasma-manager-unstable, nixpkgs-unstable, sops-nix, nix-flatpak, quadlet-nix, ... }@inputs:
     let
       inherit (self) outputs;
       username = "craig";
@@ -123,7 +122,6 @@
             ./nixos/sops.nix
             ./nixos/hypernix-hardware-configuration.nix
             ./nixos/hypernix-configuration.nix
-            chaotic.nixosModules.default
           ];
           specialArgs = { inherit inputs username; };
         };

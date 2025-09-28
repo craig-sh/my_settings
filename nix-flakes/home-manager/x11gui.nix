@@ -29,6 +29,7 @@
 
   home.packages = [
     pkgs.pwvucontrol
+    pkgs.scrot
   ];
 
   xsession.enable = true;
