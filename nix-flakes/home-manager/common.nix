@@ -36,7 +36,7 @@
     pkgs.just
     pkgs.kubectl
     pkgs.ruff
-    (pkgs.python312.withPackages (ppkgs: [
+    (pkgs.python313.withPackages (ppkgs: [
       ppkgs.mypy
       ppkgs.python-lsp-server
       ppkgs.pylsp-mypy
@@ -50,6 +50,8 @@
     pkgs.nodePackages.bash-language-server
     pkgs.lua-language-server
     pkgs.nodejs_24
+    pkgs.devenv
+    pkgs.cachix
   ];
 
   programs = {
