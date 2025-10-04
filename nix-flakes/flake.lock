@@ -164,6 +164,22 @@
         "type": "github"
       }
     },
+    "mysecrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759613726,
+        "narHash": "sha256-yw1AmPfRAUXrMYe3rrRo+G+vlv893lgfPkOaSjVkYoA=",
+        "ref": "refs/heads/main",
+        "rev": "69fcaf6a86796757dca823a62fff63271bb58bb3",
+        "revCount": 1,
+        "type": "git",
+        "url": "file:/home/craig/private/secrets"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:/home/craig/private/secrets"
+      }
+    },
     "neovim-nightly-overlay": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -315,6 +331,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "home-manager-unstable": "home-manager-unstable",
+        "mysecrets": "mysecrets",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nix-flatpak": "nix-flatpak",
         "nixpkgs": "nixpkgs",

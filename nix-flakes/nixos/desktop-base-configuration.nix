@@ -2,8 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ pkgs,lib, options, ... }:
-
+{ inputs, pkgs,lib, options, ... }:
+let
+  secretspath = builtins.toString inputs.mysecrets;
+in
 {
   imports = [
     ./syncthing.nix
@@ -127,7 +129,7 @@
   services.openssh.enable = true;
   services.fwupd.enable = true;
 
-  security.pki.certificateFiles = [ ../secrets/ca.crt ];
+  security.pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';

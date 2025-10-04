@@ -3,7 +3,9 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 { config, lib, pkgs, ... }:
-
+let
+  secretspath = builtins.toString inputs.mysecrets;
+in
 {
   imports = [
     #./steam-direct-login.nix
@@ -154,7 +156,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  security.pki.certificateFiles = [ ../secrets/ca.crt ];
+  security.pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';

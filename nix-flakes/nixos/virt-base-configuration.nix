@@ -3,7 +3,9 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 
 { config, pkgs, ... }:
-
+let
+  secretspath = builtins.toString inputs.mysecrets;
+in
 {
   imports = [ ];
 
@@ -155,7 +157,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
-  security.pki.certificateFiles = [ ../secrets/ca.crt ];
+  security.pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';

@@ -1,7 +1,10 @@
 # syncthing template help from https://old.reddit.com/r/NixOS/comments/1draqf1/i_cannot_get_sopsnix_to_import_my_secrets_properly/
-{ config, ... }:
+{ inputs, config, ... }:
+let
+  secretspath = builtins.toString inputs.mysecrets;
+in
 {
-  sops.defaultSopsFile = ../secrets/os-secrets.yaml;
+  sops.defaultSopsFile = "${secretspath}/secrets/os-secrets.yaml";
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
   #sops.templates = {

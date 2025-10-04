@@ -52,6 +52,10 @@
       url = "github:qtile/qtile";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    mysecrets = {
+        url = "git+file:/home/craig/private/secrets";
+        flake = false;
+    };
   };
 
   # `outputs` are all the build result of the flake.
