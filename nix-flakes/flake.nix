@@ -96,6 +96,7 @@
             ./nixos/virt-k3s-controller.nix
             ./nixos/virt-tailscale.nix
           ];
+          specialArgs = { inherit inputs username; };
         };
         "virtnix2" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -106,6 +107,7 @@
             ./nixos/virt-base-configuration.nix
             ./nixos/virt-k3s-agent.nix
           ];
+          specialArgs = { inherit inputs username; };
         };
         "beelink" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -117,6 +119,7 @@
             quadlet-nix.nixosModules.quadlet
             #./nixos/virt-k3s-agent.nix
           ];
+          specialArgs = { inherit inputs username; };
         };
         "hypernix" = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
