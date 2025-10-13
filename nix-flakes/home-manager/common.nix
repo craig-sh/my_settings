@@ -36,6 +36,7 @@
     pkgs.just
     pkgs.kubectl
     pkgs.ruff
+    pkgs.basedpyright
     (pkgs.python313.withPackages (ppkgs: [
       ppkgs.mypy
       ppkgs.python-lsp-server
