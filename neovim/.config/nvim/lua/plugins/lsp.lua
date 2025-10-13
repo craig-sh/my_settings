@@ -23,7 +23,6 @@ return {
         float = true
       })
 
-      local nvim_lsp = require 'lspconfig'
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)
 
@@ -72,51 +71,54 @@ return {
 
       local servers = { "hls", "basedpyright", "rust_analyzer", "bashls", "volar", "ansiblels", "nixd", "ruff" }
       for _, lsp in ipairs(servers) do
-        nvim_lsp[lsp].setup {
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = {
-            pylsp = {
-              plugins = {
-                pycodestyle = {
-                  maxLineLength = 200,
-                },
-                flake8 = {
-                  maxLineLength = 200,
-                },
-                ruff = {
-                  enabled = true,
-                  lineLength = 200,
+        vim.lsp.enable(lsp)
+        vim.lsp.config(lsp, {
+            capabilities = capabilities,
+            on_attach = on_attach,
+            settings = {
+              pylsp = {
+                plugins = {
+                  pycodestyle = {
+                    maxLineLength = 200,
+                  },
+                  flake8 = {
+                    maxLineLength = 200,
+                  },
+                  ruff = {
+                    enabled = true,
+                    lineLength = 200,
+                  }
                 }
-              }
-            },
+              },
+            }
           }
-        }
+        )
       end
 
       local runtime_path = vim.split(package.path, ';')
       table.insert(runtime_path, 'lua/?.lua')
       table.insert(runtime_path, 'lua/?/init.lua')
-      require('lspconfig').lua_ls.setup {
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = {
-          Lua = {
-            runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT)
-              version = 'LuaJIT',
-              -- Setup your lua path
-              path = runtime_path,
+      vim.lsp.enable("lua_ls")
+      vim.lsp.config("lua_ls", {
+          capabilities = capabilities,
+          on_attach = on_attach,
+          settings = { Lua = {
+              runtime = {
+                -- Tell the language server which version of Lua you're using (most likely LuaJIT)
+                version = 'LuaJIT',
+                -- Setup your lua path
+                path = runtime_path,
+              },
+              diagnostics = {
+                globals = { 'vim' },
+              },
+              workspace = { library = vim.api.nvim_get_runtime_file('', true) },
+              -- Do not send telemetry data containing a randomized but unique identifier
+              telemetry = { enable = false },
             },
-            diagnostics = {
-              globals = { 'vim' },
-            },
-            workspace = { library = vim.api.nvim_get_runtime_file('', true) },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = { enable = false },
           },
-        },
-      }
+        }
+      )
     end,
   },
 }
