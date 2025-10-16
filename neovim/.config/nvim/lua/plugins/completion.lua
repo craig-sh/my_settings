@@ -43,14 +43,14 @@ return {
                 text = function(ctx)
                   local icon = ctx.kind_icon
                   if vim.tbl_contains({ "Path" }, ctx.source_name) then
-                      local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-                      if dev_icon then
-                          icon = dev_icon
-                      end
+                    local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
+                    if dev_icon then
+                      icon = dev_icon
+                    end
                   else
-                      icon = require("lspkind").symbolic(ctx.kind, {
-                          mode = "symbol",
-                      })
+                    icon = require("lspkind").symbolic(ctx.kind, {
+                      mode = "symbol",
+                    })
                   end
 
                   return icon .. ctx.icon_gap
@@ -69,8 +69,20 @@ return {
                   end
                   return hl
                 end,
-              }
-            }
+              },
+              source_name = {
+                width = { max = 30 },
+                text = function(ctx)
+                  return "[" .. ctx.source_name .. "]"
+                end,
+                highlight = "BlinkCmpSource",
+              },
+            },
+            columns = {
+              { "label",      "label_description", gap = 1 },
+              { "kind_icon",  "kind" },
+              { "source_name" }
+            },
           }
         }
       },
@@ -81,7 +93,7 @@ return {
       -- elsewhere in your config, without redefining it, due to `opts_extend`
       sources = {
         --default = { 'lsp', 'path', 'snippets', 'buffer', 'tmux' },
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'tmux'},
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'tmux' },
         providers = {
           tmux = {
             module = "blink-cmp-tmux",
@@ -90,9 +102,8 @@ return {
             opts = {
               all_panes = true,
               capture_history = false,
-              -- only suggest completions from `tmux` if the `trigger_chars` are
-              -- used
-              triggered_only = false,
+              -- only suggest completions from `tmux` if the `trigger_chars` are used
+              triggered_only = true,
               trigger_chars = { "." }
             },
           },
