@@ -22,6 +22,9 @@ in
   sops.secrets.virtnix-tailscale-key = {
     format = "yaml";
   };
+  sops.secrets.restic_password = {
+    format = "yaml";
+  };
   #sops.secrets.carbonarch-syncthing-id = {
   #  format = "yaml";
   #};

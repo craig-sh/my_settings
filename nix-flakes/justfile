@@ -29,6 +29,9 @@ switch-hm target=hostname:
 flake-update:
     nix flake update
 
+flake-update-single input:
+    nix flake update {{input}}
+
 get-age-key server:
     nix shell 'nixpkgs#ssh-to-age' --command  sh -c "ssh-keyscan {{server}} | ssh-to-age"
 
