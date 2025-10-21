@@ -1,52 +1,47 @@
-{...}: {
+{config, ...}: {
   virtualisation.quadlet = {
     containers = {
-      frigate = {
+      jellyfin = {
         autoStart = true;
         unitConfig = {
-          Description = "Frigate";
+          Description = "Jellyfin";
           Wants = "network-online.target nfs-client.target";
           After = "network-online.target nfs-client.target";
         };
 
         containerConfig = {
-          image = "ghcr.io/blakeblackshear/frigate:stable";
+          image = "ghcr.io/jellyfin/jellyfin:10.10.7";
           timezone = "America/Toronto";
           devices = [ "/dev/dri/renderD128" ];
           addGroups = ["keep-groups"];
           publishPorts = [
-            "8971:8971"
-            "8554:8554"
-            "8555:8555/tcp"
-            "8555:8555/udp"
+            "8096:8096/tcp"
+            "7359:7359/udp"
           ];
-          shmSize = "1024m";
           notify=true;
-          podmanArgs=["--privileged"];
-          user = "0";
+          user = "1000"; # Set in beelink-configuration.nix (jellyfin user id). # TODO does this even make sense to run under craig home-manager?
           userns = "keep-id";
-          addCapabilities=["PERFMON"];
-          tmpfses=["/tmp/cache:size=2000m"];
           volumes = [
-            "frigate-config.volume:/config:U,Z"
-            "/mnt/camera/frigate:/media/frigate"
+            "jellyfin-config.volume:/config:U"
+            "jellyfin-cache:/cache:U"
+            "/mnt/movies:/data/movies"
+            "/mnt/tvshows:/data/tvshows"
           ];
           environments={
             LIBVA_DRIVER_NAME="iHD";
             #S6_CMD_WAIT_FOR_SERVICES_MAXTIME="20";
           };
-          networks = [ "host" ];
         };
 
         serviceConfig = {
-          Restart = "always";
+          SuccessExitStatus = "0 143";
           TimeoutStartSec = "infinity";
         };
       };
     };
     volumes = {
-      "frigate-config" = {
-      };
+      "jellyfin-config" = { };
+      "jellyfin-cache" = { };
     };
   };
 }

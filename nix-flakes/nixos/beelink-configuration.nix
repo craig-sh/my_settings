@@ -27,6 +27,7 @@ in
   #boot.kernelPackages = pkgs.linuxPackages_latest;
   nixpkgs.config.allowUnfree = true;
 
+  hardware.firmware = [ pkgs.linux-firmware ];
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
@@ -42,8 +43,17 @@ in
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   # For frigate pod
-  networking.firewall.allowedTCPPorts = [8971 8554 8555 8556];
-  networking.firewall.allowedUDPPorts = [8555];
+  networking.firewall.allowedTCPPorts = [
+    8096 # jellyfin
+    8971 # frigate
+    8554 # frigate
+    8555 # frigate
+    8556 # frigate
+  ];
+  networking.firewall.allowedUDPPorts = [
+    7359 # jellyfin
+    8555 # frigate
+  ];
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -87,6 +97,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.craig = {
     isNormalUser = true;
+    uid = 1000;
     extraGroups = [ "wheel" "video" "render"]; # Enable ‘sudo’ for the user. video/render is for hwaccell for rootless containers
     # Quadlets
     # required for auto start before user login
@@ -94,6 +105,19 @@ in
     # required for rootless container with multiple users
     autoSubUidGidRange = true;
   };
+
+  #users.users.jellyfin = {
+  #  isSystemUser = true;
+  #  uid = 1100;
+  #  extraGroups = ["video" "render"]; # video/render is for hwaccell for rootless containers
+  #  group =  "funmedia";
+  #  # Quadlets
+  #  # required for auto start before user login
+  #  linger = true;
+  #  # required for rootless container with multiple users
+  #  autoSubUidGidRange = true;
+  #};
+  #users.groups.funmedia = {};
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -104,6 +128,12 @@ in
     age
     sops
     nfs-utils
+
+    # hardwarde transcoding
+    intel-compute-runtime-legacy1
+    intel-gmmlib
+    pciutils
+
   ];
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables = {
@@ -160,6 +190,7 @@ in
   security.sudo.extraConfig = ''
     Defaults        timestamp_timeout=3600
   '';
+  virtualisation.quadlet.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

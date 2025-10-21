@@ -12,6 +12,11 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelPackages = pkgs.linuxPackages_6_6;
   boot.kernelModules = [ "kvm-intel" ];
+  # GPU transcoding
+  boot.kernelParams = [
+    "i915.enable_guc=2"
+  ];
+
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
@@ -27,6 +32,14 @@
 
   fileSystems."/mnt/camera" = {
     device = "trunas.localdomain:/mnt/mediapool/camera ";
+    fsType = "nfs";
+  };
+  fileSystems."/mnt/movies" = {
+    device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/movies";
+    fsType = "nfs";
+  };
+  fileSystems."/mnt/tvshows" = {
+    device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/tvshows";
     fsType = "nfs";
   };
 

@@ -4,5 +4,6 @@
   imports = [
     inputs.quadlet-nix.homeManagerModules.quadlet
     ./programs/frigate.nix
+    #./programs/jellyfin.nix
   ];
 }
