@@ -12,7 +12,20 @@ in
     #./zoneminder.nix
     # ./scrypted.nix
     #./frigate.nix
+    ./beelink-backup.nix
   ];
+
+  # load the secrets needed by this system
+  sops.secrets.restic_password = {
+    format = "yaml";
+  };
+
+  sops.secrets.oracle_vm_ssh_key = {
+    format = "yaml";
+  };
+  sops.secrets.healthcheck_key = {
+    format = "yaml";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;

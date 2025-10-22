@@ -9,6 +9,20 @@ in
 {
   imports = [ ];
 
+  # load the secrets needed by this system
+  sops.secrets.k3s-server-token = {
+    format = "yaml";
+  };
+  sops.secrets.virtnix-tailscale-key = {
+    format = "yaml";
+  };
+  sops.secrets.restic_password = {
+    format = "yaml";
+  };
+  sops.secrets.healthcheck_key = {
+    format = "yaml";
+  };
+
   #### Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
