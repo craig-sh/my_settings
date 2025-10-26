@@ -4,20 +4,21 @@
   imports = [
     ./desktop-base-configuration.nix
     ./wayland.nix
-    ./x11.nix
+    #./x11.nix
     ./qtile.nix
     ./kde.nix
     ./gaming.nix
     ./sunshine.nix
-    ./ai.nix
+    #./ai.nix
     ./podman.nix
     #./gpu_passthrough.nix
+    ./hyprland.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelModules = ["i2c-dev"];
   boot.supportedFilesystems = [ "ntfs" ];
   hardware.i2c.enable = true;

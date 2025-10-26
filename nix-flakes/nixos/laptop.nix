@@ -2,11 +2,11 @@
 {
 
   imports = [
-    ./x11-keyboard-emulation.nix
+    ./generic-key-remapping.nix
     ./tailscale.nix
   ];
   # Dont auto start sshd on laptops
-  systemd.services.sshd.wantedBy = lib.mkForce [ ];
+  #systemd.services.sshd.wantedBy = lib.mkForce [ ];
   services.libinput.enable = true;
   powerManagement.enable = true;
   services.thermald.enable = true;

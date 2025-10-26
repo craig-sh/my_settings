@@ -12,6 +12,7 @@
     extraPackages = [
       pkgs.nixd
       pkgs.imagemagick
+      pkgs.nixfmt-rfc-style
     ];
   };
 

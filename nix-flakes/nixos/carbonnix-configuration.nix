@@ -9,6 +9,7 @@
     ./desktop-base-configuration.nix
     ./x11.nix
     ./laptop.nix
+    ./hyprland.nix
   ];
 
       #      (_: { nixpkgs.overlays = [ qtile-flake.overlays.default ]; })

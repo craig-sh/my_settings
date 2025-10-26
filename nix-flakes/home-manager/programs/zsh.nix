@@ -139,13 +139,13 @@
       ls = "${pkgs.eza}/bin/eza --colour=auto";
       ll = "ls -la";
       vim = "nvim";
-      yy = "xclip -selection clipboard";
-      yi = " tr -d '\n' | xclip -selection clipboard";
+      yy = "wl-copy";
+      yi = " tr -d '\n' | wl-copy";
       diskspace = "sudo ncdu -x /";
       goorg="cd ~/Documents/org && vim .";
       gonix = ''cd ''${HOME}/my_settings/nix-flakes '';
       eqt = ''vim ''${HOME}/my_settings/nix-flakes/home-manager/programs/qtile/config.py'';
-      screenshot = "scrot --select - | xclip -selection clipboard -t image/png -i &";
+      screenshot = "scrot --select - | wl-copy";
     };
 
     sessionVariables = {

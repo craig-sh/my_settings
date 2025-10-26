@@ -128,6 +128,8 @@ in
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.fwupd.enable = true;
+  # Automount disks
+  services.udisks2.enable = true;
 
   security.pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
   security.sudo.extraConfig = ''
