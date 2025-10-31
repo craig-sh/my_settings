@@ -1,7 +1,5 @@
-{ config, pkgs, lib, inputs, ... }:
-
+{ pkgs, ... }:
 {
-
   nixpkgs.config.allowUnfree = true;
 
   programs = {
@@ -12,6 +10,12 @@
       enable = true;
     };
     firefox = {
+      enable = true;
+    };
+  };
+
+  services = {
+    dunst = {
       enable = true;
     };
   };
@@ -28,28 +32,41 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".config/kitty" = {source = programs/kitty; recursive = true;};
-    ".config/rofi" = {source = programs/rofi; recursive = true;};
-    ".config/qtile" = {source = programs/qtile; recursive = true;};
+    ".config/kitty" = {
+      source = programs/kitty;
+      recursive = true;
+    };
+    ".config/rofi" = {
+      source = programs/rofi;
+      recursive = true;
+    };
+    ".config/qtile" = {
+      source = programs/qtile;
+      recursive = true;
+    };
+    ".config/dunst" = {
+      source = programs/dunst;
+      recursive = true;
+    };
   };
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
     };
     "org/gnome/meld" = {
-      custom-font="FantasqueSansM Nerd Font Mono 12";
-      enable-space-drawer=true;
-      highlight-current-line=true;
-      highlight-syntax=true;
-      indent-width=4;
-      insert-spaces-instead-of-tabs=true;
-      prefer-dark-theme=true;
-      show-line-numbers=true;
-      style-scheme="meld-dark";
-      use-system-font=false;
-      wrap-mode="none";
+      custom-font = "FantasqueSansM Nerd Font Mono 12";
+      enable-space-drawer = true;
+      highlight-current-line = true;
+      highlight-syntax = true;
+      indent-width = 4;
+      insert-spaces-instead-of-tabs = true;
+      prefer-dark-theme = true;
+      show-line-numbers = true;
+      style-scheme = "meld-dark";
+      use-system-font = false;
+      wrap-mode = "none";
     };
   };
 }

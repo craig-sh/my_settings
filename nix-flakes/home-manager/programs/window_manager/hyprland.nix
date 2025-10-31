@@ -11,24 +11,11 @@ let
 in
 {
 
-  services = {
-    dunst = {
-      enable = true;
-    };
-  };
-
-  home.file = {
-    ".config/dunst" = {
-      source = ../dunst;
-      recursive = true;
-    };
-  };
   home.packages = with pkgs; [
     playerctl
     grimblast
     hyprpaper
     hyprlock
-    simp1e-cursors
     hyprpolkitagent
     wayvnc
     wl-clipboard

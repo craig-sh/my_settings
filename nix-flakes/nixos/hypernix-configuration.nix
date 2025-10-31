@@ -4,15 +4,16 @@
   imports = [
     ./desktop-base-configuration.nix
     ./wayland.nix
-    #./x11.nix
     ./qtile.nix
-    ./kde.nix
     ./gaming.nix
     ./sunshine.nix
-    #./ai.nix
     ./podman.nix
-    #./gpu_passthrough.nix
     ./hyprland.nix
+    #./ai.nix
+    #./gpu_passthrough.nix
+    #./x11.nix
+    #./kde.nix
+    #./vr.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -28,13 +29,6 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
   networking.interfaces.eno1.wakeOnLan.enable = true;
-  #networking.extraHosts =
-  #''
-  #  127.0.0.1 beelink.localdomain
-  #'';
-
-  #services.displayManager.autoLogin.enable = true;
-  #services.displayManager.autoLogin.user = "craig";
 
   environment.systemPackages = [
     pkgs.ddcutil
@@ -46,7 +40,7 @@
     ACTION=="add", SUBSYSTEM=="pci", DRIVERS=="pcieport", ATTR{power/wakeup}="disabled"
     ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{power/wakeup}="disabled"
   '';
-  services.logind.powerKey = "suspend";
+  services.logind.settings.Login.HandlePowerKey = "suspend";
   services.xserver.deviceSection = ''
       Option "VariableRefresh" "true"
       Option "AsyncFlipSecondaries" "true"
@@ -56,22 +50,6 @@
 
   networking.firewall.allowedTCPPorts = [ 27036 27037 ];
   networking.firewall.allowedUDPPorts = [ 27031 27036 ];
-
-  # VR https://wiki.nixos.org/wiki/VR
-  services.monado = {
-    enable = true;
-    defaultRuntime = true; # Register as default OpenXR runtime
-  };
-  systemd.user.services.monado.environment = {
-    STEAMVR_LH_ENABLE = "1";
-    XRT_COMPOSITOR_COMPUTE = "1";
-    WMR_HANDTRACKING = "0"; # disable handtrackiong for now
-  };
-
-  programs.envision = {
-    enable = true;
-    openFirewall = false; # This is set true by default
-  };
 
 
 }
