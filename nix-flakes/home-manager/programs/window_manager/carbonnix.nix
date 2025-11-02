@@ -3,9 +3,23 @@
   programs.waybar = {
     settings = {
       mainBar = {
-        modules-left = [ "hyprland/workspaces" "hyprland/window" ];
-        modules-center = [];
-        modules-right = [ "battery" "backlight" "network" "memory" "cpu" "pulseaudio" "clock" "tray" ];
+        modules-left = [
+          "hyprland/workspaces"
+          "hyprland/window"
+        ];
+        modules-center = [ ];
+        modules-right = [
+          "battery"
+          "backlight"
+          "network"
+          "disk"
+          "memory"
+          "cpu"
+          "temperature"
+          "pulseaudio"
+          "clock"
+          "tray"
+        ];
       };
     };
   };

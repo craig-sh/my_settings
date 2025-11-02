@@ -10,8 +10,6 @@
         ];
         modules-center = [ ];
         modules-right = [
-          "battery"
-          "backlight"
           "network"
           "disk"
           "memory"
