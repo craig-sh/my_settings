@@ -1,6 +1,9 @@
 { pkgs, ... }:
 
 {
+  imports = [
+    ./programs/git.nix
+  ];
   programs.zsh = {
     shellAliases = {
       kubectl = "sudo k3s kubectl";

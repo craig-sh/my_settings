@@ -3,7 +3,6 @@
 {
   imports = [
     ./programs/starship.nix
-    ./programs/git.nix
     ./programs/tmux.nix
     ./programs/zsh.nix
     ./programs/neovim.nix

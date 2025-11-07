@@ -2,6 +2,10 @@
 { pkgs, ... }:
 
 {
+
+  imports = [
+    ./programs/git_unstable.nix
+  ];
   home.packages = [
     pkgs.nerd-fonts.fantasque-sans-mono
   ];
