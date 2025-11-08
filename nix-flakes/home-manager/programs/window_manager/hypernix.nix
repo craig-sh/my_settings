@@ -10,6 +10,7 @@
         ];
         modules-center = [ ];
         modules-right = [
+          "custom/spotify"
           "network"
           "disk"
           "memory"

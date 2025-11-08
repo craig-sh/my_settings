@@ -1,9 +1,21 @@
 { config, pkgs, ... }:
+let
+  mediaStatus = pkgs.writeShellScriptBin "mediastatus" ''
+    # From https://github.com/Alexays/Waybar/issues/34
+    player_status=$(playerctl status 2> /dev/null)
+    if [ "$player_status" = "Playing" ]; then
+        echo "󰝚 $(playerctl metadata artist) - $(playerctl metadata title)"
+    elif [ "$player_status" = "Paused" ]; then
+        echo " $(playerctl metadata artist) - $(playerctl metadata title)"
+    fi
+  '';
+in
 {
   home.packages = with pkgs; [
     waybar
     pavucontrol # For pulseaudio control
     networkmanagerapplet # For network management
+    mediaStatus # Custom spotify
   ];
 
   programs.waybar = {
@@ -13,7 +25,7 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 30;
+        height = 26;
 
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -45,7 +57,7 @@
         };
 
         clock = {
-          format = "{:%H:%M}";
+          format = "{:%Y-%m-%d\n   %H:%M}";
           format-alt = "{:%Y-%m-%d}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
@@ -57,6 +69,7 @@
 
         memory = {
           format = " {}%";
+          interval = 30;
         };
         disk = {
           interval = 30;
@@ -89,6 +102,7 @@
           format-ethernet = "󰱓 {bandwidthDownBytes}\n  {bandwidthUpBytes}";
           format-disconnected = "󰖪 Disconnected";
           tooltip-format = "{ifname}: {ipaddr}";
+          interval = 5;
         };
 
         pulseaudio = {
@@ -119,6 +133,13 @@
         tray = {
           icon-size = 21;
           spacing = 10;
+        };
+        "custom/spotify" = {
+            format = " {}";
+            max-length= 40;
+            exec = "mediastatus";
+            exec-if= "pgrep spotify";
+            interval = 5;
         };
       };
     };

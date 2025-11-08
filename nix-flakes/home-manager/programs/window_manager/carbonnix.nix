@@ -9,6 +9,7 @@
         ];
         modules-center = [ ];
         modules-right = [
+          "custom/spotify"
           "battery"
           "backlight"
           "network"

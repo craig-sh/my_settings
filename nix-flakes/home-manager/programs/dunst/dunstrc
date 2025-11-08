@@ -1,5 +1,5 @@
 [global]
-    font =  FantasqueSansM Nerd Font Mono 13
+    font =  FantasqueSansM Nerd Font Mono 12
 
     # Allow a small subset of html markup:
     #   <b>bold</b>
@@ -187,7 +187,7 @@ frame_color = "#1e66f5"
 separator_color= frame
 
 [urgency_low]
-background = "#eff1f5"
+background = "#B5E8A4"
 foreground = "#4c4f69"
 
 [urgency_normal]
