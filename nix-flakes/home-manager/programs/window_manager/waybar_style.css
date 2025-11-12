@@ -1,3 +1,5 @@
+@import "catppuccin.css";
+
 * {
     border: none;
     border-radius: 0px;
@@ -10,9 +12,9 @@
 
 window#waybar {
     font-family: inherit;
-    background: @theme_base_color;
-    border-bottom: 1px solid @unfocused_borders;
-    color: @theme_text_color;
+    background: @base;
+    border-bottom: 1px solid @crust;
+    color: @surface0;
 }
 
 window#waybar.hidden {
@@ -21,38 +23,38 @@ window#waybar.hidden {
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces {
     border-radius: 8px;
-    background: rgba(92,99,112, 0.85);
+    background: @surface2;
     transition: none;
     padding-right: 2px;
 }
 
 #workspaces button {
     transition: none;
-    color:      rgba(217, 216, 216, 0.4);
+    color:      @rosewater;
 }
 
 #workspaces button.visible {
-    color:      rgba(217, 216, 216, 1);
+    color:      @flamingo;
 }
 
 #workspaces button.active {
-    border-bottom: 3px solid #9aedfe;
+    border-bottom: 3px solid @sky;
     transition: none;
     box-shadow: inherit;
     text-shadow: inherit;
-    color: #ff79c6;
+    color: @red;
 }
 
 #workspaces button:hover {
-    border-top: 3px solid #ff79c6;
+    border-top: 3px solid @maroon;
     transition: none;
     box-shadow: inherit;
     text-shadow: inherit;
-    color: #ff79c6;
+    color: @overlay1;
 }
 
 #workspaces button.urgent {
-    color:      rgba(238, 46, 36, 1);
+    color:      @yellow;
 }
 
 #window {

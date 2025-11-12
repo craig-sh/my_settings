@@ -5,6 +5,7 @@
     ./common.nix
     ./common_unstable.nix
     ./gui.nix
+    ./catppuccin.nix
     #./x11gui.nix
     ./programs/neovim_git.nix
     ./programs/window_manager/hyprland.nix
