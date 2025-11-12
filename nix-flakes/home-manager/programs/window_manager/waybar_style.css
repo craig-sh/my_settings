@@ -58,44 +58,40 @@ window#waybar.hidden {
 }
 
 #window {
-    color: #61A84C;
+    color: @flamingo;
     font-size: 12px;
     padding-left: 4px;
 }
 
 #mode {
-    background: #64727D;
+    background: @surface2;
     border-bottom: 3px solid #ffffff;
 }
 
 #clock, #battery, #cpu, #memory, #temperature, #backlight, #disk, #network, #pulseaudio, #custom-spotify, #tray, #mode, #idle_inhibitor {
     padding: 0 5px;
     margin: 0 0px;
-    color: #000000;
-}
-
-#clock {
-    background-color: #c678dd;
+    color: @crust;
 }
 
 #battery {
-    background-color: #528bff;
+    background-color: @pink;
 }
 
 #battery.charging {
-    background-color: #528bff;
-    color: #5CE65C;
+    background-color: @blue;
+    color: @green;
 }
 
 @keyframes blink {
     to {
-        background-color: #ffffff;
-        color: #000000;
+        background-color: @red;
+        color: @crust;
     }
 }
 
 #battery.critical:not(.charging) {
-    background: #528bff;
+    background: @blue;
     color: #ffffff;
     animation-name: blink;
     animation-duration: 0.5s;
@@ -104,64 +100,56 @@ window#waybar.hidden {
     animation-direction: alternate;
 }
 
-#disk {
-    background: #b2d8d8;
-}
-
-#memory {
-    background: #66b2b2;
-}
-
-#cpu {
-    background: #008080;
-}
-
-#temperature {
-    background: #008080;
-}
-
 #backlight {
-    background: #90b1b1;
-}
-
-#custom-spotify {
-    background: #57C84D;
+    background: @rosewater;
 }
 
 #network {
-    background: #98c379;
+    background: @green;
     font-size: 12px;
 }
+
+#disk {
+    background: @teal;
+}
+
+#memory {
+    background: @yellow;
+}
+
+#cpu {
+    background: @peach;
+}
+
+#temperature {
+    background: @peach;
+}
+
+
+#custom-spotify {
+    background: @green;
+}
+
 
 #network.disconnected {
     background: #ffffff;
 }
 
-
 #pulseaudio {
-    background: #61afef;
+    background: @mauve;
 }
 
 #pulseaudio.muted {
     background: #ffffff;
-    color: #2a5c45;
+    color: @red;
 }
 
-#custom-media {
-    background: #66cc99;
-    color: #2a5c45;
+#clock {
+    background-color: @teal;
 }
 
 .custom-spotify {
-    background: #66cc99;
-}
-
-.custom-vlc {
-    background: #ffa000;
-}
-
-#temperature {
-    background: #f0932b;
+    background: @green;
 }
 
 #temperature.critical {
@@ -169,7 +157,7 @@ window#waybar.hidden {
 }
 
 #tray {
-    background-color: #2980b9;
+    background-color: @blue;
 }
 
 #idle_inhibitor {
