@@ -10,7 +10,7 @@
         };
 
         containerConfig = {
-          image = "ghcr.io/blakeblackshear/frigate:stable";
+          image = "ghcr.io/blakeblackshear/frigate:0.16.2";
           timezone = "America/Toronto";
           devices = [ "/dev/dri/renderD128" ];
           addGroups = ["keep-groups"];

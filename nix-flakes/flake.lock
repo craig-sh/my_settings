@@ -83,11 +83,11 @@
     "mysecrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1761089615,
-        "narHash": "sha256-Q9GzG6Jq4sr+JPeVPdMMZDqcbxGyBlmTFF8LGiCFzIU=",
+        "lastModified": 1762909106,
+        "narHash": "sha256-e6LoPAdz6UNXWWLWELr00FBOTbtRDAyveo0lxtLCkG8=",
         "ref": "refs/heads/main",
-        "rev": "cd71c540ac99931eee9e51a965b10ade5a3704b2",
-        "revCount": 4,
+        "rev": "b174490540342d2a7f635a49be2925ccafd9e0a6",
+        "revCount": 5,
         "type": "git",
         "url": "file:/home/craig/private/secrets"
       },

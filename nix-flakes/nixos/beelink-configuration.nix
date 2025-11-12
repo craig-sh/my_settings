@@ -13,6 +13,7 @@ in
     # ./scrypted.nix
     #./frigate.nix
     ./beelink-backup.nix
+    ./caddy.nix
   ];
 
   # load the secrets needed by this system
@@ -25,6 +26,14 @@ in
   };
   sops.secrets.healthcheck_key = {
     format = "yaml";
+  };
+  sops.secrets.ca_pub_cert = {
+    format = "yaml";
+    owner = config.systemd.services.caddy.serviceConfig.User;
+  };
+  sops.secrets.ca_cert_key = {
+    format = "yaml";
+    owner = config.systemd.services.caddy.serviceConfig.User;
   };
 
   # Use the systemd-boot EFI boot loader.
