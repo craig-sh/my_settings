@@ -34,7 +34,9 @@ in
             {
               #do = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.disable";
               #undo = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.enable  output.DP-3.position.1707,0  output.HDMI-A-1.position.0,0";
-              do = "${pkgs.hyprland}/bin/hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12;${pkgs.hyprland}/bin/hyprctl dispatch workspace 8";
+              #do = "${pkgs.hyprland}/bin/hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12;${pkgs.hyprland}/bin/hyprctl dispatch workspace 8";
+              #disable HDR for now its not getting picked up by moonlight
+              do = "${pkgs.hyprland}/bin/hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1,bitdepth,10;${pkgs.hyprland}/bin/hyprctl dispatch workspace 8";
               undo = "${pkgs.hyprland}/bin/hyprctl reload";
             }
           ];

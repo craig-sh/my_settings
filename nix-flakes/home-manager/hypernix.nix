@@ -5,6 +5,7 @@
     ./common.nix
     ./common_unstable.nix
     ./gui.nix
+    ./catppuccin.nix
     ./waylandgui.nix
     ./programs/neovim_git.nix
     ./gaming.nix
