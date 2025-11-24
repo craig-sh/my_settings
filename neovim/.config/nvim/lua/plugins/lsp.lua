@@ -69,7 +69,7 @@ return {
       end
 
 
-      local servers = { "hls", "basedpyright", "rust_analyzer", "bashls", "volar", "ansiblels", "nixd", "ruff" }
+      local servers = { "hls", "basedpyright", "rust_analyzer", "bashls", "ansiblels", "nixd", "ruff" }
       for _, lsp in ipairs(servers) do
         vim.lsp.enable(lsp)
         vim.lsp.config(lsp, {
