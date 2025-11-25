@@ -1,5 +1,7 @@
-{...}: {
+{inputs, ...}: {
+  imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
   virtualisation.quadlet = {
+    enable = true;
     containers = {
       frigate = {
         autoStart = true;
@@ -21,7 +23,6 @@
             "8555:8555/udp"
           ];
           shmSize = "1024m";
-          notify=true;
           podmanArgs=["--privileged"];
           user = "0";
           userns = "keep-id";
@@ -40,7 +41,6 @@
 
         serviceConfig = {
           Restart = "always";
-          TimeoutStartSec = "infinity";
         };
       };
     };

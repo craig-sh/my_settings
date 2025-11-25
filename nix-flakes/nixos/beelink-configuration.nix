@@ -21,19 +21,56 @@ in
     format = "yaml";
   };
 
-  sops.secrets.oracle_vm_ssh_key = {
-    format = "yaml";
+  sops.secrets = {
+    oracle_vm_ssh_key = {
+      format = "yaml";
+    };
+    healthcheck_key = {
+        format = "yaml";
+    };
+    ca_pub_cert = {
+      format = "yaml";
+      owner = config.systemd.services.caddy.serviceConfig.User;
+    };
+    ca_cert_key = {
+      format = "yaml";
+      owner = config.systemd.services.caddy.serviceConfig.User;
+    };
+
+    gf-redis-pw = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    gf-pg-pw = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    gf-gf-salt = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    gf-gf-jwt = {
+      format = "yaml";
+      owner = "conrun";
+    };
   };
-  sops.secrets.healthcheck_key = {
-    format = "yaml";
-  };
-  sops.secrets.ca_pub_cert = {
-    format = "yaml";
-    owner = config.systemd.services.caddy.serviceConfig.User;
-  };
-  sops.secrets.ca_cert_key = {
-    format = "yaml";
-    owner = config.systemd.services.caddy.serviceConfig.User;
+  # TODO move this to home manager config?
+  #  Do not double qoute below strings. This is passed to systemd enviornment not regular bash env!!!!!
+  sops.templates."ghostfolio.env" = {
+    content = ''
+      REDIS_HOST=gfredis
+      REDIS_PORT=6379
+      REDIS_PASSWORD=${config.sops.placeholder.gf-redis-pw}
+
+      POSTGRES_USER=pguser
+      POSTGRES_DB=ghostfolio-db
+      POSTGRES_PASSWORD=${config.sops.placeholder.gf-pg-pw}
+
+      ACCESS_TOKEN_SALT=${config.sops.placeholder.gf-gf-salt}
+      DATABASE_URL=postgresql://pguser:${config.sops.placeholder.gf-pg-pw}@gfpostgres:5432/ghostfolio-db?connect_timeout=300&sslmode=prefer
+      JWT_SECRET_KEY=${config.sops.placeholder.gf-gf-jwt}
+    '';
+    owner = "conrun";
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -121,6 +158,18 @@ in
     isNormalUser = true;
     uid = 1000;
     extraGroups = [ "wheel" "video" "render"]; # Enable ‘sudo’ for the user. video/render is for hwaccell for rootless containers
+    # Quadlets
+    # required for auto start before user login
+    linger = true;
+    # required for rootless container with multiple users
+    autoSubUidGidRange = true;
+  };
+
+  users.users.conrun = {
+    isNormalUser = true;
+    uid = 1010;
+    #extraGroups = ["video" "render"]; # video/render is for hwaccell for rootless containers
+    #group =  "funmedia";
     # Quadlets
     # required for auto start before user login
     linger = true;

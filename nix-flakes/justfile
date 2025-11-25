@@ -25,6 +25,7 @@ old-switch-hm target=hostname:
 
 switch-hm target=hostname:
     nh home switch . -c craig@{{target}}
+    #[ "{{target}}" = "beelink" ] && nh home switch . -c conrun@{{target}}
 
 flake-update:
     nix flake update

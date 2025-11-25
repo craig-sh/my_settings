@@ -2,15 +2,14 @@
 
 {
   imports = [
-    ./programs/starship.nix
-    ./programs/tmux.nix
-    ./programs/zsh.nix
-    ./programs/neovim.nix
+    inputs.sops-nix.homeManagerModules.sops
+    inputs.quadlet-nix.homeManagerModules.quadlet
+    ./programs/ghostfolio.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "craig";
-  home.homeDirectory = "/home/craig";
+  home.username = "conrun";
+  home.homeDirectory = "/home/conrun";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -27,61 +26,9 @@
   # Packages to install
   home.packages = [
     pkgs.zsh
-    pkgs.ripgrep
-    # todo integrate with zsh
-    pkgs.eza
-    pkgs.kubernetes-helm
-    pkgs.just
-    pkgs.kubectl
-    pkgs.ruff
-    pkgs.basedpyright
-    (pkgs.python313.withPackages (ppkgs: [
-      ppkgs.mypy
-      ppkgs.python-lsp-server
-      ppkgs.pylsp-mypy
-      ppkgs.python-lsp-ruff
-    ]))
-    pkgs.nixpkgs-fmt
-    pkgs.gcc # For neovim treesitter to compile parsers
-    pkgs.btop
-    pkgs.htop
-    pkgs.fd
-    pkgs.nodePackages.bash-language-server
-    pkgs.lua-language-server
-    pkgs.nodejs_24
-    pkgs.devenv
-    pkgs.cachix
   ];
 
-  programs = {
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-      tmux = {
-        enableShellIntegration = true;
-      };
-    };
-    dircolors = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    bat.enable = true;
-    k9s.enable = true;
-    direnv = {
-      enable = true;
-      enableZshIntegration = true;
-      nix-direnv.enable = true;
-    };
-    lazygit = {
-      enable = true;
-    };
-    nh = {
-      enable = true;
-      clean.enable = true;
-      clean.extraArgs = "--keep-since 4d --keep 3";
-      flake = "/home/craig/my_settings/nix-flakes/flake.nix";
-    };
-  };
+  programs = { };
 
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -106,7 +53,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-### TODO???
   #nix = {
   #  package = pkgs.nix;
   #  settings.experimental-features = ["nix-command" "flakes" ];

@@ -26,6 +26,17 @@
           reverse_proxy http://localhost:8971
         '';
       };
+      "ghostfolio.localdomain" = {
+        serverAliases = [ "www.ghostfolio.localdomain" ];
+        extraConfig = ''
+          tls {
+            issuer internal {
+              ca local
+            }
+          }
+          reverse_proxy http://localhost:3333
+        '';
+      };
     };
   };
 }
