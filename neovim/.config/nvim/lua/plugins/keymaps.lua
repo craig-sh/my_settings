@@ -43,7 +43,7 @@ return {
             end,
             desc = "Edit nix files"
           },
-          { '<F3>',               '::NvimTreeFindFileToggle<CR>',                 desc = 'Tree finder' },
+          { '<F3>',               ':NvimTreeFindFileToggle<CR>',                  desc = 'Tree finder' },
           { '<leader>cf',         [[:let @+=expand("%")<CR>]],                    desc = 'Copy relative path of file', },
           { '<leader>pwd',        ':! pwd<CR>',                                   desc = 'Print the pwd', },
           { '<leader>ss',         ':syntax sync fromstart<CR>',                   desc = 'Resync syntax', },
