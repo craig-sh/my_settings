@@ -23,9 +23,9 @@ switch-os-dry-run:
 old-switch-hm target=hostname:
     home-manager switch --flake .#craig@{{target}}
 
+#[ "{{target}}" = "beelink" ] && nh home switch . -c conrun@{{target}}
 switch-hm target=hostname:
     nh home switch . -c craig@{{target}}
-    #[ "{{target}}" = "beelink" ] && nh home switch . -c conrun@{{target}}
 
 flake-update:
     nix flake update
