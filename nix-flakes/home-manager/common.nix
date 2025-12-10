@@ -6,6 +6,7 @@
     ./programs/tmux.nix
     ./programs/zsh.nix
     ./programs/neovim.nix
+    ./programs/git.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -42,6 +43,7 @@
       ppkgs.python-lsp-ruff
     ]))
     pkgs.nixpkgs-fmt
+    pkgs.nerd-fonts.fantasque-sans-mono
     pkgs.gcc # For neovim treesitter to compile parsers
     pkgs.btop
     pkgs.htop
