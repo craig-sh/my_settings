@@ -135,11 +135,20 @@ in
           spacing = 10;
         };
         "custom/spotify" = {
-            format = " {}";
-            max-length= 40;
-            exec = "mediastatus";
-            exec-if= "pgrep spotify";
-            interval = 5;
+          format = " {}";
+          max-length = 40;
+          exec = "mediastatus";
+          exec-if = "pgrep spotify";
+          interval = 5;
+        };
+        "wlr/taskbar" = {
+          "format" = "{icon}";
+          "icon-size" = 16;
+          "tooltip-format" = "{title}";
+          "on-click" = "activate";
+          "on-click-middle" = "close";
+          "ignore-list" = [ ];
+          "all-outputs" = false;
         };
       };
     };
