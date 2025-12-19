@@ -35,7 +35,7 @@
     pkgs.just
     pkgs.kubectl
     pkgs.ruff
-    pkgs.basedpyright
+    pkgs.ty
     (pkgs.python313.withPackages (ppkgs: [
       ppkgs.mypy
       ppkgs.python-lsp-server
@@ -45,6 +45,7 @@
     pkgs.nixpkgs-fmt
     pkgs.nerd-fonts.fantasque-sans-mono
     pkgs.gcc # For neovim treesitter to compile parsers
+    pkgs.tree-sitter # For neovim treesitter to compile parsers
     pkgs.btop
     pkgs.htop
     pkgs.fd
