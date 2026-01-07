@@ -63,9 +63,6 @@
       # game mode
       "$mainMod CTRL, g, exec, hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12" # game mode
     ];
-    experimental = {
-      xx_color_management_v4 = true;
-    };
     workspace = [
       "1, persistent:true monitor:HDMI-A-1"
       "2, persistent:true monitor:HDMI-A-1"

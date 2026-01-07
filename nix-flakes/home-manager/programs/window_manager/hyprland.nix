@@ -99,19 +99,15 @@ in
     ];
     windowrule = [
       # Gaming rules on workpsace 8
-      "workspace 8, class:^(steam)$"
-      "float, onworkspace:8"
+      "workspace 8, match:class ^(steam)$"
+      "float on, match:workspace 8"
       ################
       ##Special workspace tags###
-      "tag +music, workspace:special:music"
-      "float, workspace:special:music"
-      "tag +org, workspace:speical:org"
-      "float, workspace:special:org"
+      "tag +music, match:workspace special:music"
+      "float on, match:workspace special:music"
+      "tag +org, match:workspace speical:org"
+      "float on, match:workspace special:org"
       #######
-
-      # Fix some dragging issues with XWayland
-      "nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0"
-
     ];
 
     workspace = [
@@ -352,8 +348,8 @@ in
 
     ## https://wiki.hypr.land/Configuring/Variables/#misc
     misc {
-        new_window_takes_over_fullscreen = 1
-        force_default_wallpaper = -1 # Set to 0 or 1 to disable the anime mascot wallpapers
+        on_focus_under_fullscreen = 2
+        force_default_wallpaper = 1 # Set to 0 or 1 to disable the anime mascot wallpapers
         disable_hyprland_logo = false # If true disables the random hyprland logo / anime girl background. :(
     }
 
@@ -389,11 +385,29 @@ in
     # See https://wiki.hypr.land/Configuring/Window-Rules/ for more
     # See https://wiki.hypr.land/Configuring/Workspace-Rules/ for workspace rules
 
-    # Example windowrule
-    # windowrule = float,class:^(kitty)$,title:^(kitty)$
+    # Named window rules here for now. Unsure of how to do this in the home manager setting portion
+    windowrule {
+        # Fix some dragging issues with XWayland
+        name = fix-xwayland-drags
+        match:class = ^$
+        match:title = ^$
+        match:xwayland = true
+        match:float = true
+        match:fullscreen = false
+        match:pin = false
 
-    # Ignore maximize requests from apps. You'll probably like this.
-    #windowrule = suppressevent maximize, class:.*
+        no_focus = true
+    }
+
+    # Hyprland-run windowrule
+    windowrule {
+        name = move-hyprland-run
+
+        match:class = hyprland-run
+
+        move = 20 monitor_h-120
+        float = yes
+    }
 
   '';
 }
