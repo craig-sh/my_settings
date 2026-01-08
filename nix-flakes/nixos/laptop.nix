@@ -8,6 +8,7 @@
   # Dont auto start sshd on laptops
   #systemd.services.sshd.wantedBy = lib.mkForce [ ];
   services.libinput.enable = true;
+  services.blueman.enable = true;
   powerManagement.enable = true;
   services.thermald.enable = true;
   services.tlp = {
@@ -30,6 +31,7 @@
        };
   };
   environment.systemPackages = with pkgs; [ brightnessctl ];
+  hardware.bluetooth.enable = true;
 
 
   systemd.sleep.extraConfig = ''

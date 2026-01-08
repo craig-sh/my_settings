@@ -27,6 +27,7 @@
     pkgs.meld
     pkgs.remmina
     pkgs.udiskie
+    pkgs.vlc
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

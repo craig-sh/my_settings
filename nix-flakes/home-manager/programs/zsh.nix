@@ -146,6 +146,8 @@
       gonix = ''cd ''${HOME}/my_settings/nix-flakes '';
       eqt = ''vim ''${HOME}/my_settings/nix-flakes/home-manager/programs/qtile/config.py'';
       screenshot = "scrot --select - | wl-copy";
+      tailup = "sudo systemctl start tailscaled.service && sudo tailscale up --accept-routes";
+      taildown = "sudo tailscale down && sudo systemctl stop tailscaled.service";
     };
 
     sessionVariables = {
