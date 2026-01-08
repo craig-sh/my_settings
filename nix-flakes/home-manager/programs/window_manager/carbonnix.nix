@@ -13,6 +13,7 @@
           "battery"
           "backlight"
           "network"
+          "custom/tailscale"
           "disk"
           "memory"
           "cpu"

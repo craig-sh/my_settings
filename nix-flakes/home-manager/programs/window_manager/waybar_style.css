@@ -68,14 +68,14 @@ window#waybar.hidden {
     border-bottom: 3px solid #ffffff;
 }
 
-#clock, #battery, #cpu, #memory, #temperature, #backlight, #disk, #network, #pulseaudio, #custom-spotify, #tray, #mode, #idle_inhibitor {
+#clock, #battery, #cpu, #memory, #temperature, #backlight, #disk, #network,#custom-tailscale, #pulseaudio, #custom-spotify, #tray, #mode, #idle_inhibitor {
     padding: 0 5px;
     margin: 0 0px;
     color: @crust;
 }
 
 #battery {
-    background-color: @pink;
+    background-color: @sapphire;
 }
 
 #battery.charging {
@@ -101,16 +101,20 @@ window#waybar.hidden {
 }
 
 #backlight {
-    background: @rosewater;
+    background: @pink;
 }
 
 #network {
     background: @green;
     font-size: 12px;
 }
+#custom-tailscale {
+    background: @red;
+    font-size: 12px;
+}
 
 #disk {
-    background: @teal;
+    background: @blue;
 }
 
 #memory {

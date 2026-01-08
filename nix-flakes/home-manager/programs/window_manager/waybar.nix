@@ -104,6 +104,13 @@ in
           tooltip-format = "{ifname}: {ipaddr}";
           interval = 5;
         };
+        "custom/tailscale" = {
+          exec = "echo '󰒄'";
+          exec-if = "tailscale status";
+          interval = 5;
+          format = "{}";
+          hide-empty-text = true;
+        };
 
         pulseaudio = {
           format = "{icon} {volume}%";
