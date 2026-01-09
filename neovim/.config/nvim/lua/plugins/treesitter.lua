@@ -116,7 +116,7 @@ return {
         group = vim.api.nvim_create_augroup("ts_setup", { clear = true }),
         callback = function(e)
           vim.treesitter.start(e.buf)
-          vim.wo.foldmethod = "expr"
+          -- vim.wo.foldmethod = "expr"
           -- vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
           vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
         end,

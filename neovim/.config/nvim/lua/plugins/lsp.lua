@@ -66,6 +66,8 @@ return {
           },
           { '<leader>ca', mode = { 'n', 'v' }, vim.lsp.buf.code_action, desc = "Code Action" },
         })
+        -- disable highlighting for strings so that our SQL injection takes precedence
+        vim.api.nvim_set_hl(0, "@lsp.type.string.python", {})
       end
 
 

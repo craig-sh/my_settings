@@ -27,14 +27,36 @@
 ;		(#set! injection.combined)
 ;	)
 ;)
+;(
+;  string
+;    (
+;      (string_content)
+;      ( (interpolation) (string_content))*
+;    ) @injection.content
+;    (#match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
+;    (#set! injection.language "sql")
+;    ;(#set! injection.include-children)
+;    ;(#set! injection.combined)
+;)
+
 (
   string
-    (
-      (string_content)
-      ( (interpolation) (string_content))*
-    ) @injection.content
-    (#match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
-    (#set! injection.language "sql")
-    ;(#set! injection.include-children)
-    ;(#set! injection.combined)
+  ((string_content)(interpolation)*)+ @injection.content
+  (#match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
+  (#set! injection.language "sql")
+  ; Increase priority to override semantic highliting from LSP -- doesn't seem to work
+  (#set! priority 130)
 )
+
+
+;(
+;  string
+;    (
+;      (string_content)
+;      ((interpolation)(string_content))*
+;    ) @injection.content
+;    (#match? @injection.content "SELECT|CREATE|WITH|DROP|UPDATE|INSERT")
+;    (#set! injection.language "sql")
+;    (#set! injection.include-children)
+;    ;(#set! injection.combined)
+;)
