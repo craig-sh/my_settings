@@ -1,5 +1,5 @@
 {config, ...}: let
-  version = "2.218.0";
+  version = "2.228.0";
   internalPort = toString 3333;
   servicePort = toString 3333;
   inherit (config.virtualisation.quadlet) pods;
@@ -20,7 +20,7 @@ in {
           pod = pods.ghostfoliopod.ref;
           environmentFiles = ["/run/secrets/rendered/ghostfolio.env"];
           image = "docker.io/ghostfolio/ghostfolio:${version}";
-          timezone = "America/Toronto";
+          #timezone = "America/Toronto";
           dropCapabilities = [ "ALL" ];
           noNewPrivileges = true;
           podmanArgs = [ "--init" ];
@@ -46,14 +46,14 @@ in {
           pod = pods.ghostfoliopod.ref;
           image = "docker.io/library/redis:alpine";
           dropCapabilities = [ "ALL" ];
-          userns = "keep-id:uid=999"; # this is redis user id inside the container
+          #userns = "keep-id:uid=999"; # this is redis user id inside the container
           noNewPrivileges = true;
           environmentFiles = ["/run/secrets/rendered/ghostfolio.env"];
           exec = ''/bin/sh -c 'redis-server --requirepass "''${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"' '';
-          healthCmd = ''redis-cli --pass "''${REDIS_PASSWORD}" ping | grep PONG'';
-          healthInterval = "10s";
-          healthTimeout = "5s";
-          healthRetries = 5;
+          #healthCmd = ''redis-cli --pass "''${REDIS_PASSWORD}" ping | grep PONG'';
+          #healthInterval = "10s";
+          #healthTimeout = "5s";
+          #healthRetries = 5;
           volumes = [ "gf-redis:/data:Z" ];
         };
         unitConfig = {
@@ -73,10 +73,10 @@ in {
           dropCapabilities = [ "ALL" ];
           addCapabilities = [ "CHOWN" "DAC_READ_SEARCH" "FOWNER" "SETGID" "SETUID" ];
           noNewPrivileges = true;
-          healthCmd = ''pg_isready -d "''${POSTGRES_DB}" -U ''${POSTGRES_USER}'';
-          healthInterval = "10s";
-          healthTimeout = "5s";
-          healthRetries = 5;
+          #healthCmd = ''pg_isready -hlocalhost -d "''${POSTGRES_DB}" -U ''${POSTGRES_USER}'';
+          #healthInterval = "10s";
+          #healthTimeout = "5s";
+          #healthRetries = 5;
         };
         unitConfig = {
           Description = "Ghostfolio PostgreSQL Database";

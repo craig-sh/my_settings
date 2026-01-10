@@ -8,7 +8,7 @@
         unitConfig = {
           Description = "Frigate";
           Wants = "network-online.target nfs-client.target";
-          After = "network-online.target nfs-client.target";
+          After = "network-online.target nfs-client.target mnt-camera.mount";
         };
 
         containerConfig = {
