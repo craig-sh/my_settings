@@ -64,7 +64,18 @@ vim.cmd([[ command! W w ]])
 require("lazy").setup({
   spec = {
     -- import your plugins
-    { import = "plugins" },
+    { import = "plugins/utility" },
+    { import = "plugins/code_utility" },
+    { import = "plugins/colorscheme" },
+    { import = "plugins/git" },
+    { import = "plugins/completion" },
+    { import = "plugins/lsp" },
+    { import = "plugins/keymaps" },
+    { import = "plugins/orgmode" },
+    { import = "plugins/snacks" },
+    { import = "plugins/snippets" },
+    { import = "plugins/term" },
+    { import = "plugins/treesitter" },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
