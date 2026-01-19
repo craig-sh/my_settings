@@ -55,7 +55,7 @@ return {
           { '<leader><leader>mp', '::! mypy % --follow-imports=silent<CR> %<CR>', desc = 'mp', },
           { '<leader><leader>pc', ':!pre-commit run --file %<CR>',                desc = 'Run pre-commit on current file', },
           { 'jj',                 '<Esc>',                                        desc = 'Change to normal mode',          mode = 'i',   silent = true },
-          { '<F5>',               [[%s/\s\+$//e]],                                desc = 'Remove trailing white space',    expr = true },
+          { '<F5>',               [[:%s/\s\+$//e]],                               desc = 'Remove trailing white space',    },
           { '<A-k>',              ':wincmd k<CR>',                                desc = 'Window: Move up',                silent = true },
           { '<A-j>',              ':wincmd j<CR>',                                desc = 'Window: Move down',              silent = true },
           { '<A-h>',              ':wincmd h<CR>',                                desc = 'Window: Move left',              silent = true },
