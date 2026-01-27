@@ -12,7 +12,7 @@ return {
   { 'tpope/vim-sleuth' }, --  Indentation settings
   { 'norcalli/nvim-colorizer.lua', opts = {} },
   { 'farmergreg/vim-lastplace' },
-  { 'ggandor/leap.nvim',
+  { url = 'https://codeberg.org/andyg/leap.nvim',
     config = function ()
       -- Highly recommended: define a preview filter to reduce visual noise
       -- and the blinking effect after the first keypress
