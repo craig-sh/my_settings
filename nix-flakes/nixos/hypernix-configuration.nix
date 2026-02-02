@@ -35,10 +35,11 @@
     pkgs.dmidecode
   ];
 
-  # Issues with suspend, disable pci and usbs from waking system...just use the power button
   services.udev.extraRules = ''
+    # Issues with suspend, disable pci and usbs from waking system...just use the power button
     ACTION=="add", SUBSYSTEM=="pci", DRIVERS=="pcieport", ATTR{power/wakeup}="disabled"
-    ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{power/wakeup}="disabled"
+    # blacklist for usb autosuspend. Could be cause of hyprland lockup: https://github.com/hyprwm/Hyprland/issues/2789
+    ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{power/wakeup/autosuspend}="disabled"
   '';
   services.logind.settings.Login.HandlePowerKey = "suspend";
   services.xserver.deviceSection = ''
