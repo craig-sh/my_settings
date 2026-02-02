@@ -2,6 +2,11 @@ return {
   { 'rhysd/git-messenger.vim' },
   { 'sindrets/diffview.nvim' },
   {
+    "esmuellert/codediff.nvim",
+    dependencies = { "MunifTanjim/nui.nvim" },
+    cmd = "CodeDiff",
+  },
+  {
     'lewis6991/gitsigns.nvim',
     opts = {
       on_attach = function(bufnr)

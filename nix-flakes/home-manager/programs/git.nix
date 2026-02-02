@@ -27,17 +27,33 @@
         push = { default = "simple"; };
         color = { ui = "true"; };
         credential = { helper = "cache --timeout=1440"; };
-        merge = { tool = "meld"; };
-        mergetool = {
-          meld = [
-            ''cmd = meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"''
-          ];
+      };
+      difftool = {
+          codediff = {
+            cmd = ''nvim "$LOCAL" "$REMOTE" +"CodeDiff file $LOCAL $REMOTE" '';
+          };
+          meld = {
+            cmd = '' meld "$LOCAL" "$REMOTE" '';
+          };
+      };
+      mergetool = {
+        codediff = {
+          cmd = '' nvim "$MERGED" -c "CodeDiff merge \"$MERGED\"" '';
         };
-        difftool = {
-          prompt = "false";
-          meld = [ ''cmd = meld "$LOCAL" "$REMOTE" ''];
+        meld = {
+          cmd = ''meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';
         };
       };
+      difftool = {
+        prompt = false;
+      };
+      diff = {
+        tool = "meld";
+      };
+      merge = {
+        tool = "meld";
+      };
+
     };
   };
   programs.delta = {
