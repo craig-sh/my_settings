@@ -10,7 +10,7 @@
         ];
         modules-center = [ ];
         modules-right = [
-          "custom/spotify"
+          #"custom/spotify" # This is possibly causing freezing because incorrect IPC communication
           "network"
           "disk"
           "memory"
