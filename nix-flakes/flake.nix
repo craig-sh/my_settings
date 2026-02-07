@@ -82,6 +82,7 @@
       username = "craig";
     in
     {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
       nixosConfigurations = {
         # By default, NixOS will try to refer the nixosConfiguration with
         # its hostname, so the system named `virtnix` will use this one.
@@ -129,8 +130,11 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.craig.imports = [./home-manager/common.nix  ./home-manager/beelink.nix ] ;
-              home-manager.users.conrun.imports = [./home-manager/conrun.nix ] ;
+              home-manager.users.craig.imports = [
+                ./home-manager/common.nix
+                ./home-manager/beelink.nix
+              ];
+              home-manager.users.conrun.imports = [ ./home-manager/conrun.nix ];
               home-manager.extraSpecialArgs = { inherit inputs outputs username; };
             }
             #./nixos/virt-k3s-agent.nix
@@ -206,7 +210,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-             inputs.sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
             ./home-manager/common.nix
             ./home-manager/common_stable.nix
             ./home-manager/virtserver.nix
@@ -216,7 +220,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-             inputs.sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
             ./home-manager/common.nix
             ./home-manager/virtserver.nix
           ];
@@ -225,7 +229,7 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
           modules = [
-             inputs.sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
             ./home-manager/common.nix
             ./home-manager/programs/neovim_git.nix
           ];
@@ -234,7 +238,7 @@
           pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
           modules = [
-             inputs.sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
             ./home-manager/carbonnix.nix
             catppuccin.homeModules.catppuccin
           ];
@@ -243,7 +247,7 @@
           pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
           modules = [
-             inputs.sops-nix.homeManagerModules.sops
+            inputs.sops-nix.homeManagerModules.sops
             ./home-manager/hypernix.nix
             catppuccin.homeModules.catppuccin
           ];
