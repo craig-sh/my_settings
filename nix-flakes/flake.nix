@@ -99,11 +99,11 @@
           system = "x86_64-linux";
           modules = [
             sops-nix.nixosModules.sops
-            ./nixos/sops.nix
-            ./nixos/virt-hardware-configuration.nix
-            ./nixos/virt-base-configuration.nix
-            ./nixos/virt-k3s-controller.nix
-            ./nixos/virt-tailscale.nix
+            ./nixos/services/sops.nix
+            ./nixos/hosts/virt/hardware-configuration.nix
+            ./nixos/hosts/virt/base-configuration.nix
+            ./nixos/hosts/virt/k3s-controller.nix
+            ./nixos/hosts/virt/tailscale.nix
           ];
           specialArgs = { inherit inputs username; };
         };
@@ -111,10 +111,10 @@
           system = "x86_64-linux";
           modules = [
             sops-nix.nixosModules.sops
-            ./nixos/sops.nix
-            ./nixos/virt-hardware-configuration.nix
-            ./nixos/virt-base-configuration.nix
-            ./nixos/virt-k3s-agent.nix
+            ./nixos/services/sops.nix
+            ./nixos/hosts/virt/hardware-configuration.nix
+            ./nixos/hosts/virt/base-configuration.nix
+            ./nixos/hosts/virt/k3s-agent.nix
           ];
           specialArgs = { inherit inputs username; };
         };
@@ -123,9 +123,9 @@
           modules = [
             sops-nix.nixosModules.sops
             quadlet-nix.nixosModules.quadlet
-            ./nixos/sops.nix
-            ./nixos/beelink-hardware-configuration.nix
-            ./nixos/beelink-configuration.nix
+            ./nixos/services/sops.nix
+            ./nixos/hosts/beelink/hardware-configuration.nix
+            ./nixos/hosts/beelink/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -137,7 +137,7 @@
               home-manager.users.conrun.imports = [ ./home-manager/conrun.nix ];
               home-manager.extraSpecialArgs = { inherit inputs outputs username; };
             }
-            #./nixos/virt-k3s-agent.nix
+            #./nixos/hosts/virt/k3s-agent.nix
           ];
           specialArgs = { inherit inputs username; };
         };
@@ -146,9 +146,9 @@
           modules = [
             sops-nix.nixosModules.sops
             nix-flatpak.nixosModules.nix-flatpak
-            ./nixos/sops.nix
-            ./nixos/hypernix-hardware-configuration.nix
-            ./nixos/hypernix-configuration.nix
+            ./nixos/services/sops.nix
+            ./nixos/hosts/hypernix/hardware-configuration.nix
+            ./nixos/hosts/hypernix/configuration.nix
           ];
           specialArgs = { inherit inputs username; };
         };
@@ -157,9 +157,9 @@
           modules = [
             sops-nix.nixosModules.sops
             nix-flatpak.nixosModules.nix-flatpak
-            ./nixos/sops.nix
-            ./nixos/carbonnix-hardware-configuration.nix
-            ./nixos/carbonnix-configuration.nix
+            ./nixos/services/sops.nix
+            ./nixos/hosts/carbonnix/hardware-configuration.nix
+            ./nixos/hosts/carbonnix/configuration.nix
           ];
           specialArgs = { inherit inputs username; };
         };
