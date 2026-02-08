@@ -43,6 +43,8 @@
       ppkgs.python-lsp-ruff
     ]))
     pkgs.nixpkgs-fmt
+    pkgs.dix
+    pkgs.statix
     pkgs.nerd-fonts.fantasque-sans-mono
     pkgs.gcc # For neovim treesitter to compile parsers
     pkgs.tree-sitter # For neovim treesitter to compile parsers
