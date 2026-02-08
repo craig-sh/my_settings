@@ -20,25 +20,38 @@
   environment.systemPackages = with pkgs; [
     moonlight-qt
   ];
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.enable = true;
-  programs.gamescope.enable = true;
-  programs.steam.gamescopeSession.enable = true;
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "craig";
-  #services.xserver.displayManager.lightdm.autoLogin.timeout = 10;
+  services = {
+    xserver = {
+      enable = true;
+      displayManager = {
+        gdm.enable = true;
+        autoLogin = {
+          enable = true;
+          user = "craig";
+        };
+      };
+      #displayManager.lightdm.autoLogin.timeout = 10;
+      desktopManager.gnome.enable = true;
+    };
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+    };
+  };
+  programs = {
+    gamescope.enable = true;
+    steam = {
+      enable = true;
+      gamescopeSession.enable = true;
+    };
+  };
   # Do we need this?
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
-  #####
-  programs.steam = {
-    enable = true;
+  systemd.services = {
+    "getty@tty1".enable = false;
+    "autovt@tty1".enable = false;
   };
-  services.pipewire = {
+  hardware.bluetooth = {
     enable = true;
-    pulse.enable = true;
+    powerOnBoot = true;
   };
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
 }

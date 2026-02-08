@@ -4,28 +4,32 @@ let
   secretspath = builtins.toString inputs.mysecrets;
 in
 {
-  sops.defaultSopsFile = "${secretspath}/secrets/os-secrets.yaml";
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  sops.age.generateKey = true;
-  #sops.templates = {
-  #    "st-carbon-tpl".content = ''${config.sops.placeholder.carbonarch-syncthing-id}'';
-  #    "st-pixel6-tpl".content = ''${config.sops.placeholder.craigpixel6-syncthing-id}'';
-  #    "st-hypernix-tpl".content = ''${config.sops.placeholder.hypernix-syncthing-id}'';
-  #    "st-homelab-tpl".content = ''${config.sops.placeholder.homelab-syncthing-id}'';
-  # };
-  sops.secrets.ca_pub_cert = {
-    format = "yaml";
+  sops = {
+    defaultSopsFile = "${secretspath}/secrets/os-secrets.yaml";
+    age = {
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
+    };
+    #templates = {
+    #    "st-carbon-tpl".content = ''${config.sops.placeholder.carbonarch-syncthing-id}'';
+    #    "st-pixel6-tpl".content = ''${config.sops.placeholder.craigpixel6-syncthing-id}'';
+    #    "st-hypernix-tpl".content = ''${config.sops.placeholder.hypernix-syncthing-id}'';
+    #    "st-homelab-tpl".content = ''${config.sops.placeholder.homelab-syncthing-id}'';
+    #};
+    secrets.ca_pub_cert = {
+      format = "yaml";
+    };
+    #secrets.carbonarch-syncthing-id = {
+    #  format = "yaml";
+    #};
+    #secrets.craigpixel6-syncthing-id = {
+    #  format = "yaml";
+    #};
+    #secrets.hypernix-syncthing-id = {
+    #  format = "yaml";
+    #};
+    #secrets.homelab-syncthing-id = {
+    #  format = "yaml";
+    #};
   };
-  #sops.secrets.carbonarch-syncthing-id = {
-  #  format = "yaml";
-  #};
-  #sops.secrets.craigpixel6-syncthing-id = {
-  #  format = "yaml";
-  #};
-  #sops.secrets.hypernix-syncthing-id = {
-  #  format = "yaml";
-  #};
-  #sops.secrets.homelab-syncthing-id = {
-  #  format = "yaml";
-  #};
 }

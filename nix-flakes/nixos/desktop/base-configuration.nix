@@ -55,77 +55,87 @@ in
   # Enable sound.
   # hardware.pulseaudio.enable = true;
   # OR
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
+  services = {
+    pipewire = {
+      enable = true;
+      pulse.enable = true;
+    };
+
+    # Enable touchpad support (enabled default in most desktopManager).
+    # xserver.libinput.enable = true;
+
+    flatpak = {
+      enable = true;
+      remotes = lib.mkOptionDefault [
+        {
+          name = "flathub-beta";
+          location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
+        }
+      ];
+      # This flatpak is our of date
+      packages = [
+        {
+          appId = "com.budgetwithbuckets.Buckets";
+          origin = "flathub-beta";
+        }
+      ];
+    };
+
+    displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
+    };
   };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  services.flatpak.enable = true;
-  services.flatpak.remotes = lib.mkOptionDefault [
-    {
-      name = "flathub-beta";
-      location = "https://flathub.org/beta-repo/flathub-beta.flatpakrepo";
-    }
-  ];
-  # This flatpak is our of date
-  services.flatpak.packages = [
-    {
-      appId = "com.budgetwithbuckets.Buckets";
-      origin = "flathub-beta";
-    }
-  ];
   programs.appimage = {
     enable = true;
     binfmt = true;
   };
-
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    git
-    age
-    sops
-    xclip
-    xsel
-    iwd
-    usbutils
-    lm_sensors
-    libnotify
-    pciutils
-    xdg-utils
-    xdg-launch
-    dconf # for gnome themes
-    nfs-utils
-  ];
+  environment = {
+    systemPackages = with pkgs; [
+      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      wget
+      git
+      age
+      sops
+      xclip
+      xsel
+      iwd
+      usbutils
+      lm_sensors
+      libnotify
+      pciutils
+      xdg-utils
+      xdg-launch
+      dconf # for gnome themes
+      nfs-utils
+    ];
+    shells = with pkgs; [ zsh ];
+    sessionVariables = {
+      SOPS_AGE_KEY_FILE = "/home/craig/.config/sops/age/keys.txt";
+    };
+  };
   fonts.packages = [
     pkgs.nerd-fonts.fantasque-sans-mono
   ];
-  environment.shells = with pkgs; [ zsh ];
-  environment.sessionVariables = {
-    SOPS_AGE_KEY_FILE = "/home/craig/.config/sops/age/keys.txt";
-  };
 
   nix = {
     package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    settings = {
+      trusted-users = [ "craig" ];
+      auto-optimise-store = true;
+    };
+    # Perform garbage collection weekly to maintain low disk usage
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 7d";
+    };
   };
-  nix.settings.trusted-users = [ "craig" ];
-  # Perform garbage collection weekly to maintain low disk usage
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-  nix.settings.auto-optimise-store = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -134,25 +144,32 @@ in
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    # https://nix.dev/guides/faq#how-to-run-non-nix-executables
+    nix-ld = {
+      enable = true;
+      libraries = options.programs.nix-ld.libraries.default;
+    };
+  };
   users.defaultUserShell = pkgs.zsh;
-
-  # https://nix.dev/guides/faq#how-to-run-non-nix-executables
-  programs.nix-ld.enable = true;
-  programs.nix-ld.libraries = options.programs.nix-ld.libraries.default;
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-  services.fwupd.enable = true;
-  # Automount disks
-  services.udisks2.enable = true;
+  services = {
+    openssh.enable = true;
+    fwupd.enable = true;
+    # Automount disks
+    udisks2.enable = true;
+  };
 
-  security.pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
-  security.sudo.extraConfig = ''
-    Defaults        timestamp_timeout=3600
-  '';
+  security = {
+    pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
+    sudo.extraConfig = ''
+      Defaults        timestamp_timeout=3600
+    '';
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

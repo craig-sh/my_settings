@@ -6,10 +6,14 @@
 }:
 {
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  services.xserver.xkb.layout = "us";
+  services.xserver = {
+    enable = true;
+    xkb.layout = "us";
+  };
 
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-  xdg.portal.config.common.default = [ "gnome" ];
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = [ "gnome" ];
+  };
 }

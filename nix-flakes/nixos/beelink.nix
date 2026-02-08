@@ -14,12 +14,14 @@
     ./hosts/beelink/configuration.nix
   ];
 
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
-  home-manager.users.craig.imports = [
-    ../home-manager/common.nix
-    ../home-manager/beelink.nix
-  ];
-  home-manager.users.conrun.imports = [ ../home-manager/conrun.nix ];
-  home-manager.extraSpecialArgs = { inherit inputs outputs username; };
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+    users.craig.imports = [
+      ../home-manager/common.nix
+      ../home-manager/beelink.nix
+    ];
+    users.conrun.imports = [ ../home-manager/conrun.nix ];
+    extraSpecialArgs = { inherit inputs outputs username; };
+  };
 }

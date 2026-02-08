@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
 
   # VR https://wiki.nixos.org/wiki/VR
   services.monado = {

@@ -1,5 +1,4 @@
-{ ... }:
-{
+_: {
   catppuccin = {
     flavor = "macchiato";
     kitty = {

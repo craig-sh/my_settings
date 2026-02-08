@@ -70,18 +70,20 @@
     #  #})
     inputs.qtile-flake.overlays.default
   ];
-  services.xserver.windowManager.qtile = {
-    enable = true;
-    extraPackages =
-      python3Packages: with python3Packages; [
-        #qtile-extras
-        pulsectl-asyncio
-      ];
-    configFile = "/home/craig/.config/qtile/config.py";
-  };
-  services.displayManager.sddm.enable = true;
-  #services.displayManager.defaultSession = "qtile";
-  services.picom = {
-    enable = true;
+  services = {
+    xserver.windowManager.qtile = {
+      enable = true;
+      extraPackages =
+        python3Packages: with python3Packages; [
+          #qtile-extras
+          pulsectl-asyncio
+        ];
+      configFile = "/home/craig/.config/qtile/config.py";
+    };
+    displayManager.sddm.enable = true;
+    #displayManager.defaultSession = "qtile";
+    picom = {
+      enable = true;
+    };
   };
 }

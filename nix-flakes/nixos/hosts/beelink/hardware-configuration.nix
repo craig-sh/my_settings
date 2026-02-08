@@ -14,48 +14,53 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "ahci"
-    "usbhid"
-    "usb_storage"
-    "sd_mod"
-  ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
-  boot.kernelModules = [ "kvm-intel" ];
-  # GPU transcoding
-  boot.kernelParams = [
-    "i915.enable_guc=2"
-  ];
-
-  boot.extraModulePackages = [ ];
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/7d1d782e-2068-46be-98a8-374ab30c28a7";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/07D0-A352";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
+  boot = {
+    initrd = {
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
+      kernelModules = [ ];
+    };
+    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelModules = [ "kvm-intel" ];
+    # GPU transcoding
+    kernelParams = [
+      "i915.enable_guc=2"
     ];
+    extraModulePackages = [ ];
   };
 
-  fileSystems."/mnt/camera" = {
-    device = "trunas.localdomain:/mnt/mediapool/camera ";
-    fsType = "nfs";
-  };
-  fileSystems."/mnt/movies" = {
-    device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/movies";
-    fsType = "nfs";
-  };
-  fileSystems."/mnt/tvshows" = {
-    device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/tvshows";
-    fsType = "nfs";
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/7d1d782e-2068-46be-98a8-374ab30c28a7";
+      fsType = "ext4";
+    };
+
+    "/boot" = {
+      device = "/dev/disk/by-uuid/07D0-A352";
+      fsType = "vfat";
+      options = [
+        "fmask=0022"
+        "dmask=0022"
+      ];
+    };
+
+    "/mnt/camera" = {
+      device = "trunas.localdomain:/mnt/mediapool/camera ";
+      fsType = "nfs";
+    };
+    "/mnt/movies" = {
+      device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/movies";
+      fsType = "nfs";
+    };
+    "/mnt/tvshows" = {
+      device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/tvshows";
+      fsType = "nfs";
+    };
   };
 
   swapDevices = [ ];

@@ -23,11 +23,10 @@ in
   ];
 
   # load the secrets needed by this system
-  sops.secrets.restic_password = {
-    format = "yaml";
-  };
-
   sops.secrets = {
+    restic_password = {
+      format = "yaml";
+    };
     oracle_vm_ssh_key = {
       format = "yaml";
     };
@@ -80,12 +79,16 @@ in
   };
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "nfs" ];
-  boot.kernel.sysctl = {
-    # to allow rootless containers (frigate) to monitor performance
-    "kernel.perf_event_paranoid" = 0;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    supportedFilesystems = [ "nfs" ];
+    kernel.sysctl = {
+      # to allow rootless containers (frigate) to monitor performance
+      "kernel.perf_event_paranoid" = 0;
+    };
   };
 
   #boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -100,22 +103,26 @@ in
     extraPackages32 = with pkgs.pkgsi686Linux; [ intel-media-driver ];
   };
 
-  networking.hostName = "beelink"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
-  # For frigate pod
-  networking.firewall.allowedTCPPorts = [
-    8096 # jellyfin
-    8971 # frigate
-    8554 # frigate
-    8555 # frigate
-    8556 # frigate
-  ];
-  networking.firewall.allowedUDPPorts = [
-    7359 # jellyfin
-    8555 # frigate
-  ];
+  networking = {
+    hostName = "beelink"; # Define your hostname.
+    # Pick only one of the below networking options.
+    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+    networkmanager.enable = true; # Easiest to use and most distros use this by default.
+    # For frigate pod
+    firewall = {
+      allowedTCPPorts = [
+        8096 # jellyfin
+        8971 # frigate
+        8554 # frigate
+        8555 # frigate
+        8556 # frigate
+      ];
+      allowedUDPPorts = [
+        7359 # jellyfin
+        8555 # frigate
+      ];
+    };
+  };
 
   # Set your time zone.
   time.timeZone = "America/Toronto";
@@ -153,106 +160,112 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.craig = {
-    isNormalUser = true;
-    uid = 1000;
-    extraGroups = [
-      "wheel"
-      "video"
-      "render"
-    ]; # Enable ‘sudo’ for the user. video/render is for hwaccell for rootless containers
-    # Quadlets
-    # required for auto start before user login
-    linger = true;
-    # required for rootless container with multiple users
-    autoSubUidGidRange = true;
-  };
+  # Define a user account. Don't forget to set a password with 'passwd'.
+  users.users = {
+    craig = {
+      isNormalUser = true;
+      uid = 1000;
+      extraGroups = [
+        "wheel"
+        "video"
+        "render"
+      ]; # Enable 'sudo' for the user. video/render is for hwaccell for rootless containers
+      # Quadlets
+      # required for auto start before user login
+      linger = true;
+      # required for rootless container with multiple users
+      autoSubUidGidRange = true;
+    };
 
-  users.users.conrun = {
-    isNormalUser = true;
-    uid = 1010;
-    #extraGroups = ["video" "render"]; # video/render is for hwaccell for rootless containers
-    #group =  "funmedia";
-    # Quadlets
-    # required for auto start before user login
-    linger = true;
-    # required for rootless container with multiple users
-    autoSubUidGidRange = true;
-  };
+    conrun = {
+      isNormalUser = true;
+      uid = 1010;
+      #extraGroups = ["video" "render"]; # video/render is for hwaccell for rootless containers
+      #group =  "funmedia";
+      # Quadlets
+      # required for auto start before user login
+      linger = true;
+      # required for rootless container with multiple users
+      autoSubUidGidRange = true;
+    };
 
-  #users.users.jellyfin = {
-  #  isSystemUser = true;
-  #  uid = 1100;
-  #  extraGroups = ["video" "render"]; # video/render is for hwaccell for rootless containers
-  #  group =  "funmedia";
-  #  # Quadlets
-  #  # required for auto start before user login
-  #  linger = true;
-  #  # required for rootless container with multiple users
-  #  autoSubUidGidRange = true;
-  #};
+    #jellyfin = {
+    #  isSystemUser = true;
+    #  uid = 1100;
+    #  extraGroups = ["video" "render"]; # video/render is for hwaccell for rootless containers
+    #  group =  "funmedia";
+    #  # Quadlets
+    #  # required for auto start before user login
+    #  linger = true;
+    #  # required for rootless container with multiple users
+    #  autoSubUidGidRange = true;
+    #};
+  };
   #users.groups.funmedia = {};
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    wget
-    git
-    age
-    sops
-    nfs-utils
+  environment = {
+    systemPackages = with pkgs; [
+      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      wget
+      git
+      age
+      sops
+      nfs-utils
 
-    # hardwarde transcoding
-    intel-compute-runtime-legacy1
-    intel-gmmlib
-    pciutils
+      # hardwarde transcoding
+      intel-compute-runtime-legacy1
+      intel-gmmlib
+      pciutils
 
-  ];
-  environment.shells = with pkgs; [ zsh ];
-  environment.sessionVariables = {
-    SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
-    LIBVA_DRIVER_NAME = "iHD";
-  };
+    ];
+    shells = with pkgs; [ zsh ];
+    sessionVariables = {
+      SOPS_AGE_KEY_FILE = "/var/lib/sops-nix/key.txt";
+      LIBVA_DRIVER_NAME = "iHD";
+    };
 
-  #  help with podman debugging
-  environment.etc."systemd/user-generators/podman-user-generator" = {
-    source = "${pkgs.podman}/lib/systemd/user-generators/podman-user-generator";
-    target = "systemd/user-generators/podman-user-generator";
+    #  help with podman debugging
+    etc."systemd/user-generators/podman-user-generator" = {
+      source = "${pkgs.podman}/lib/systemd/user-generators/podman-user-generator";
+      target = "systemd/user-generators/podman-user-generator";
+    };
   };
   nix = {
     package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 1w";
+    };
+    settings.auto-optimise-store = true;
   };
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 1w";
-  };
-  nix.settings.auto-optimise-store = true;
 
   programs.zsh.enable = true;
-  users.defaultUserShell = pkgs.zsh;
-  users.groups.containers = { };
-  users.users = {
-    containers = {
-      group = "containers"; # Assign the user to the group
-      isSystemUser = true;
-      subUidRanges = [
-        {
-          startUid = 100000;
-          count = 65536;
-        }
-      ];
-      subGidRanges = [
-        {
-          startGid = 100000;
-          count = 65536;
-        }
-      ];
+  users = {
+    defaultUserShell = pkgs.zsh;
+    groups.containers = { };
+    users = {
+      containers = {
+        group = "containers"; # Assign the user to the group
+        isSystemUser = true;
+        subUidRanges = [
+          {
+            startUid = 100000;
+            count = 65536;
+          }
+        ];
+        subGidRanges = [
+          {
+            startGid = 100000;
+            count = 65536;
+          }
+        ];
+      };
     };
   };
   # Some programs need SUID wrappers, can be configured further or are
@@ -267,10 +280,12 @@ in
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  security.pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
-  security.sudo.extraConfig = ''
-    Defaults        timestamp_timeout=3600
-  '';
+  security = {
+    pki.certificateFiles = [ "${secretspath}/secrets/ca.crt" ];
+    sudo.extraConfig = ''
+      Defaults        timestamp_timeout=3600
+    '';
+  };
   virtualisation.quadlet.enable = true;
 
   # Open ports in the firewall.

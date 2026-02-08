@@ -7,8 +7,8 @@
 
 let
   common = import ./common.nix {
-    config = config;
-    pkgs = pkgs;
+    inherit config;
+    inherit pkgs;
   };
   overrides = {
     programs.git = {
