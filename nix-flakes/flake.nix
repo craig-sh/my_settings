@@ -97,70 +97,27 @@
         #   sudo nixos-rebuild switch --flake .#nixos-test
         "virtnix" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            ./nixos/services/sops.nix
-            ./nixos/hosts/virt/hardware-configuration.nix
-            ./nixos/hosts/virt/base-configuration.nix
-            ./nixos/hosts/virt/k3s-controller.nix
-            ./nixos/hosts/virt/tailscale.nix
-          ];
+          modules = [ ./nixos/virtnix.nix ];
           specialArgs = { inherit inputs username; };
         };
         "virtnix2" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            ./nixos/services/sops.nix
-            ./nixos/hosts/virt/hardware-configuration.nix
-            ./nixos/hosts/virt/base-configuration.nix
-            ./nixos/hosts/virt/k3s-agent.nix
-          ];
+          modules = [ ./nixos/virtnix2.nix ];
           specialArgs = { inherit inputs username; };
         };
         "beelink" = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            quadlet-nix.nixosModules.quadlet
-            ./nixos/services/sops.nix
-            ./nixos/hosts/beelink/hardware-configuration.nix
-            ./nixos/hosts/beelink/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.craig.imports = [
-                ./home-manager/common.nix
-                ./home-manager/beelink.nix
-              ];
-              home-manager.users.conrun.imports = [ ./home-manager/conrun.nix ];
-              home-manager.extraSpecialArgs = { inherit inputs outputs username; };
-            }
-            #./nixos/hosts/virt/k3s-agent.nix
-          ];
-          specialArgs = { inherit inputs username; };
+          modules = [ ./nixos/beelink.nix ];
+          specialArgs = { inherit inputs outputs username; };
         };
         "hypernix" = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            nix-flatpak.nixosModules.nix-flatpak
-            ./nixos/services/sops.nix
-            ./nixos/hosts/hypernix/hardware-configuration.nix
-            ./nixos/hosts/hypernix/configuration.nix
-          ];
+          modules = [ ./nixos/hypernix.nix ];
           specialArgs = { inherit inputs username; };
         };
         "carbonnix" = nixpkgs-unstable.lib.nixosSystem {
           system = "x86_64-linux";
-          modules = [
-            sops-nix.nixosModules.sops
-            nix-flatpak.nixosModules.nix-flatpak
-            ./nixos/services/sops.nix
-            ./nixos/hosts/carbonnix/hardware-configuration.nix
-            ./nixos/hosts/carbonnix/configuration.nix
-          ];
+          modules = [ ./nixos/carbonnix.nix ];
           specialArgs = { inherit inputs username; };
         };
         # The Nix module system can modularize configuration,
@@ -209,48 +166,27 @@
         "craig@virtnix" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./home-manager/common.nix
-            ./home-manager/common_stable.nix
-            ./home-manager/virtserver.nix
-          ];
+          modules = [ ./home-manager/virtnix.nix ];
         };
         "craig@virtnix2" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./home-manager/common.nix
-            ./home-manager/virtserver.nix
-          ];
+          modules = [ ./home-manager/virtnix2.nix ];
         };
         "craig@hyperarch" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./home-manager/common.nix
-            ./home-manager/programs/neovim_git.nix
-          ];
+          modules = [ ./home-manager/hyperarch.nix ];
         };
         "craig@carbonnix" = home-manager-unstable.lib.homeManagerConfiguration {
           pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./home-manager/carbonnix.nix
-            catppuccin.homeModules.catppuccin
-          ];
+          modules = [ ./home-manager/carbonnix.nix ];
         };
         "craig@hypernix" = home-manager-unstable.lib.homeManagerConfiguration {
           pkgs = nixpkgs-unstable.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs outputs username; };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            ./home-manager/hypernix.nix
-            catppuccin.homeModules.catppuccin
-          ];
+          modules = [ ./home-manager/hypernix.nix ];
         };
       };
     };

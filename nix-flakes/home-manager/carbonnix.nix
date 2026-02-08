@@ -1,7 +1,9 @@
-{ ... }:
+{ inputs, ... }:
 
 {
   imports = [
+    inputs.sops-nix.homeManagerModules.sops
+    inputs.catppuccin.homeModules.catppuccin
     ./common.nix
     ./common_unstable.nix
     ./gui.nix
