@@ -30,15 +30,15 @@
       ];
     };
 
-# Uncomment to profile
-#    initExtraFirst = ''
-#      zmodload zsh/zprof
-#    '';
-#    initExtra = ''
-#      zprof
-#    '';
+    # Uncomment to profile
+    #    initExtraFirst = ''
+    #      zmodload zsh/zprof
+    #    '';
+    #    initExtra = ''
+    #      zprof
+    #    '';
 
-    initContent= lib.mkOrder 550 ''
+    initContent = lib.mkOrder 550 ''
       unsetopt BEEP
       source ~/.zsh_aliases
 
@@ -142,9 +142,9 @@
       yy = "wl-copy";
       yi = " tr -d '\n' | wl-copy";
       diskspace = "sudo ncdu -x /";
-      goorg="cd ~/Documents/org && vim .";
-      gonix = ''cd ''${HOME}/my_settings/nix-flakes '';
-      eqt = ''vim ''${HOME}/my_settings/nix-flakes/home-manager/programs/qtile/config.py'';
+      goorg = "cd ~/Documents/org && vim .";
+      gonix = "cd \${HOME}/my_settings/nix-flakes ";
+      eqt = "vim \${HOME}/my_settings/nix-flakes/home-manager/programs/qtile/config.py";
       screenshot = "scrot --select - | wl-copy";
       tailup = "sudo systemctl start tailscaled.service && sudo tailscale up --accept-routes";
       taildown = "sudo tailscale down && sudo systemctl stop tailscaled.service";
@@ -165,4 +165,3 @@
     ".zsh_aliases".source = zsh/.zsh_aliases;
   };
 }
-

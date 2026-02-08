@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
 
@@ -37,7 +43,12 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".Xresources" = {source = programs/X11/.Xresources;};
-    ".config/dunst" = {source = programs/dunst; recursive = true;};
+    ".Xresources" = {
+      source = programs/X11/.Xresources;
+    };
+    ".config/dunst" = {
+      source = programs/dunst;
+      recursive = true;
+    };
   };
 }

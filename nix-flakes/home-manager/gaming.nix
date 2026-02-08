@@ -1,4 +1,4 @@
-{pkgs, ... }:
+{ pkgs, ... }:
 {
 
   #programs = {
@@ -17,7 +17,7 @@
 
   #home.packages = [
   #  # pgks.gamemode -- Leaving this out for now
-  #  # WINE 
+  #  # WINE
   #  pkgs.wine
   #  pkgs.winetricks
   #  pkgs.protontricks

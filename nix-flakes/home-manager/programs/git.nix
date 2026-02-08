@@ -21,24 +21,36 @@
 
         # Diff the whole directory with meld in one shot
         dirdiff = "difftool --dir-diff --tool=meld";
-        core = { editor = "vim"; };
-        format = { pretty = "oneline"; };
-        pull = { ff = "only"; };
-        push = { default = "simple"; };
-        color = { ui = "true"; };
-        credential = { helper = "cache --timeout=1440"; };
+        core = {
+          editor = "vim";
+        };
+        format = {
+          pretty = "oneline";
+        };
+        pull = {
+          ff = "only";
+        };
+        push = {
+          default = "simple";
+        };
+        color = {
+          ui = "true";
+        };
+        credential = {
+          helper = "cache --timeout=1440";
+        };
       };
       difftool = {
-          codediff = {
-            cmd = ''nvim "$LOCAL" "$REMOTE" +"CodeDiff file $LOCAL $REMOTE" '';
-          };
-          meld = {
-            cmd = '' meld "$LOCAL" "$REMOTE" '';
-          };
+        codediff = {
+          cmd = ''nvim "$LOCAL" "$REMOTE" +"CodeDiff file $LOCAL $REMOTE" '';
+        };
+        meld = {
+          cmd = ''meld "$LOCAL" "$REMOTE" '';
+        };
       };
       mergetool = {
         codediff = {
-          cmd = '' nvim "$MERGED" -c "CodeDiff merge \"$MERGED\"" '';
+          cmd = ''nvim "$MERGED" -c "CodeDiff merge \"$MERGED\"" '';
         };
         meld = {
           cmd = ''meld "$LOCAL" "$MERGED" "$REMOTE" --output "$MERGED"'';

@@ -1,4 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -88,11 +94,9 @@
     };
   };
 
-
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = { };
-
 
   # You can also manage environment variables but you will have to manually
   # source
@@ -111,7 +115,7 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
-### TODO???
+  ### TODO???
   #nix = {
   #  package = pkgs.nix;
   #  settings.experimental-features = ["nix-command" "flakes" ];
