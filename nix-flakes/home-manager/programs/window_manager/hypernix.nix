@@ -1,4 +1,8 @@
-_: {
+_:
+let
+  modules = import ./waybar-modules.nix;
+in
+{
   programs.waybar = {
     settings = {
       mainBar = {
@@ -26,46 +30,8 @@ _: {
           "hyprland/workspaces"
           "hyprland/workspaces#windows"
         ];
-        "hyprland/workspaces" = {
-          format = "{icon}";
-          on-click = "activate";
-          format-icons = {
-            "1" = ""; # terminals
-            "2" = ""; # coding
-            "3" = "󰆩"; # scratchpad
-            "4" = "󰭻"; # comms
-            "5" = "5";
-            "6" = "󰖟"; # browser
-            "7" = "󰢹"; # remote sessions
-            "8" = "󰊴"; # gaming
-            "9" = "9";
-            "10" = "󰘨"; # Long running
-            urgent = "󱈸";
-          };
-        };
-        "hyprland/window" = {
-          format = "{}";
-          icon = true;
-
-        };
-        "hyprland/workspaces" = {
-            window-rewrite = {
-              "(.*) - Mozilla Firefox" = "🌎 $1";
-            };
-            max-length = 15;
-        };
-        "hyprland/workspaces#windows" = {
-          active-only = true;
-          format = "{windows}";
-          workspace-taskbar = {
-            enable = true;
-            update-active-window = true;
-            format = "{icon} {title}";
-            icon-size = 16;
-            orientation = "horizontal";
-            #on-click-window = "${./scripts/focus-window.sh} {address} {button}";
-          };
-        };
+        "hyprland/window" = modules.window;
+        "hyprland/workspaces#windows" = modules.workspacesWindows;
       };
     };
   };

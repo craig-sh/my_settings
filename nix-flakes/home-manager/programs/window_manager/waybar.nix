@@ -1,5 +1,6 @@
 { config, pkgs, ... }:
 let
+  waybarModules = import ./waybar-modules.nix;
   mediaStatus = pkgs.writeShellScriptBin "mediastatus" ''
     # From https://github.com/Alexays/Waybar/issues/34
     player_status=$(playerctl -p spotify status 2> /dev/null)
@@ -27,47 +28,9 @@ in
         position = "top";
         height = 26;
 
-        "hyprland/workspaces" = {
-          format = "{icon}";
-          on-click = "activate";
-          format-icons = {
-            "1" = ""; # terminals
-            "2" = ""; # coding
-            "3" = "󰆩"; # scratchpad
-            "4" = "󰭻"; # comms
-            "5" = "5";
-            "6" = "󰖟"; # browser
-            "7" = "󰢹"; # remote sessions
-            "8" = "8";
-            "9" = "9";
-            "10" = "󰘨"; # Long running
-            urgent = "󱈸";
-            #active = "";
-            #default = "";
-          };
-        };
-
-        "hyprland/workspaces#windows" = {
-          active-only = true;
-          format = "{windows}";
-          workspace-taskbar = {
-            enable = true;
-            update-active-window = true;
-            format = "{icon} {title}";
-            icon-size = 16;
-            orientation = "horizontal";
-            #on-click-window = "${./scripts/focus-window.sh} {address} {button}";
-          };
-        };
-
-        "hyprland/window" = {
-          format = "{}";
-          icon = true;
-          max-length = 50;
-          rewrite = {
-            "(.*) - Mozilla Firefox" = "🌎 $1";
-          };
-        };
+        "hyprland/workspaces" = waybarModules.workspaces;
+        "hyprland/workspaces#windows" = waybarModules.workspacesWindows;
+        "hyprland/window" = waybarModules.window;
 
         clock = {
           format = "{:%Y-%m-%d\n   %H:%M}";
