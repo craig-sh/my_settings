@@ -47,6 +47,19 @@ in
           };
         };
 
+        "hyprland/workspaces#windows" = {
+          active-only = true;
+          format = "{windows}";
+          workspace-taskbar = {
+            enable = true;
+            update-active-window = true;
+            format = "{icon} {title}";
+            icon-size = 16;
+            orientation = "horizontal";
+            #on-click-window = "${./scripts/focus-window.sh} {address} {button}";
+          };
+        };
+
         "hyprland/window" = {
           format = "{}";
           icon = true;

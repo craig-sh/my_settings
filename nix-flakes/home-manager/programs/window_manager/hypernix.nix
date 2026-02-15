@@ -5,7 +5,7 @@ _: {
         output = "HDMI-A-1";
         modules-left = [
           "hyprland/workspaces"
-          "hyprland/window"
+          "hyprland/workspaces#windows"
         ];
         modules-center = [ ];
         modules-right = [
@@ -24,7 +24,7 @@ _: {
         output = "DP-3";
         modules-left = [
           "hyprland/workspaces"
-          "hyprland/window"
+          "hyprland/workspaces#windows"
         ];
         "hyprland/workspaces" = {
           format = "{icon}";
@@ -44,7 +44,27 @@ _: {
           };
         };
         "hyprland/window" = {
+          format = "{}";
           icon = true;
+
+        };
+        "hyprland/workspaces" = {
+            window-rewrite = {
+              "(.*) - Mozilla Firefox" = "🌎 $1";
+            };
+            max-length = 15;
+        };
+        "hyprland/workspaces#windows" = {
+          active-only = true;
+          format = "{windows}";
+          workspace-taskbar = {
+            enable = true;
+            update-active-window = true;
+            format = "{icon} {title}";
+            icon-size = 16;
+            orientation = "horizontal";
+            #on-click-window = "${./scripts/focus-window.sh} {address} {button}";
+          };
         };
       };
     };

@@ -38,7 +38,6 @@ window#waybar.hidden {
 }
 
 #workspaces button.active {
-    border-bottom: 3px solid @sky;
     transition: none;
     box-shadow: inherit;
     text-shadow: inherit;
@@ -55,6 +54,22 @@ window#waybar.hidden {
 
 #workspaces button.urgent {
     color:      @yellow;
+}
+
+#workspaces.windows {
+	padding-left: 5px;
+	min-width: 5rem;
+}
+
+/* Show only the active window */
+#workspaces.windows .taskbar-window {
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 5px;
+}
+
+#workspaces.windows .taskbar-window.active {
+	border-bottom: 3px solid @sky;
 }
 
 #window {

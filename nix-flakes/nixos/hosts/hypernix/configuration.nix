@@ -55,16 +55,16 @@
     '';
   };
 
-  # For steam play
 
   networking.firewall = {
     allowedTCPPorts = [
-      27036
-      27037
+      27036 # For steam play
+      27037 # For steam play
+      3000 # For local testing
     ];
     allowedUDPPorts = [
-      27031
-      27036
+      27031 # For steam play
+      27036 # For steam play
     ];
   };
 
