@@ -164,7 +164,7 @@ in
         "$mainMod, l, movefocus, r"
         "$mainMod, k, movefocus, u"
         "$mainMod, j, movefocus, d"
-        "$mainMod, c, cyclenext"
+        "$mainMod, c, movefocus, l" # Using this instead of cyclenext because of movefocus_cycles_fullscreen behavior
         "$mainMod, y, exec, dunstctl history-pop"
         "$mainMod, t, exec, dunstctl close"
         "$mainMod, n, exec, dunstctl close-all"
@@ -353,6 +353,10 @@ in
           on_focus_under_fullscreen = 2
           force_default_wallpaper = 1 # Set to 0 or 1 to disable the anime mascot wallpapers
           disable_hyprland_logo = false # If true disables the random hyprland logo / anime girl background. :(
+      }
+
+      binds {
+          movefocus_cycles_fullscreen = true
       }
 
 
