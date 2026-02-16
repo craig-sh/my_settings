@@ -92,7 +92,12 @@ return {
                   }
                 }
               },
-            }
+              nixd = {
+                formatting = {
+                  command = { "nixfmt" },
+                },
+              },
+            },
           }
         )
       end
