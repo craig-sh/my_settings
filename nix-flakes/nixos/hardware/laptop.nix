@@ -30,7 +30,7 @@
         STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
       };
     };
-    logind.lidSwitch = "suspend-then-hibernate";
+    logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
   };
   powerManagement.enable = true;
   environment.systemPackages = with pkgs; [ brightnessctl ];

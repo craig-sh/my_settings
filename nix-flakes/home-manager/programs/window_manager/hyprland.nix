@@ -16,7 +16,7 @@ in
       playerctl
       grimblast
       hyprpaper
-      hyprlock
+
       hyprpolkitagent
       wayvnc
       wl-clipboard

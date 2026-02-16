@@ -17,7 +17,7 @@
     extraPackages = [
       pkgs.nixd
       pkgs.imagemagick
-      pkgs.nixfmt-rfc-style
+      pkgs.nixfmt
     ];
   };
   xdg.configFile."nvim/init.lua".enable = false; # disable the auto generated init.lua

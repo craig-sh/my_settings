@@ -11,6 +11,7 @@
     #./x11gui.nix
     ./programs/neovim_git.nix
     ./programs/window_manager/hyprland.nix
+    ./programs/window_manager/hyprlock.nix
     ./programs/window_manager/waybar.nix
     ./programs/window_manager/carbonnix.nix
     (import ./programs/window_manager/hypridle.nix {

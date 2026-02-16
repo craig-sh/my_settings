@@ -82,7 +82,7 @@
       username = "craig";
     in
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-rfc-style;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt;
       nixosConfigurations = {
         # By default, NixOS will try to refer the nixosConfiguration with
         # its hostname, so the system named `virtnix` will use this one.
