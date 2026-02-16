@@ -1,6 +1,6 @@
 _:
 let
-  modules = import ./waybar-modules.nix;
+  waybarModules = import ./waybar-modules.nix;
 in
 {
   programs.waybar = {
@@ -26,11 +26,13 @@ in
       };
       otherBar = {
         output = "DP-3";
+
         modules-left = [
           "hyprland/workspaces"
           "hyprland/workspaces#windows"
         ];
-        "hyprland/workspaces#windows" = modules.workspacesWindows;
+        "hyprland/workspaces" = waybarModules.workspaces;
+        "hyprland/workspaces#windows" = waybarModules.workspacesWindows;
       };
     };
   };
