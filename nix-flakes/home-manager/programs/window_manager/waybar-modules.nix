@@ -15,10 +15,6 @@
       "10" = "󰘨"; # Long running
       urgent = "󱈸";
     };
-    window-rewrite = {
-      "(.*) - Mozilla Firefox" = "🌎 $1";
-    };
-    max-length = 15;
   };
 
   workspacesWindows = {
@@ -27,18 +23,9 @@
     workspace-taskbar = {
       enable = true;
       update-active-window = true;
-      format = "{icon} {title}";
+      format = "{icon} {title:.15}";
       icon-size = 16;
       orientation = "horizontal";
-    };
-  };
-
-  window = {
-    format = "{}";
-    icon = true;
-    max-length = 50;
-    rewrite = {
-      "(.*) - Mozilla Firefox" = "🌎 $1";
     };
   };
 }

@@ -30,7 +30,6 @@ in
           "hyprland/workspaces"
           "hyprland/workspaces#windows"
         ];
-        "hyprland/window" = modules.window;
         "hyprland/workspaces#windows" = modules.workspacesWindows;
       };
     };

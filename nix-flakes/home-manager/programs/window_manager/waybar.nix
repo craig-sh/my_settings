@@ -30,7 +30,6 @@ in
 
         "hyprland/workspaces" = waybarModules.workspaces;
         "hyprland/workspaces#windows" = waybarModules.workspacesWindows;
-        "hyprland/window" = waybarModules.window;
 
         clock = {
           format = "{:%Y-%m-%d\n   %H:%M}";
