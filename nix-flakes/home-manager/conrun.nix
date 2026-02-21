@@ -11,6 +11,8 @@
     inputs.sops-nix.homeManagerModules.sops
     inputs.quadlet-nix.homeManagerModules.quadlet
     ./programs/ghostfolio.nix
+    ./programs/zsh.nix
+    ./programs/starship.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -28,9 +30,7 @@
     stateVersion = "23.05"; # Please read the comment before changing.
 
     # Packages to install
-    packages = [
-      pkgs.zsh
-    ];
+    packages = [ ];
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
@@ -52,6 +52,12 @@
   };
 
   fonts.fontconfig.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    viAlias = true;
+    vimAlias = true;
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
