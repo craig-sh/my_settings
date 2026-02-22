@@ -11,6 +11,7 @@
     inputs.sops-nix.homeManagerModules.sops
     inputs.quadlet-nix.homeManagerModules.quadlet
     ./programs/ghostfolio.nix
+    ./programs/actualbudget.nix
     ./programs/zsh.nix
     ./programs/starship.nix
   ];

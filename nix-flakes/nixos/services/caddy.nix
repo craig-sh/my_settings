@@ -27,6 +27,17 @@
           reverse_proxy http://localhost:8971
         '';
       };
+      "actualbudget.localdomain" = {
+        serverAliases = [ "www.actualbudget.localdomain" ];
+        extraConfig = ''
+          tls {
+            issuer internal {
+              ca local
+            }
+          }
+          reverse_proxy http://localhost:5006
+        '';
+      };
       "ghostfolio.localdomain" = {
         serverAliases = [ "www.ghostfolio.localdomain" ];
         extraConfig = ''
