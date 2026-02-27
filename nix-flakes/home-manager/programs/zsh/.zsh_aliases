@@ -16,6 +16,7 @@ alias nethome='netconnect Eriador'
 alias nethomepalan='netconnect palantir'
 alias netleander='netconnect Overmind'
 alias netadmin='netconnect Angainor'
+alias maxcharge='sudo tlp setcharge 0 100 && sudo tlp chargeonce'
 
 function convert_media {
     for f in *.$1;
