@@ -24,7 +24,7 @@ _: {
         }
         {
           timeout = suspendTimeout;
-          on-timeout = "systemctl suspend";
+          on-timeout = "[ -z \"$(who | grep pts)\" ] && systemctl suspend";
         }
       ];
     };
