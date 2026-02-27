@@ -60,6 +60,20 @@
       mkdir $FRIGRATE_DEST_DIR;
       rsync -ah $FRIGRATE_SRC_DIR/ $FRIGRATE_DEST_DIR/
 
+      # Actual Budget
+      ACTUALBUDGET_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" actualbudget-data');
+      ACTUALBUDGET_DEST_DIR=$CUSTOM_BACKUP_ROOT/actualbudget;
+      rm -rf $ACTUALBUDGET_DEST_DIR;
+      mkdir $ACTUALBUDGET_DEST_DIR;
+      rsync -ah $ACTUALBUDGET_SRC_DIR/ $ACTUALBUDGET_DEST_DIR/
+
+      # Forgejo
+      FORGEJO_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-data');
+      FORGEJO_DEST_DIR=$CUSTOM_BACKUP_ROOT/forgejo;
+      rm -rf $FORGEJO_DEST_DIR;
+      mkdir $FORGEJO_DEST_DIR;
+      rsync -ah $FORGEJO_SRC_DIR/ $FORGEJO_DEST_DIR/
+
       # Actual backup
       restic --verbose backup --tag=$RESTIC_TAG $CUSTOM_BACKUP_ROOT
 

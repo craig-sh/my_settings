@@ -61,10 +61,6 @@
       device = "trunas.localdomain:/mnt/mediapool/media/one/hl-media/tvshows";
       fsType = "nfs";
     };
-    "/mnt/actualbudget" = {
-      device = "trunas.localdomain:/mnt/mainpool/kubernetes/actualbudget";
-      fsType = "nfs";
-    };
   };
 
   swapDevices = [ ];

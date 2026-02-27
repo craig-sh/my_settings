@@ -15,7 +15,7 @@ in
           "127.0.0.1:${httpPort}:3000"
           "0.0.0.0:${sshPort}:${sshPort}"
         ];
-        volumes = [ "/mnt/forgejo/data:/data:Z" ];
+        volumes = [ "forgejo-data:/data" ];
         environments = {
           USER_UID = uid;
           USER_GID = uid;
@@ -34,4 +34,5 @@ in
       serviceConfig.Restart = "always";
     };
   };
+  virtualisation.quadlet.volumes."forgejo-data" = { };
 }

@@ -10,7 +10,7 @@ in
         containerConfig = {
           image = "docker.io/actualbudget/actual-server:${version}";
           publishPorts = [ "127.0.0.1:${port}:${port}" ];
-          volumes = [ "/mnt/actualbudget/data:/data:Z" ];
+          volumes = [ "actualbudget-data:/data" ];
           dropCapabilities = [ "ALL" ];
           noNewPrivileges = true;
           healthCmd = "node src/scripts/health-check.js";
@@ -28,4 +28,5 @@ in
       };
     };
   };
+  virtualisation.quadlet.volumes."actualbudget-data" = { };
 }
