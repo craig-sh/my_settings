@@ -49,6 +49,17 @@
           reverse_proxy http://localhost:3333
         '';
       };
+      "git.localdomain" = {
+        serverAliases = [ "www.git.localdomain" ];
+        extraConfig = ''
+          tls {
+            issuer internal {
+              ca local
+            }
+          }
+          reverse_proxy http://localhost:3001
+        '';
+      };
     };
   };
 }
