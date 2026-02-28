@@ -1,24 +1,24 @@
-{ osConfig, ... }:
+{ ... }:
 let
   version = "14.0.2";
   httpPort = "3001";
   sshPort = "2222";
-  uid = toString osConfig.users.users.conrun.uid;
 in
 {
   virtualisation.quadlet = {
     enable = true;
     containers.forgejo = {
       containerConfig = {
-        image = "codeberg.org/forgejo/forgejo:${version}";
+        image = "codeberg.org/forgejo/forgejo:${version}-rootless";
         publishPorts = [
           "127.0.0.1:${httpPort}:3000"
           "0.0.0.0:${sshPort}:${sshPort}"
         ];
-        volumes = [ "forgejo-data:/data" ];
+        volumes = [
+          "forgejo-data:/var/lib/gitea"
+          "forgejo-conf:/etc/gitea"
+        ];
         environments = {
-          USER_UID = uid;
-          USER_GID = uid;
           FORGEJO__server__SSH_LISTEN_PORT = sshPort;
           FORGEJO__server__SSH_PORT = sshPort;
         };
@@ -35,4 +35,5 @@ in
     };
   };
   virtualisation.quadlet.volumes."forgejo-data" = { };
+  virtualisation.quadlet.volumes."forgejo-conf" = { };
 }

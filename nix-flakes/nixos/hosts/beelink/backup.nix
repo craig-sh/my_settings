@@ -68,11 +68,14 @@
       rsync -ah $ACTUALBUDGET_SRC_DIR/ $ACTUALBUDGET_DEST_DIR/
 
       # Forgejo
-      FORGEJO_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-data');
+      FORGEJO_DATA_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-data');
+      FORGEJO_CONF_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-conf');
       FORGEJO_DEST_DIR=$CUSTOM_BACKUP_ROOT/forgejo;
       rm -rf $FORGEJO_DEST_DIR;
-      mkdir $FORGEJO_DEST_DIR;
-      rsync -ah $FORGEJO_SRC_DIR/ $FORGEJO_DEST_DIR/
+      mkdir -p $FORGEJO_DEST_DIR/data;
+      mkdir -p $FORGEJO_DEST_DIR/conf;
+      rsync -ah $FORGEJO_DATA_SRC_DIR/ $FORGEJO_DEST_DIR/data/
+      rsync -ah $FORGEJO_CONF_SRC_DIR/ $FORGEJO_DEST_DIR/conf/
 
       # Actual backup
       restic --verbose backup --tag=$RESTIC_TAG $CUSTOM_BACKUP_ROOT
