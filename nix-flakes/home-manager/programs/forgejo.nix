@@ -1,8 +1,9 @@
-{ ... }:
+{ osConfig, ... }:
 let
   version = "14.0.2";
   httpPort = "3001";
   sshPort = "2222";
+  uid = toString osConfig.users.users.conrun.uid;
 in
 {
   virtualisation.quadlet = {
@@ -10,6 +11,7 @@ in
     containers.forgejo = {
       containerConfig = {
         image = "codeberg.org/forgejo/forgejo:${version}-rootless";
+        user = "${uid}:${uid}";
         publishPorts = [
           "127.0.0.1:${httpPort}:3000"
           "0.0.0.0:${sshPort}:${sshPort}"
