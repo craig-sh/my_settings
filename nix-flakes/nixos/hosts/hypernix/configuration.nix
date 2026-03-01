@@ -9,7 +9,7 @@
     ../../services/sunshine.nix
     ../../services/podman.nix
     ../../desktop/hyprland.nix
-    #../../services/ai.nix
+    ../../services/ai.nix
     #./gpu_passthrough.nix
     #../../desktop/x11.nix
     #../../desktop/kde.nix
