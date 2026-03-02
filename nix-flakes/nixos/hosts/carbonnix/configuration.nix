@@ -1,9 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
   imports = [
     #../../desktop/qtile-overlay.nix
-    ../../desktop/qtile.nix
+    #../../desktop/qtile.nix
     ../../services/podman.nix
     ../../desktop/base-configuration.nix
     ../../desktop/x11.nix
@@ -29,5 +29,5 @@
     networkmanager.enable = true; # Easiest to use and most distros use this by default.
   };
   # environment.systemPackages = [ ];
-  services.displayManager.defaultSession = "qtile";
+  services.displayManager.defaultSession = lib.mkForce "hyprland";
 }
