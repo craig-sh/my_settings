@@ -8,6 +8,11 @@
         { name, config, ... }:
         {
           options = {
+            user = lib.mkOption {
+              type = lib.types.str;
+              default = "conrun";
+              description = "User who owns this service (runs containers, HM module owner, used for backups).";
+            };
             port = lib.mkOption {
               type = lib.types.port;
               description = "Port the service listens on locally.";
@@ -29,16 +34,16 @@
                 description = "Additional UDP ports to open in the firewall.";
               };
             };
+            hmModule = lib.mkOption {
+              type = lib.types.nullOr lib.types.path;
+              default = null;
+              description = "Path to the Home Manager module for this service.";
+            };
             backup = {
               enable = lib.mkEnableOption "backup for this service";
-              user = lib.mkOption {
-                type = lib.types.str;
-                default = "conrun";
-                description = "User whose podman session owns this service's volumes.";
-              };
               scriptFile = lib.mkOption {
                 type = lib.types.str;
-                default = "/home/${config.backup.user}/backup-scripts/${name}.sh";
+                default = "/home/${config.user}/backup-scripts/${name}.sh";
                 description = ''
                   Absolute path to an executable backup script.
                   Called by the backup service with the backup destination dir as $1.

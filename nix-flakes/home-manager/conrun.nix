@@ -10,9 +10,6 @@
   imports = [
     inputs.sops-nix.homeManagerModules.sops
     inputs.quadlet-nix.homeManagerModules.quadlet
-    ./programs/ghostfolio.nix
-    ./programs/actualbudget.nix
-    ./programs/forgejo.nix
     ./programs/zsh.nix
     ./programs/starship.nix
   ];

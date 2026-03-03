@@ -297,13 +297,11 @@ in
       backup.enable = true;
     };
     frigate = {
+      user = "craig";
       port = 8971;
       firewall.extraTCPPorts = [ 8971 8554 8555 8556 ];
       firewall.extraUDPPorts = [ 8555 ];
-      backup = {
-        enable = true;
-        user = "craig";
-      };
+      backup.enable = true;
     };
   };
 
