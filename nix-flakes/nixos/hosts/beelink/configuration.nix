@@ -58,6 +58,23 @@ in
       format = "yaml";
       owner = "conrun";
     };
+
+    sf-db-pw = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    sf-app-db-pw = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    sf-api-key = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    sf-auth-secret = {
+      format = "yaml";
+      owner = "conrun";
+    };
   };
   # TODO move this to home manager config?
   #  Do not double qoute below strings. This is passed to systemd enviornment not regular bash env!!!!!
@@ -74,6 +91,31 @@ in
       ACCESS_TOKEN_SALT=${config.sops.placeholder.gf-gf-salt}
       DATABASE_URL=postgresql://pguser:${config.sops.placeholder.gf-pg-pw}@gfpostgres:5432/ghostfolio-db?connect_timeout=300&sslmode=prefer
       JWT_SECRET_KEY=${config.sops.placeholder.gf-gf-jwt}
+    '';
+    owner = "conrun";
+  };
+  # Do not double quote below strings. This is passed to systemd environment not regular bash env!!!!!
+  sops.templates."sparkyfitness.env" = {
+    content = ''
+      POSTGRES_DB=sparkydb
+      POSTGRES_USER=sparky
+      POSTGRES_PASSWORD=${config.sops.placeholder.sf-db-pw}
+
+      SPARKY_FITNESS_DB_USER=sparky
+      SPARKY_FITNESS_DB_NAME=sparkydb
+      SPARKY_FITNESS_DB_HOST=sfpostgres
+      SPARKY_FITNESS_DB_PORT=5432
+      SPARKY_FITNESS_DB_PASSWORD=${config.sops.placeholder.sf-db-pw}
+
+      SPARKY_FITNESS_APP_DB_USER=sparkyapp
+      SPARKY_FITNESS_APP_DB_PASSWORD=${config.sops.placeholder.sf-app-db-pw}
+
+      SPARKY_FITNESS_API_ENCRYPTION_KEY=${config.sops.placeholder.sf-api-key}
+      BETTER_AUTH_SECRET=${config.sops.placeholder.sf-auth-secret}
+
+      SPARKY_FITNESS_FRONTEND_URL=https://sparkyfitness.localdomain
+      SPARKY_FITNESS_SERVER_HOST=sfserver
+      SPARKY_FITNESS_SERVER_PORT=3010
     '';
     owner = "conrun";
   };
@@ -301,6 +343,10 @@ in
       port = 8971;
       firewall.extraTCPPorts = [ 8971 8554 8555 8556 ];
       firewall.extraUDPPorts = [ 8555 ];
+      backup.enable = true;
+    };
+    sparkyfitness = {
+      port = 3004;
       backup.enable = true;
     };
   };
