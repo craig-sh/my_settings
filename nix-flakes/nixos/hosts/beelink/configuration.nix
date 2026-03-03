@@ -108,18 +108,12 @@ in
     # Pick only one of the below networking options.
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     networkmanager.enable = true; # Easiest to use and most distros use this by default.
-    # For frigate pod
     firewall = {
       allowedTCPPorts = [
         8096 # jellyfin
-        8971 # frigate
-        8554 # frigate
-        8555 # frigate
-        8556 # frigate
       ];
       allowedUDPPorts = [
         7359 # jellyfin
-        8555 # frigate
       ];
     };
   };
@@ -292,6 +286,7 @@ in
     forgejo = {
       port = 3001;
       domain = "git.localdomain";
+      firewall.extraTCPPorts = [ 2222 ];
       backup.enable = true;
     };
     ghostfolio = {
@@ -300,6 +295,15 @@ in
     actualbudget = {
       port = 5006;
       backup.enable = true;
+    };
+    frigate = {
+      port = 8971;
+      firewall.extraTCPPorts = [ 8971 8554 8555 8556 ];
+      firewall.extraUDPPorts = [ 8555 ];
+      backup = {
+        enable = true;
+        user = "craig";
+      };
     };
   };
 

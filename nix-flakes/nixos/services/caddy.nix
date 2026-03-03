@@ -27,22 +27,8 @@ in
         }
       }
     '';
-    virtualHosts =
-      {
-        "frigate.localdomain" = {
-          serverAliases = [ "www.frigate.localdomain" ];
-          extraConfig = ''
-            tls {
-              issuer internal {
-                ca local
-              }
-            }
-            reverse_proxy http://localhost:8971
-          '';
-        };
-      }
-      // lib.mapAttrs' (
-        name: svc: lib.nameValuePair svc.domain (mkVirtualHost name svc)
-      ) config.local.services;
+    virtualHosts = lib.mapAttrs' (
+      name: svc: lib.nameValuePair svc.domain (mkVirtualHost name svc)
+    ) config.local.services;
   };
 }

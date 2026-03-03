@@ -63,13 +63,6 @@ in
       mkdir -p $TMPDIR;
       mkdir -p $CUSTOM_BACKUP_ROOT;
 
-      # Frigate
-      FRIGRATE_SRC_DIR=$(su -l craig -c 'podman volume inspect --format "{{.Mountpoint}}" frigate-config');
-      FRIGRATE_DEST_DIR=$CUSTOM_BACKUP_ROOT/frigate;
-      rm -rf $FRIGRATE_DEST_DIR;
-      mkdir $FRIGRATE_DEST_DIR;
-      rsync -ah $FRIGRATE_SRC_DIR/ $FRIGRATE_DEST_DIR/
-
       ${backupCalls}
 
       # Actual backup
