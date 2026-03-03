@@ -1,9 +1,10 @@
-{ config, ... }:
+{ osConfig, config, ... }:
 let
   servicePort = "3004";
   internalPort = "80"; # frontend nginx port
   inherit (config.virtualisation.quadlet) pods;
-  version = "0.16.4.8";
+  version = "v0.16.4.9";
+  uid = toString osConfig.users.users.conrun.uid;
 in
 {
   virtualisation.quadlet = {
@@ -25,6 +26,7 @@ in
           dropCapabilities = [ "ALL" ];
           addCapabilities = [
             "CHOWN"
+            "NET_BIND_SERVICE"
             "SETGID"
             "SETUID"
           ];

@@ -12,6 +12,7 @@ in
       containerConfig = {
         image = "codeberg.org/forgejo/forgejo:${version}-rootless";
         user = "${uid}:${uid}";
+        userns = "keep-id";
         publishPorts = [
           "127.0.0.1:${httpPort}:3000"
           "0.0.0.0:${sshPort}:${sshPort}"
