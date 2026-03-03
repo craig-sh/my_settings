@@ -1,4 +1,16 @@
-{ pkgs, config, ... }:
+{ pkgs, config, lib, ... }:
+let
+  enabledServices = lib.filterAttrs (_: svc: svc.backup.enable) config.local.services;
+  backupCalls = lib.concatStringsSep "\n" (
+    lib.mapAttrsToList (name: svc: ''
+      echo "==> Backing up ${name}"
+      BACKUP_DIR="$CUSTOM_BACKUP_ROOT/${name}"
+      rm -rf "$BACKUP_DIR"
+      mkdir -p "$BACKUP_DIR"
+      ${svc.backup.scriptFile} "$BACKUP_DIR"
+    '') enabledServices
+  );
+in
 {
   programs.ssh = {
     extraConfig = "
@@ -43,12 +55,10 @@
       #!/usr/bin/env bash
       set -euo pipefail
 
-
       export RESTIC_HOST="$(hostname)";
       export RESTIC_TAG="$(hostname)";
       export HEALTHCHECK_KEY="$(cat $HEALTHCHECK_KEY_FILE)";
       export RESTIC_REPOSITORY="sftp:$REMOTE_USER@$REMOTE_REPO:$REMOTE_PATH";
-
 
       mkdir -p $TMPDIR;
       mkdir -p $CUSTOM_BACKUP_ROOT;
@@ -60,22 +70,7 @@
       mkdir $FRIGRATE_DEST_DIR;
       rsync -ah $FRIGRATE_SRC_DIR/ $FRIGRATE_DEST_DIR/
 
-      # Actual Budget
-      ACTUALBUDGET_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" actualbudget-data');
-      ACTUALBUDGET_DEST_DIR=$CUSTOM_BACKUP_ROOT/actualbudget;
-      rm -rf $ACTUALBUDGET_DEST_DIR;
-      mkdir $ACTUALBUDGET_DEST_DIR;
-      rsync -ah $ACTUALBUDGET_SRC_DIR/ $ACTUALBUDGET_DEST_DIR/
-
-      # Forgejo
-      FORGEJO_DATA_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-data');
-      FORGEJO_CONF_SRC_DIR=$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-conf');
-      FORGEJO_DEST_DIR=$CUSTOM_BACKUP_ROOT/forgejo;
-      rm -rf $FORGEJO_DEST_DIR;
-      mkdir -p $FORGEJO_DEST_DIR/data;
-      mkdir -p $FORGEJO_DEST_DIR/conf;
-      rsync -ah $FORGEJO_DATA_SRC_DIR/ $FORGEJO_DEST_DIR/data/
-      rsync -ah $FORGEJO_CONF_SRC_DIR/ $FORGEJO_DEST_DIR/conf/
+      ${backupCalls}
 
       # Actual backup
       restic --verbose backup --tag=$RESTIC_TAG $CUSTOM_BACKUP_ROOT

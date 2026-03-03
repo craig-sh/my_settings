@@ -288,6 +288,21 @@ in
   };
   virtualisation.quadlet.enable = true;
 
+  local.services = {
+    forgejo = {
+      port = 3001;
+      domain = "git.localdomain";
+      backup.enable = true;
+    };
+    ghostfolio = {
+      port = 3333;
+    };
+    actualbudget = {
+      port = 5006;
+      backup.enable = true;
+    };
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

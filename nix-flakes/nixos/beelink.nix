@@ -9,6 +9,7 @@
     inputs.sops-nix.nixosModules.sops
     inputs.quadlet-nix.nixosModules.quadlet
     inputs.home-manager.nixosModules.home-manager
+    ./modules/local-services.nix
     ./services/sops.nix
     ./hosts/beelink/hardware-configuration.nix
     ./hosts/beelink/configuration.nix

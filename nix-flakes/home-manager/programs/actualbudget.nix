@@ -29,4 +29,16 @@ in
     };
   };
   virtualisation.quadlet.volumes."actualbudget-data" = { };
+
+  home.file."backup-scripts/actualbudget.sh" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+      BACKUP_DIR="$1"
+      rsync -ah \
+        "$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" actualbudget-data')/" \
+        "$BACKUP_DIR/"
+    '';
+  };
 }

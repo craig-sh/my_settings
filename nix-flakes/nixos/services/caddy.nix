@@ -1,6 +1,18 @@
-{ config, ... }:
+{ config, lib, ... }:
+let
+  mkVirtualHost = _name: svc: {
+    serverAliases = [ "www.${svc.domain}" ];
+    extraConfig = ''
+      tls {
+        issuer internal {
+          ca local
+        }
+      }
+      reverse_proxy http://localhost:${toString svc.port}
+    '';
+  };
+in
 {
-
   networking.firewall.allowedTCPPorts = [ 443 ];
   services.caddy = {
     enable = true;
@@ -15,51 +27,22 @@
         }
       }
     '';
-    virtualHosts = {
-      "frigate.localdomain" = {
-        serverAliases = [ "www.frigate.localdomain" ];
-        extraConfig = ''
-          tls {
-            issuer internal {
-              ca local
+    virtualHosts =
+      {
+        "frigate.localdomain" = {
+          serverAliases = [ "www.frigate.localdomain" ];
+          extraConfig = ''
+            tls {
+              issuer internal {
+                ca local
+              }
             }
-          }
-          reverse_proxy http://localhost:8971
-        '';
-      };
-      "actualbudget.localdomain" = {
-        serverAliases = [ "www.actualbudget.localdomain" ];
-        extraConfig = ''
-          tls {
-            issuer internal {
-              ca local
-            }
-          }
-          reverse_proxy http://localhost:5006
-        '';
-      };
-      "ghostfolio.localdomain" = {
-        serverAliases = [ "www.ghostfolio.localdomain" ];
-        extraConfig = ''
-          tls {
-            issuer internal {
-              ca local
-            }
-          }
-          reverse_proxy http://localhost:3333
-        '';
-      };
-      "git.localdomain" = {
-        serverAliases = [ "www.git.localdomain" ];
-        extraConfig = ''
-          tls {
-            issuer internal {
-              ca local
-            }
-          }
-          reverse_proxy http://localhost:3001
-        '';
-      };
-    };
+            reverse_proxy http://localhost:8971
+          '';
+        };
+      }
+      // lib.mapAttrs' (
+        name: svc: lib.nameValuePair svc.domain (mkVirtualHost name svc)
+      ) config.local.services;
   };
 }
