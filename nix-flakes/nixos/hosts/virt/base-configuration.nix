@@ -29,6 +29,23 @@ in
       format = "yaml";
     };
   };
+  sops.secrets.user_healthcheck_key = {
+    format = "yaml";
+    owner = config.systemd.user.services.keep-calendar-sync.serviceConfig.User;
+    key = "healthcheck_key";
+  };
+  sops.secrets.keep_user = {
+    format = "yaml";
+    owner = config.systemd.user.services.keep-calendar-sync.serviceConfig.User;
+  };
+  sops.secrets.keep_pass = {
+    format = "yaml";
+    owner = config.systemd.user.services.keep-calendar-sync.serviceConfig.User;
+  };
+  sops.secrets.gcalender_creds = {
+    format = "yaml";
+    owner = config.systemd.user.services.keep-calendar-sync.serviceConfig.User;
+  };
 
   #### Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
@@ -94,6 +111,7 @@ in
       craig = {
         isNormalUser = true;
         extraGroups = [ "wheel" ]; # Enable 'sudo' for the user.
+        linger = true;
         #packages = with pkgs; [
         #  firefox
         #  tree
@@ -162,6 +180,8 @@ in
     package = pkgs.nixVersions.stable;
     extraOptions = ''
       experimental-features = nix-command flakes
+      extra-substituters = https://nixpkgs-python.cachix.org https://devenv.cachix.org
+      extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw= nixpkgs-python.cachix.org-1:hxjI7pFxTyuTHn2NkvWCrAUcNZLNS3ZAvfYNuYifcEU=
     '';
     # Perform garbage collection weekly to maintain low disk usage
     gc = {

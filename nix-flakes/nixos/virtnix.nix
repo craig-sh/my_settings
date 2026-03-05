@@ -2,6 +2,7 @@
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
+    ./keep-calendar-sync.nix
     ./services/sops.nix
     ./hosts/virt/hardware-configuration.nix
     ./hosts/virt/base-configuration.nix
