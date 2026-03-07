@@ -58,7 +58,7 @@
       set -euo pipefail
       BACKUP_DIR="$1"
       rsync -ah \
-        "$(su -l craig -c 'podman volume inspect --format "{{.Mountpoint}}" frigate-config')/" \
+        "$(podman volume inspect --format '{{.Mountpoint}}' frigate-config)/" \
         "$BACKUP_DIR/"
     '';
   };

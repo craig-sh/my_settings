@@ -46,7 +46,8 @@
                 default = "/home/${config.user}/backup-scripts/${name}.sh";
                 description = ''
                   Absolute path to an executable backup script.
-                  Called by the backup service with the backup destination dir as $1.
+                  Run as the service user with a staging directory as $1.
+                  Root copies the staging directory contents to the final backup location.
                 '';
               };
             };

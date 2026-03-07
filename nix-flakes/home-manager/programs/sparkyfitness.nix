@@ -93,10 +93,10 @@ in
       BACKUP_DIR="$1"
       mkdir -p "$BACKUP_DIR/uploads" "$BACKUP_DIR/backup"
       rsync -ah \
-        "$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" sf-server-uploads')/" \
+        "$(podman volume inspect --format '{{.Mountpoint}}' sf-server-uploads)/" \
         "$BACKUP_DIR/uploads/"
       rsync -ah \
-        "$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" sf-server-backup')/" \
+        "$(podman volume inspect --format '{{.Mountpoint}}' sf-server-backup)/" \
         "$BACKUP_DIR/backup/"
     '';
   };

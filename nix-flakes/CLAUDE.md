@@ -51,6 +51,6 @@ rm -f .test_os_before_* .test_os_after_* .test_hm_before_* .test_hm_after_*
 ### Core Structure
 - **flake.nix**: Main configuration defining all system outputs
 - **justfile**: Just commands for common operations
-- **home-manager/**: Home manager confirguarions
+- **home-manager/**: Home manager configurations
 - **nixos/**: OS level configuration
 

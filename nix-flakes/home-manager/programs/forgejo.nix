@@ -48,10 +48,10 @@ in
       BACKUP_DIR="$1"
       mkdir -p "$BACKUP_DIR/data" "$BACKUP_DIR/conf"
       rsync -ah \
-        "$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-data')/" \
+        "$(podman volume inspect --format '{{.Mountpoint}}' forgejo-data)/" \
         "$BACKUP_DIR/data/"
       rsync -ah \
-        "$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" forgejo-conf')/" \
+        "$(podman volume inspect --format '{{.Mountpoint}}' forgejo-conf)/" \
         "$BACKUP_DIR/conf/"
     '';
   };

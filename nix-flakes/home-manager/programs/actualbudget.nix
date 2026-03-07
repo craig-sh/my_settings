@@ -37,7 +37,7 @@ in
       set -euo pipefail
       BACKUP_DIR="$1"
       rsync -ah \
-        "$(su -l conrun -c 'podman volume inspect --format "{{.Mountpoint}}" actualbudget-data')/" \
+        "$(podman volume inspect --format '{{.Mountpoint}}' actualbudget-data)/" \
         "$BACKUP_DIR/"
     '';
   };

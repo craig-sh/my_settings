@@ -5,9 +5,13 @@ let
     lib.mapAttrsToList (name: svc: ''
       echo "==> Backing up ${name}"
       BACKUP_DIR="$CUSTOM_BACKUP_ROOT/${name}"
-      rm -rf "$BACKUP_DIR"
-      mkdir -p "$BACKUP_DIR"
-      ${svc.backup.scriptFile} "$BACKUP_DIR"
+      STAGING_DIR="/tmp/backup-staging-${name}"
+      rm -rf "$STAGING_DIR"
+      mkdir -p "$BACKUP_DIR" "$STAGING_DIR"
+      chown ${svc.user} "$STAGING_DIR"
+      su -l ${svc.user} -s /bin/sh -c "${svc.backup.scriptFile} $STAGING_DIR"
+      rsync -a "$STAGING_DIR/" "$BACKUP_DIR/"
+      rm -rf "$STAGING_DIR"
     '') enabledServices
   );
 in
