@@ -333,6 +333,9 @@ in
     };
     ghostfolio = {
       port = 3333;
+      backup.enable = true;
+      backup.scriptFile = null;
+      backup.pgDumps = [ { container = "gfpostgres"; } ];
     };
     actualbudget = {
       port = 5006;
@@ -348,6 +351,7 @@ in
     sparkyfitness = {
       port = 3004;
       backup.enable = true;
+      backup.pgDumps = [ { container = "sfpostgres"; } ];
     };
   };
 

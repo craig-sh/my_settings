@@ -9,7 +9,14 @@ let
       rm -rf "$STAGING_DIR"
       mkdir -p "$BACKUP_DIR" "$STAGING_DIR"
       chown ${svc.user} "$STAGING_DIR"
-      su -l ${svc.user} -s /bin/sh -c "${svc.backup.scriptFile} $STAGING_DIR"
+      ${lib.optionalString (svc.backup.scriptFile != null) ''
+        su -l ${svc.user} -s /bin/sh -c "${svc.backup.scriptFile} $STAGING_DIR"
+      ''}
+      ${lib.concatMapStringsSep "\n" (dump: ''
+        echo "  -> pg_dump ${dump.container}"
+        su -l ${svc.user} -s /bin/sh -c "podman exec ${dump.container} sh -c 'pg_dump -U \"\$POSTGRES_USER\" \"\$POSTGRES_DB\"'" \
+          > "$STAGING_DIR/${dump.container}.sql"
+      '') svc.backup.pgDumps}
       rsync -a "$STAGING_DIR/" "$BACKUP_DIR/"
       rm -rf "$STAGING_DIR"
     '') enabledServices

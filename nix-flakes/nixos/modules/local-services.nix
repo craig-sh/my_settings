@@ -42,13 +42,25 @@
             backup = {
               enable = lib.mkEnableOption "backup for this service";
               scriptFile = lib.mkOption {
-                type = lib.types.str;
+                type = lib.types.nullOr lib.types.str;
                 default = "/home/${config.user}/backup-scripts/${name}.sh";
                 description = ''
-                  Absolute path to an executable backup script.
+                  Absolute path to an executable backup script, or null to skip.
                   Run as the service user with a staging directory as $1.
                   Root copies the staging directory contents to the final backup location.
                 '';
+              };
+              pgDumps = lib.mkOption {
+                type = lib.types.listOf (
+                  lib.types.submodule {
+                    options.container = lib.mkOption {
+                      type = lib.types.str;
+                      description = "Rootless podman container running postgres. Uses POSTGRES_USER/POSTGRES_DB env vars from the container.";
+                    };
+                  }
+                );
+                default = [ ];
+                description = "Postgres containers to dump via pg_dump inside the container.";
               };
             };
           };
