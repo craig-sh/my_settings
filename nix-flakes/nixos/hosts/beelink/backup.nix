@@ -10,12 +10,18 @@ let
       mkdir -p "$BACKUP_DIR" "$STAGING_DIR"
       chown ${svc.user} "$STAGING_DIR"
       ${lib.optionalString (svc.backup.scriptFile != null) ''
-        su -l ${svc.user} -s /bin/sh -c "${svc.backup.scriptFile} $STAGING_DIR"
+        if ! su -l ${svc.user} -s /bin/sh -c "${svc.backup.scriptFile} $STAGING_DIR"; then
+          echo "ERROR: backup script for ${name} failed"
+          BACKUP_FAILED=1
+        fi
       ''}
       ${lib.concatMapStringsSep "\n" (dump: ''
         echo "  -> pg_dump ${dump.container}"
-        su -l ${svc.user} -s /bin/sh -c "podman exec ${dump.container} sh -c 'pg_dump -U \"\$POSTGRES_USER\" \"\$POSTGRES_DB\"'" \
-          > "$STAGING_DIR/${dump.container}.sql"
+        if ! su -l ${svc.user} -s /bin/sh -c "podman exec ${dump.container} sh -c 'pg_dump -U \"\$POSTGRES_USER\" \"\$POSTGRES_DB\"'" \
+            > "$STAGING_DIR/${dump.container}.sql"; then
+          echo "ERROR: pg_dump for ${dump.container} failed"
+          BACKUP_FAILED=1
+        fi
       '') svc.backup.pgDumps}
       rsync -a "$STAGING_DIR/" "$BACKUP_DIR/"
       rm -rf "$STAGING_DIR"
@@ -74,6 +80,8 @@ in
       mkdir -p $TMPDIR;
       mkdir -p $CUSTOM_BACKUP_ROOT;
 
+      BACKUP_FAILED=0
+
       ${backupCalls}
 
       # Actual backup
@@ -89,7 +97,12 @@ in
       restic prune;
 
       # Healthcheck
-      curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/$HEALTHCHECK_KEY/beelink-backup
+      if [ "$BACKUP_FAILED" -eq 0 ]; then
+        curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/$HEALTHCHECK_KEY/beelink-backup
+      else
+        echo "ERROR: one or more backups failed, skipping healthcheck"
+        exit 1
+      fi
     '';
   };
 
