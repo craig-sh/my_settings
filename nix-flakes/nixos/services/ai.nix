@@ -1,11 +1,11 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 
 {
+  systemd.services.ollama.serviceConfig.SupplementaryGroups = [
+    "render"
+    "video"
+  ];
+
   services.ollama = {
     enable = true;
     package = pkgs.ollama-rocm;
