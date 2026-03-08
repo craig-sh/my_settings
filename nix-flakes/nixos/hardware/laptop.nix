@@ -36,8 +36,6 @@
   environment.systemPackages = with pkgs; [ brightnessctl ];
   hardware.bluetooth.enable = true;
 
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=60min
-  '';
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "60min";
 
 }
