@@ -8,6 +8,19 @@ let
     ddcutil --display 1 setvcp 60 0x10
     ddcutil --display 2 setvcp 60 0x12
   '';
+  toggleMonocle = pkgs.writeShellScriptBin "hypr-toggle-monocle" ''
+    WS=$(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.id')
+    LAYOUT=$(hyprctl workspaces -j | ${pkgs.jq}/bin/jq -r --argjson ws "$WS" '.[] | select(.id == $ws) | .tiledLayout')
+    PREV_FILE="/tmp/hypr-monocle-prev-ws$WS"
+    if [ "$LAYOUT" = "monocle" ]; then
+      PREV=$(cat "$PREV_FILE" 2>/dev/null || echo "dwindle")
+      rm -f "$PREV_FILE"
+      hyprctl keyword workspace "$WS, layout:$PREV"
+    else
+      echo "$LAYOUT" > "$PREV_FILE"
+      hyprctl keyword workspace "$WS, layout:monocle"
+    fi
+  '';
 in
 {
 
@@ -23,6 +36,7 @@ in
       cliphist
       setWorkDisplay
       setPersonalDisplay
+      toggleMonocle
       jq
       rose-pine-hyprcursor
       wl-clip-persist
@@ -117,6 +131,9 @@ in
         "special:music, on-created-empty: [float; size 80% 80%] spotify"
         "special:org, on-created-empty:[float; size 80% 80%] kitty --hold -d ~/Documents/org vim todo.org"
         "f[1], gapsout:0, gapsin:0, bordersize:0" # disable gaps when maximixed
+        "2, layout:scrolling"
+        "6, layout:scrolling"
+        "10, layout:scrolling"
       ];
 
       bind = [
@@ -149,7 +166,7 @@ in
         "$mainMod ALT, P, pseudo, " # dwindle
         "$mainMod ALT, C, togglesplit," # dwindle
         "$mainMod ALT, F, fullscreen,0"
-        "$mainMod ALT, M, fullscreen,1"
+        "$mainMod ALT, M, exec, hypr-toggle-monocle"
         "$mainMod ALT, W, killactive,"
         #"$mainMod ALT, O, exec, hyprctl setprop active opaque toggle
 
@@ -164,7 +181,7 @@ in
         "$mainMod, l, movefocus, r"
         "$mainMod, k, movefocus, u"
         "$mainMod, j, movefocus, d"
-        "$mainMod, c, movefocus, l" # Using this instead of cyclenext because of movefocus_cycles_fullscreen behavior
+        "$mainMod, c, cyclenext, tiled" # cyclenext tiled works correctly in monocle layout (plain cyclenext does not)
         "$mainMod, y, exec, dunstctl history-pop"
         "$mainMod, t, exec, dunstctl close"
         "$mainMod, n, exec, dunstctl close-all"
