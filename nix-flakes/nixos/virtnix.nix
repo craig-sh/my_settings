@@ -18,6 +18,7 @@ in
     ./hosts/virt/base-configuration.nix
     ./hosts/virt/k3s-controller.nix
     ./hosts/virt/tailscale.nix
+    ./hosts/virt/backup.nix
   ];
 
   virtualisation.quadlet.enable = true;
