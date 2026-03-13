@@ -1,15 +1,29 @@
-{ inputs, outputs, username, ... }:
+{ inputs, outputs, username, config, lib, ... }:
+let
+  serviceModulesFor = user:
+    lib.mapAttrsToList (_: svc: svc.hmModule)
+      (lib.filterAttrs (_: svc: svc.hmModule != null && svc.user == user)
+        config.local.services);
+in
 {
   imports = [
     inputs.sops-nix.nixosModules.sops
     inputs.home-manager.nixosModules.home-manager
+    inputs.quadlet-nix.nixosModules.quadlet
+    ./modules/local-services.nix
     ./keep-calendar-sync.nix
     ./services/sops.nix
+    ./services/caddy.nix
     ./hosts/virt/hardware-configuration.nix
     ./hosts/virt/base-configuration.nix
     ./hosts/virt/k3s-controller.nix
     ./hosts/virt/tailscale.nix
   ];
+
+  virtualisation.quadlet.enable = true;
+
+  local.caddy.httpsPort = 9443;
+  local.services = { };
 
   home-manager = {
     useGlobalPkgs = true;
@@ -17,6 +31,9 @@
     users.craig.imports = [
       ../home-manager/virtnix.nix
     ];
+    users.conrun.imports = [
+      ../home-manager/conrun.nix
+    ] ++ serviceModulesFor "conrun";
     extraSpecialArgs = { inherit inputs outputs username; };
   };
 }

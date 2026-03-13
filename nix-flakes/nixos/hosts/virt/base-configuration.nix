@@ -117,6 +117,12 @@ in
         #  tree
         #];
       };
+      conrun = {
+        isNormalUser = true;
+        uid = 1010;
+        linger = true;
+        autoSubUidGidRange = true;
+      };
       media = {
         isNormalUser = false;
         isSystemUser = true;
