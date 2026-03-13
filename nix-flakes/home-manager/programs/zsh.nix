@@ -133,6 +133,11 @@
       zstyle ':completion:*' group-name '''''' # group results by category
       #zstyle ':completion:::::' completer _expand _complete _ignored _approximate #enable approximate matches for completion
 
+      cdgit() {
+        local dir
+        dir=$(find ~/my_gits -maxdepth 1 -mindepth 1 -type d | fzf) && cd "$dir"
+      }
+
     '';
 
     shellAliases = {

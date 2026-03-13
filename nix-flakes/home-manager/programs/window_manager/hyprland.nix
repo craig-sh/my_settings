@@ -11,6 +11,7 @@ let
   toggleMonocle = pkgs.writeShellScriptBin "hypr-toggle-monocle" ''
     WS=$(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.id')
     LAYOUT=$(hyprctl workspaces -j | ${pkgs.jq}/bin/jq -r --argjson ws "$WS" '.[] | select(.id == $ws) | .tiledLayout')
+    ACTIVE=$(hyprctl activewindow -j | ${pkgs.jq}/bin/jq -r '.address')
     PREV_FILE="/tmp/hypr-monocle-prev-ws$WS"
     if [ "$LAYOUT" = "monocle" ]; then
       PREV=$(cat "$PREV_FILE" 2>/dev/null || echo "dwindle")
@@ -20,6 +21,7 @@ let
       echo "$LAYOUT" > "$PREV_FILE"
       hyprctl keyword workspace "$WS, layout:monocle"
     fi
+    hyprctl dispatch focuswindow address:$ACTIVE
   '';
 in
 {
@@ -30,7 +32,6 @@ in
       grimblast
       hyprpaper
 
-      hyprpolkitagent
       wayvnc
       wl-clipboard
       cliphist
@@ -107,7 +108,6 @@ in
       exec-once = [
         "kitty"
         "waybar"
-        "systemctl --user start hyprpolkitagent"
         "hyprctl setcursor rose-pine-hyprcursor 16"
         "wl-paste --watch cliphist store"
         "wl-paste --type text --watch cliphist store"
@@ -129,9 +129,9 @@ in
 
       workspace = [
         "special:music, on-created-empty: [float; size 80% 80%] spotify"
-        "special:org, on-created-empty:[float; size 80% 80%] kitty --hold -d ~/Documents/org vim todo.org"
+        "special:org, on-created-empty: [float; size 80% 80%] kitty --hold -d ~/Documents/org vim todo.org"
         "f[1], gapsout:0, gapsin:0, bordersize:0" # disable gaps when maximixed
-        "2, layout:scrolling"
+        "4, layout:scrolling"
         "6, layout:scrolling"
         "10, layout:scrolling"
       ];
@@ -163,8 +163,8 @@ in
         #################
         # Modify window
         "$mainMod ALT, S, togglefloating,"
-        "$mainMod ALT, P, pseudo, " # dwindle
-        "$mainMod ALT, C, togglesplit," # dwindle
+        "$mainMod ALT, P, layoutmsg, swapnext"
+        "$mainMod ALT, C, layoutmsg, cyclenext"
         "$mainMod ALT, F, fullscreen,0"
         "$mainMod ALT, M, exec, hypr-toggle-monocle"
         "$mainMod ALT, W, killactive,"
@@ -434,4 +434,6 @@ in
 
     '';
   };
+
+  services.hyprpolkitagent.enable = true;
 }

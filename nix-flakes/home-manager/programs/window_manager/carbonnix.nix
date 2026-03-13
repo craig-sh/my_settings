@@ -4,7 +4,7 @@ _: {
       mainBar = {
         modules-left = [
           "hyprland/workspaces"
-          "hyprland/window"
+          "hyprland/workspaces#windows"
         ];
         modules-center = [ ];
         modules-right = [
