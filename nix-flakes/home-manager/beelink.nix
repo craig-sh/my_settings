@@ -2,7 +2,8 @@
 
 {
   imports = [
-    ./programs/git.nix
+    ./common.nix
+    #./programs/aider.nix
     #./programs/jellyfin.nix
   ];
 }

@@ -9,6 +9,7 @@
     ./gui.nix
     ./catppuccin.nix
     ./waylandgui.nix
+    #./programs/aider.nix
     ./programs/neovim_git.nix
     ./gaming.nix
     ./programs/window_manager/hyprland.nix

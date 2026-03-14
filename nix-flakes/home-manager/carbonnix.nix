@@ -9,6 +9,7 @@
     ./gui.nix
     ./catppuccin.nix
     #./x11gui.nix
+    #./programs/aider.nix
     ./programs/neovim_git.nix
     ./programs/window_manager/hyprland.nix
     ./programs/window_manager/hyprlock.nix
