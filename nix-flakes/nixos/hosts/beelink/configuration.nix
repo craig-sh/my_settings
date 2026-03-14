@@ -75,6 +75,11 @@ in
       format = "yaml";
       owner = "conrun";
     };
+
+    dt-jwt-secret = {
+      format = "yaml";
+      owner = "conrun";
+    };
   };
   # TODO move this to home manager config?
   #  Do not double qoute below strings. This is passed to systemd enviornment not regular bash env!!!!!
@@ -117,6 +122,10 @@ in
       SPARKY_FITNESS_SERVER_HOST=sfserver
       SPARKY_FITNESS_SERVER_PORT=3010
     '';
+    owner = "conrun";
+  };
+  sops.templates."donetick.env" = {
+    content = "DT_JWT_SECRET=${config.sops.placeholder.dt-jwt-secret}";
     owner = "conrun";
   };
 
@@ -352,6 +361,10 @@ in
       port = 3004;
       backup.enable = true;
       backup.pgDumps = [ { container = "sfpostgres"; } ];
+    };
+    donetick = {
+      port = 2021;
+      backup.enable = true;
     };
   };
 

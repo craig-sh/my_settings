@@ -31,6 +31,7 @@ in
     actualbudget.hmModule = ../home-manager/programs/actualbudget.nix;
     frigate.hmModule    = ../home-manager/programs/frigate.nix;
     sparkyfitness.hmModule = ../home-manager/programs/sparkyfitness.nix;
+    donetick.hmModule = ../home-manager/programs/donetick.nix;
   };
 
   home-manager = {
