@@ -1,5 +1,53 @@
+{ pkgs, ... }:
 let
   port = toString 2021;
+  configFile = pkgs.writeText "selfhosted.yaml" ''
+    name: "selfhosted"
+    is_done_tick_dot_com: false
+    is_user_creation_disabled: false
+    database:
+      type: "sqlite"
+      migration: true
+    jwt:
+      session_time: 168h
+      max_refresh: 1440h
+    server:
+      port: 2021
+      read_timeout: 10s
+      write_timeout: 10s
+      rate_period: 60s
+      rate_limit: 300
+      cors_allow_origins:
+        - "http://localhost:5173"
+        - "http://localhost:7926"
+        - "https://donetick.localdomain"
+        - "capacitor://localhost"
+        - "https://localhost"
+        - "http://localhost"
+      serve_frontend: true
+    logging:
+      level: "info"
+      encoding: "json"
+      development: false
+    scheduler_jobs:
+      due_job: 30m
+      overdue_job: 3h
+      pre_due_job: 3h
+    realtime:
+      enabled: true
+      sse_enabled: true
+      heartbeat_interval: 60s
+      connection_timeout: 120s
+      max_connections: 1000
+      max_connections_per_user: 5
+      event_queue_size: 2048
+      cleanup_interval: 2m
+      stale_threshold: 5m
+      enable_compression: true
+      enable_stats: true
+      allowed_origins:
+        - "*"
+  '';
 in
 {
   virtualisation.quadlet = {
@@ -11,7 +59,7 @@ in
           publishPorts = [ "127.0.0.1:${port}:${port}" ];
           volumes = [
             "donetick-data:/donetick-data:Z"
-            "%h/donetick-config:/config:ro"
+            "${configFile}:/config/selfhosted.yaml:ro"
           ];
           environmentFiles = [ "/run/secrets/rendered/donetick.env" ];
           environments = {
@@ -31,22 +79,6 @@ in
     };
     volumes."donetick-data" = { };
   };
-
-  home.file."donetick-config/selfhosted.yaml".text = ''
-    name: "selfhosted"
-    database:
-      type: "sqlite"
-      migration: true
-    server:
-      port: 2021
-      cors_allow_origins:
-        - "https://donetick.localdomain"
-        - "capacitor://localhost"
-      serve_frontend: true
-    realtime:
-      enabled: true
-      sse_enabled: true
-  '';
 
   home.file."backup-scripts/donetick.sh" = {
     executable = true;
