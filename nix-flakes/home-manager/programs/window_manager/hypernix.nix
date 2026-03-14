@@ -23,6 +23,14 @@ in
           "clock"
           "tray"
         ];
+        "hyprland/workspaces" = {
+          persistent-workspaces = {
+            "1" = [ ];
+            "4" = [ ];
+            "6" = [ ];
+            "10" = [ ];
+          };
+        };
       };
       otherBar = {
         output = "DP-3";

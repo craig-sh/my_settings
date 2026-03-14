@@ -82,7 +82,7 @@ in
         "custom/tailscale" = {
           exec = "echo '󰒄'";
           exec-if = "tailscale status";
-          interval = 5;
+          interval = 30;
           format = "{}";
           hide-empty-text = true;
         };
