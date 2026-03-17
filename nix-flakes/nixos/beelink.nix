@@ -26,12 +26,12 @@ in
   ];
 
   local.services = {
-    forgejo.hmModule    = ../home-manager/programs/forgejo.nix;
-    ghostfolio.hmModule = ../home-manager/programs/ghostfolio.nix;
-    actualbudget.hmModule = ../home-manager/programs/actualbudget.nix;
-    frigate.hmModule    = ../home-manager/programs/frigate.nix;
-    sparkyfitness.hmModule = ../home-manager/programs/sparkyfitness.nix;
-    donetick.hmModule = ../home-manager/programs/donetick.nix;
+    forgejo.hmModule    = ../home-manager/programs/local_services/forgejo.nix;
+    ghostfolio.hmModule = ../home-manager/programs/local_services/ghostfolio.nix;
+    actualbudget.hmModule = ../home-manager/programs/local_services/actualbudget.nix;
+    frigate.hmModule    = ../home-manager/programs/local_services/frigate.nix;
+    sparkyfitness.hmModule = ../home-manager/programs/local_services/sparkyfitness.nix;
+    donetick.hmModule = ../home-manager/programs/local_services/donetick.nix;
   };
 
   home-manager = {
