@@ -50,7 +50,9 @@ in
     ### MONITORS ###
     ################
     monitor = [
-      "DP-3, 2560x1440@180, 0x0, 1.6, vrr, 2, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12"
+      #"DP-3, 2560x1440@180, 0x0, 1.6, vrr, 2, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12"
+      # temp for now diable to test if VRR is causing crashing
+      "DP-3, 2560x1440@60, 0x0, 1.6, vrr, 0, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12"
       "HDMI-A-1, 2560x1440@60, auto-left, 1.6"
     ];
     bind = [

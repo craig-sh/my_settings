@@ -128,8 +128,8 @@ in
       ];
 
       workspace = [
-        "special:music, on-created-empty: [float; size 80% 80%] spotify"
-        "special:org, on-created-empty: [float; size 80% 80%] kitty --hold -d ~/Documents/org vim todo.org"
+        "special:music, on-created-empty: [float; size (monitor_w*0.8) (monitor_h*0.8)] spotify"
+        "special:org, on-created-empty: [float; size (monitor_w*0.8) (monitor_h*0.8)] kitty --hold -d ~/Documents/org vim todo.org"
         "f[1], gapsout:0, gapsin:0, bordersize:0" # disable gaps when maximixed
         "4, layout:scrolling"
         "6, layout:scrolling"
@@ -363,6 +363,12 @@ in
       # See https://wiki.hypr.land/Configuring/Master-Layout/ for more
       master {
           new_status = master
+      }
+
+      scrolling {
+          follow_min_visible = 0.1
+          column_width = 0.9
+          focus_fit_method = 0
       }
 
       ## https://wiki.hypr.land/Configuring/Variables/#misc
