@@ -96,6 +96,12 @@ in
       pkgs.steam
     ];
   };
+
+  # https://github.com/NixOS/nixpkgs/issues/455737
+  users.users.craig = {
+    extraGroups = [ "uinput" ];
+  };
+  hardware.uinput.enable = true;
 }
 #services.sunshine = {
 #  enable = true;
