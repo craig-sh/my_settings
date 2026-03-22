@@ -367,7 +367,7 @@ in
 
       scrolling {
           follow_min_visible = 0.1
-          column_width = 0.9
+          column_width = 0.95
           focus_fit_method = 0
       }
 
