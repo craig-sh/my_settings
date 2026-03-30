@@ -12,6 +12,29 @@ let
   # Examples:
   #   steam-run-url steam://rungameid/1086940  # Start Baldur's Gate 3
   #   steam-run-url steam://open/bigpicture    # Start Steam in Big Picture mode
+  # Old commands from kde
+  # do = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.disable";
+  # undo = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.enable  output.DP-3.position.1707,0  output.HDMI-A-1.position.0,0";
+  sunshine-undo = pkgs.writeShellApplication {
+    name = "sunshine-undo";
+    runtimeInputs = [ pkgs.hyprland steam-run-url ];
+    text = ''
+      hyprctl reload
+      steam-run-url -shutdown
+    '';
+  };
+  sunshine-prep = pkgs.writeShellApplication {
+    name = "sunshine-prep";
+    runtimeInputs = [ pkgs.hyprland ];
+    text = ''
+      pkill -USR1 hyprlock || true
+      #hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12;
+      #disable HDR for now since its not getting picked up by moonlight
+      hyprctl keyword monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1,bitdepth,10
+      hyprctl keyword monitor HDMI-A-1, disable
+      hyprctl dispatch workspace 8
+    '';
+  };
   steam-run-url = pkgs.writeShellApplication {
     name = "steam-run-url";
     text = ''
@@ -37,12 +60,8 @@ in
           name = "Steam Big Picture";
           prep-cmd = [
             {
-              #do = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.disable";
-              #undo = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.enable  output.DP-3.position.1707,0  output.HDMI-A-1.position.0,0";
-              #do = "${pkgs.hyprland}/bin/hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12;${pkgs.hyprland}/bin/hyprctl dispatch workspace 8";
-              #disable HDR for now its not getting picked up by moonlight
-              do = "pkill -USR1 hyprlock || true;${pkgs.hyprland}/bin/hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1,bitdepth,10;${pkgs.hyprland}/bin/hyprctl dispatch workspace 8";
-              undo = "${pkgs.hyprland}/bin/hyprctl reload";
+              do = "${sunshine-prep}/bin/sunshine-prep";
+              undo = "${sunshine-undo}/bin/sunshine-undo";
             }
           ];
           detached = [ "steam-run-url steam://open/bigpicture" ];
@@ -57,6 +76,8 @@ in
   # absolute file path
   systemd.user.services.sunshine.path = [
     steam-run-url
+    sunshine-prep
+    sunshine-undo
   ];
 
   # Allow running `steam-run-url` from shell for testing purposes
@@ -99,7 +120,7 @@ in
 
   # https://github.com/NixOS/nixpkgs/issues/455737
   users.users.craig = {
-    extraGroups = [ "uinput" ];
+    extraGroups = [ "uinput" "input" ];
   };
   hardware.uinput.enable = true;
 }

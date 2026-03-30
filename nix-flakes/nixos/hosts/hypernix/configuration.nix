@@ -47,6 +47,8 @@
       ACTION=="add", SUBSYSTEM=="pci", DRIVERS=="pcieport", ATTR{power/wakeup}="disabled"
       # blacklist for usb autosuspend. Could be cause of hyprland lockup: https://github.com/hyprwm/Hyprland/issues/2789
       ACTION=="add", SUBSYSTEM=="usb", DRIVERS=="usb", ATTR{power/wakeup/autosuspend}="disabled"
+      # 2.4GHz/Dongle
+      KERNEL=="hidraw*", ATTRS{idProduct}=="6012", ATTRS{idVendor}=="2dc8", MODE="0660", TAG+="uaccess"
     '';
     logind.settings.Login.HandlePowerKey = "suspend";
     xserver.deviceSection = ''

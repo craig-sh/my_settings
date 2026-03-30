@@ -14,7 +14,7 @@
       {
         plugin = tmuxPlugins.dracula;
         extraConfig = ''
-          # set -g @dracula-plugins "battery attached-clients kubernetes weather time"
+          # set -g @dracula-plugins "battery attached-clients weather time"
           set -g @dracula-show-battery false
           set -g @dracula-show-weather false
           set -g @dracula-fixed-location "Toronto"
@@ -29,7 +29,7 @@
     ];
     prefix = "C-a";
     escapeTime = 10;
-    terminal = "screen-256color";
+    terminal = "tmux-256color";
     baseIndex = 1;
     shell = "${pkgs.zsh}/bin/zsh";
     keyMode = "vi";
@@ -71,23 +71,23 @@
       bind-key -T copy-mode-vi 'v' send -X begin-selection
       bind-key -T copy-mode-vi 'V' send -X select-line
       bind-key -T copy-mode-vi 'r' send -X rectangle-toggle
-      bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "xclip -in -selection clipboard"
+      bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "wl-copy"
 
 
       # extra commands for interacting with the ICCCM clipboard
-      bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
-      bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
+      bind C-c run "tmux save-buffer - | wl-copy"
+      bind C-v run "tmux set-buffer \"$(wl-paste)\"; tmux paste-buffer"
 
 
       # Selection with mouse should copy to clipboard right away, in addition to the default action.
       unbind -n -Tcopy-mode-vi MouseDragEnd1Pane
-      bind -Tcopy-mode-vi MouseDragEnd1Pane send -X copy-selection-and-cancel\; run "tmux save-buffer - | xclip -i -sel clipboard > /dev/null"
+      bind -Tcopy-mode-vi MouseDragEnd1Pane send -X copy-selection-and-cancel\; run "tmux save-buffer - | wl-copy"
 
 
       # Middle click to paste from the clipboard
       unbind-key MouseDown2Pane
       bind-key -n MouseDown2Pane run " \
-        X=$(xclip -o -sel clipboard); \
+        X=$(wl-paste); \
         tmux set-buffer \"$X\"; \
         tmux paste-buffer -p; \
         tmux display-message 'pasted!' \

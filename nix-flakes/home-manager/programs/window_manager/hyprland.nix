@@ -8,6 +8,14 @@ let
     ddcutil --display 1 setvcp 60 0x10
     ddcutil --display 2 setvcp 60 0x12
   '';
+  startupTmuxW1 = pkgs.writeShellScriptBin "hypr-startup-tmux-w1" ''
+    SESSION="startup-w1"
+    tmux new-session -d -s "$SESSION"
+    tmux send-keys -t "$SESSION" 'gonix' Enter
+    tmux split-window -t "$SESSION"
+    tmux send-keys -t "$SESSION" 'gonix' Enter
+    exec tmux attach-session -t "$SESSION"
+  '';
   toggleMonocle = pkgs.writeShellScriptBin "hypr-toggle-monocle" ''
     WS=$(hyprctl activeworkspace -j | ${pkgs.jq}/bin/jq -r '.id')
     LAYOUT=$(hyprctl workspaces -j | ${pkgs.jq}/bin/jq -r --argjson ws "$WS" '.[] | select(.id == $ws) | .tiledLayout')
@@ -38,6 +46,7 @@ in
       setWorkDisplay
       setPersonalDisplay
       toggleMonocle
+      startupTmuxW1
       jq
       rose-pine-hyprcursor
       wl-clip-persist
@@ -106,13 +115,17 @@ in
       # Autostart necessary processes (like notifications daemons, status bars, etc.)
       # Or execute your favorite apps at launch like this:
       exec-once = [
-        "kitty"
         "waybar"
         "hyprctl setcursor rose-pine-hyprcursor 16"
         "wl-paste --watch cliphist store"
         "wl-paste --type text --watch cliphist store"
         "wl-paste --type image --watch cliphist store"
         "wl-clip-persist --clipboard regular"
+        "[workspace 1 silent] kitty hypr-startup-tmux-w1"
+        "[workspace 2 silent] kitty"
+        "[workspace 7 silent] kitty"
+        "[workspace 6 silent] firefox"
+        "[workspace 10 silent] keepassxc"
       ];
       windowrule = [
         # Gaming rules on workpsace 8

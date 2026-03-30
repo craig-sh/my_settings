@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -26,4 +26,10 @@
   ];
   #xsession.initExtra = "xrandr  --output DP-1 --rate 180 --mode 2560x1440 --output  HDMI-1 --auto --left-of DP-1";
   xsession.initExtra = "xrandr  --output DP-3 --rate 180 --mode 2560x1440 --output  HDMI-1 --auto --left-of DP-3";
+
+  home = {
+    packages = [
+      pkgs.google-chrome
+    ];
+  };
 }
