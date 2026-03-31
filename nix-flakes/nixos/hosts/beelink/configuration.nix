@@ -365,6 +365,7 @@ in
     donetick = {
       port = 2021;
       backup.enable = true;
+      firewall.extraTCPPorts = [ 2021 ];
     };
   };
 

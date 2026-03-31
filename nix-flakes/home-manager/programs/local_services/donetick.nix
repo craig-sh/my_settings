@@ -56,7 +56,7 @@ in
       donetick = {
         containerConfig = {
           image = "docker.io/donetick/donetick:v0.1.74";
-          publishPorts = [ "127.0.0.1:${port}:${port}" ];
+          publishPorts = [ "0.0.0.0:${port}:${port}" ];
           volumes = [
             "donetick-data:/donetick-data:Z"
             "${configFile}:/config/selfhosted.yaml:ro"
