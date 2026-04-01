@@ -143,6 +143,7 @@
     shellAliases = {
       ls = "${pkgs.eza}/bin/eza --colour=auto";
       ll = "ls -la";
+      lsdu = "ls -l --total-size --sort size -r";
       vim = "nvim";
       yy = "wl-copy";
       yi = " tr -d '\n' | wl-copy";
@@ -153,6 +154,7 @@
       screenshot = "scrot --select - | wl-copy";
       tailup = "sudo systemctl start tailscaled.service && sudo tailscale up --accept-routes";
       taildown = "sudo tailscale down && sudo systemctl stop tailscaled.service";
+      stay-awake=''systemd-inhibit --what=idle:sleep:handle-lid-switch --who="me" --why="stay awake" --mode=block sleep infinity'';
     };
 
     sessionVariables = {
