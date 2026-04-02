@@ -4,12 +4,12 @@
   imports = [
     ../../desktop/base-configuration.nix
     ../../desktop/wayland.nix
-    ../../desktop/qtile.nix
     ../../gaming/gaming.nix
     ../../services/sunshine.nix
     ../../services/podman.nix
     ../../desktop/hyprland.nix
     ../../services/ai.nix
+    #../../desktop/qtile.nix
     #./gpu_passthrough.nix
     #../../desktop/x11.nix
     #../../desktop/kde.nix

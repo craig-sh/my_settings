@@ -162,6 +162,8 @@ in
     fwupd.enable = true;
     # Automount disks
     udisks2.enable = true;
+    # NFS
+    rpcbind.enable = true;
   };
 
   security = {

@@ -57,7 +57,7 @@
       pkgs.btop
       pkgs.htop
       pkgs.fd
-      pkgs.nodePackages.bash-language-server
+      #pkgs.nodePackages.bash-language-server # nodePackages not supported anymore
       pkgs.lua-language-server
       pkgs.nodejs_24
       pkgs.devenv

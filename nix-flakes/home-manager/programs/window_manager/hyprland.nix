@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   setPersonalDisplay = pkgs.writeShellScriptBin "hypr-personal-display" ''
     ddcutil --display 1 setvcp 60 0x12
@@ -82,6 +82,7 @@ in
     gtk3.extraConfig = {
       "gtk-cursor-theme-name" = "BreezeX-RosePine-Linux";
     };
+    gtk4.theme = config.gtk.theme;
     gtk4.extraConfig = {
       Settings = ''
         gtk-cursor-theme-name=BreezeX-RosePine-Linux
