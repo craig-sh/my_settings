@@ -96,12 +96,19 @@
       # Browse tmux pane in nvim
       #bind [ run-shell 'kitty @ kitten /home/craig/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --env "TMUX=$TMUX" --env "TMUX_PANE=#{pane_id}" --nvim-args --clean --noplugin -n'
       #bind ] run-shell 'kitty @ kitten /home/craig/.local/share/nvim/lazy/kitty-scrollback.nvim/python/kitty_scrollback_nvim.py --env "TMUX=$TMUX" --env "TMUX_PANE=#{pane_id}"'
-      bind ] {
-        capture-pane -S -
+      #bind ] {
+      #  capture-pane -S -
+      #  save-buffer /tmp/tmux_buffer_tmp
+      #  delete-buffer
+      #  split-window
+      #  send-keys 'nvim + /tmp/tmux_buffer_tmp' Enter
+      #}
+
+      bind-key ] {
+        capture-pane -eJS -
         save-buffer /tmp/tmux_buffer_tmp
         delete-buffer
-        split-window
-        send-keys 'nvim + /tmp/tmux_buffer_tmp' Enter
+        display-popup -h 100% -w 100% -E "nvim +'lua Snacks.terminal.colorize(); vim.opt.relativenumber=true' /tmp/tmux_buffer_tmp"
       }
 
       # Plugin Configs

@@ -59,6 +59,45 @@ vim.o.background = 'dark'
 -- Always mistyping :w as :W...
 vim.cmd([[ command! W w ]])
 
+-- Autocmds
+-- Autosave files in workspace
+local function setup_autosave_timer()
+  -- prevent duplicate timers
+  if _G.autosave_timer then
+    return
+  end
+
+  local interval = 300000 -- 5 minutes
+  local target_dir = vim.fn.expand("~/workspace/grepo/scratch")
+
+  local timer = vim.loop.new_timer()
+  if not timer then
+    vim.notify("Failed to create autosave timer", vim.log.levels.ERROR)
+    return
+  end
+
+  _G.autosave_timer = timer
+
+  timer:start(interval, interval, vim.schedule_wrap(function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      if vim.api.nvim_buf_is_loaded(buf)
+        and vim.bo[buf].modified then
+
+        local name = vim.api.nvim_buf_get_name(buf)
+
+        if name ~= "" and vim.startswith(name, target_dir) then
+          vim.api.nvim_buf_call(buf, function()
+            vim.cmd("silent write")
+          end)
+        end
+      end
+    end
+  end))
+end
+
+setup_autosave_timer()
+--
+
 
 -- Setup lazy.nvim
 require("lazy").setup({
