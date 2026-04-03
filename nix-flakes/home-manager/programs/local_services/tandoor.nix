@@ -75,7 +75,7 @@ in
           volumes = [
             "tandoor-media:/media:ro"
             "tandoor-static:/static:ro"
-            "tandoor-socket:/run/:ro"
+            "tandoor-socket:/run/"
             "${nginxConf}:/etc/nginx/conf.d/default.conf:ro"
           ];
           dropCapabilities = [ "ALL" ];
