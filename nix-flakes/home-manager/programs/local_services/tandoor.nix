@@ -1,9 +1,36 @@
-{ config, osConfig, ... }:
+{ config, osConfig, pkgs, ... }:
 let
   version = "2.4";
   servicePort = toString osConfig.local.services.tandoor.port;
   internalPort = "8080";
   inherit (config.virtualisation.quadlet) pods;
+  nginxConf = pkgs.writeText "tandoor-nginx.conf" ''
+    upstream tandoor {
+      server unix:/run/tandoor.sock;
+    }
+
+    server {
+      listen ${internalPort};
+      server_name _;
+      client_max_body_size 128m;
+
+      location /static/ {
+        alias /static/;
+      }
+
+      location /media/ {
+        alias /media/;
+      }
+
+      location / {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://tandoor;
+      }
+    }
+  '';
 in
 {
   virtualisation.quadlet = {
@@ -23,14 +50,41 @@ in
             POSTGRES_HOST = "localhost";
             POSTGRES_PORT = "5432";
             ALLOWED_HOSTS = "*";
-            TIMEZONE = "America/Toronto";
-            GUNICORN_MEDIA = "1";
+            TZ = "America/Toronto";
+            GUNICORN_MEDIA = "0";
           };
           volumes = [
             "tandoor-media:/opt/recipes/mediafiles"
             "tandoor-static:/opt/recipes/staticfiles"
+            "tandoor-socket:/run/"
           ];
           dropCapabilities = [ "ALL" ];
+          noNewPrivileges = true;
+        };
+        unitConfig = {
+          Description = "Tandoor Recipe Manager";
+          After = [ "tandoordb.service" ];
+          Requires = [ "tandoordb.service" ];
+        };
+        serviceConfig.Restart = "always";
+      };
+      tandoornginx = {
+        containerConfig = {
+          pod = pods.tandoorpod.ref;
+          image = "docker.io/library/nginx:alpine";
+          volumes = [
+            "tandoor-media:/media:ro"
+            "tandoor-static:/static:ro"
+            "tandoor-socket:/run/:ro"
+            "${nginxConf}:/etc/nginx/conf.d/default.conf:ro"
+          ];
+          dropCapabilities = [ "ALL" ];
+          addCapabilities = [
+            "CHOWN"
+            "NET_BIND_SERVICE"
+            "SETGID"
+            "SETUID"
+          ];
           noNewPrivileges = true;
           healthCmd = "curl -f http://localhost:${internalPort}/";
           healthInterval = "30s";
@@ -39,9 +93,9 @@ in
           healthStartPeriod = "30s";
         };
         unitConfig = {
-          Description = "Tandoor Recipe Manager";
-          After = [ "tandoordb.service" ];
-          Requires = [ "tandoordb.service" ];
+          Description = "Tandoor Nginx Proxy";
+          After = [ "tandoor.service" ];
+          Requires = [ "tandoor.service" ];
         };
         serviceConfig.Restart = "always";
       };
@@ -68,6 +122,7 @@ in
     volumes = {
       "tandoor-media" = { };
       "tandoor-static" = { };
+      "tandoor-socket" = { };
       "tandoor-db" = { };
     };
   };
