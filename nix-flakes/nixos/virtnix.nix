@@ -48,6 +48,13 @@ in
     ];
     users.conrun.imports = [
       ../home-manager/conrun.nix
+      {
+        home.file.".config/containers/storage.conf".text = ''
+          [storage]
+          driver = "overlay"
+          graphRoot = "/mnt/k8sconfig/podman/conrun"
+        '';
+      }
     ] ++ serviceModulesFor "conrun";
     extraSpecialArgs = { inherit inputs outputs username; };
   };

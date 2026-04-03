@@ -73,8 +73,8 @@ in
         REMOTE_USER = "ubuntu";
         REMOTE_REPO = "backupbox.localdomain";
         REMOTE_PATH = "/backup/restic";
-        TMPDIR = "/root/tmpbackup";
-        CUSTOM_BACKUP_ROOT = "/root/backup";
+        TMPDIR = "/mnt/k8sconfig/tmpbackup";
+        CUSTOM_BACKUP_ROOT = "/mnt/k8sconfig/backup_work_dir";
       };
       script = ''
         #!/usr/bin/env bash
