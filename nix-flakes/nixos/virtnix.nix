@@ -24,7 +24,16 @@ in
   virtualisation.quadlet.enable = true;
 
   local.caddy.httpsPort = 9443;
-  local.services = { };
+  local.services = {
+    tandoor = {
+      port = 8787;
+      hmModule = ../home-manager/programs/local_services/tandoor.nix;
+      backup = {
+        enable = true;
+        pgDumps = [ { container = "tandoordb"; } ];
+      };
+    };
+  };
 
   home-manager = {
     useGlobalPkgs = true;

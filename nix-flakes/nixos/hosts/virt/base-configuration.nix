@@ -28,6 +28,14 @@ in
     healthcheck_key = {
       format = "yaml";
     };
+    tandoor-secret-key = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    tandoor-db-password = {
+      format = "yaml";
+      owner = "conrun";
+    };
   };
   sops.secrets.user_healthcheck_key = {
     format = "yaml";
@@ -45,6 +53,16 @@ in
   sops.secrets.gcalender_creds = {
     format = "yaml";
     owner = config.systemd.user.services.keep-calendar-sync.serviceConfig.User;
+  };
+
+  sops.templates."tandoor.env" = {
+    content = ''
+      SECRET_KEY=${config.sops.placeholder.tandoor-secret-key}
+      POSTGRES_PASSWORD=${config.sops.placeholder.tandoor-db-password}
+      POSTGRES_USER=tandoor
+      POSTGRES_DB=recepies
+    '';
+    owner = "conrun";
   };
 
   #### Use the systemd-boot EFI boot loader.
