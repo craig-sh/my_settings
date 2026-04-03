@@ -60,7 +60,7 @@ in
       SECRET_KEY=${config.sops.placeholder.tandoor-secret-key}
       POSTGRES_PASSWORD=${config.sops.placeholder.tandoor-db-password}
       POSTGRES_USER=tandoor
-      POSTGRES_DB=recepies
+      POSTGRES_DB=recipes
     '';
     owner = "conrun";
   };
