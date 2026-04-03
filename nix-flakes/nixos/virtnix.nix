@@ -23,6 +23,11 @@ in
 
   virtualisation.quadlet.enable = true;
 
+  systemd.tmpfiles.rules = [
+    "d /mnt/k8sconfig/podman/conrun 0700 conrun - - -"
+    "d /mnt/k8sconfig/podman/craig  0700 craig  - - -"
+  ];
+
   local.caddy.httpsPort = 9443;
   local.services = {
     tandoor = {

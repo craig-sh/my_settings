@@ -33,7 +33,13 @@
 
     # Home Manager is pretty good at managing dotfiles. The primary way to manage
     # plain files is through 'home.file'.
-    file = { };
+    file = {
+      ".config/containers/storage.conf".text = ''
+        [storage]
+        driver = "overlay"
+        graphRoot = "/mnt/k8sconfig/podman/conrun"
+      '';
+    };
 
     # You can also manage environment variables but you will have to manually
     # source
