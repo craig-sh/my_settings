@@ -138,6 +138,8 @@
         dir=$(find ~/my_gits -maxdepth 1 -mindepth 1 -type d | fzf) && cd "$dir"
       }
 
+      notmux() { ssh -t "$1" "bash --norc" }
+
     '';
 
     shellAliases = {
@@ -155,6 +157,7 @@
       tailup = "sudo systemctl start tailscaled.service && sudo tailscale up --accept-routes";
       taildown = "sudo tailscale down && sudo systemctl stop tailscaled.service";
       stay-awake=''systemd-inhibit --what=idle:sleep:handle-lid-switch --who="me" --why="stay awake" --mode=block sleep infinity'';
+      switch-conrun=''machinectl shell conrun@.host'';
     };
 
     sessionVariables = {

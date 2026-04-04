@@ -9,9 +9,9 @@ let
     ddcutil --display 2 setvcp 60 0x12
   '';
   startupTmuxW1 = pkgs.writeShellScriptBin "hypr-startup-tmux-w1" ''
-    SESSION="startup-w1"
+    SESSION="main"
     tmux new-session -d -s "$SESSION"
-    tmux send-keys -t "$SESSION" 'gonix' Enter
+    tmux send-keys -t "$SESSION" 'gonix && vim .' Enter
     tmux split-window -t "$SESSION"
     tmux send-keys -t "$SESSION" 'gonix' Enter
     exec tmux attach-session -t "$SESSION"
