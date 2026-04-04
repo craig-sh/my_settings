@@ -38,6 +38,15 @@ in
         pgDumps = [ { container = "tandoordb"; } ];
       };
     };
+    paperless = {
+      user = "craig";
+      port = 8788;
+      hmModule = ../home-manager/programs/local_services/paperless.nix;
+      backup = {
+        enable = true;
+        pgDumps = [ { container = "paperlessdb"; } ];
+      };
+    };
   };
 
   home-manager = {
@@ -45,7 +54,7 @@ in
     useUserPackages = true;
     users.craig.imports = [
       ../home-manager/virtnix.nix
-    ];
+    ] ++ serviceModulesFor "craig";
     users.conrun.imports = [
       ../home-manager/conrun.nix
       {

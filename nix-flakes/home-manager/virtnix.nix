@@ -2,13 +2,14 @@
 {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
+    inputs.quadlet-nix.homeManagerModules.quadlet
     ./common.nix
     ./common_stable.nix
     #./programs/aider.nix
     ./virtserver.nix
   ];
 
-  programs.zsh.loginShellInit = ''
+  home.file.".zlogin".text = ''
     if [[ -n "$SSH_TTY" && -z "$TMUX" ]]; then
       if ! tmux has-session -t main 2>/dev/null; then
         tmux new-session -d -s main -n "config"

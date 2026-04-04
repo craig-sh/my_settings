@@ -36,6 +36,18 @@ in
       format = "yaml";
       owner = "conrun";
     };
+    paperless-db-password = {
+      format = "yaml";
+      owner = "craig";
+    };
+    paperless-secret-key = {
+      format = "yaml";
+      owner = "craig";
+    };
+    paperless-admin-password = {
+      format = "yaml";
+      owner = "craig";
+    };
   };
   sops.secrets.user_healthcheck_key = {
     format = "yaml";
@@ -63,6 +75,15 @@ in
       POSTGRES_DB=recipes
     '';
     owner = "conrun";
+  };
+  sops.templates."paperless.env" = {
+    content = ''
+      POSTGRES_PASSWORD=${config.sops.placeholder.paperless-db-password}
+      PAPERLESS_DBPASS=${config.sops.placeholder.paperless-db-password}
+      PAPERLESS_SECRET_KEY=${config.sops.placeholder.paperless-secret-key}
+      PAPERLESS_ADMIN_PASSWORD=${config.sops.placeholder.paperless-admin-password}
+    '';
+    owner = "craig";
   };
 
   #### Use the systemd-boot EFI boot loader.

@@ -40,6 +40,11 @@
     fsType = "ext4";
   };
 
+  fileSystems."/mnt/main-nfs" = {
+    device = "trunas.localdomain:/mnt/mainpool/kubernetes/";
+    fsType = "nfs";
+  };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
