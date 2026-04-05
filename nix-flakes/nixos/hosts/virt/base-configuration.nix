@@ -86,6 +86,14 @@ in
     owner = "craig";
   };
 
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver  # iHD VA-API driver (Broadwell+)
+      libvdpau-va-gl      # VDPAU via VA-API
+    ];
+  };
+
   #### Use the systemd-boot EFI boot loader.
   #boot.loader.systemd-boot.enable = true;
   #boot.loader.efi.canTouchEfiVariables = true;
@@ -149,7 +157,7 @@ in
     users = {
       craig = {
         isNormalUser = true;
-        extraGroups = [ "wheel" ]; # Enable 'sudo' for the user.
+        extraGroups = [ "wheel" "render" "video" ];
         linger = true;
         #packages = with pkgs; [
         #  firefox
