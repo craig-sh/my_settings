@@ -1,0 +1,59 @@
+name: Sync from GitHub
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync whitelisted branches from GitHub
+        env:
+          FORGEJO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORGEJO_REPO: ${{ github.server_url }}/${{ github.repository }}.git
+        run: |
+          WHITELIST="master"
+
+          git config user.email "sync-bot@localhost"
+          git config user.name "Sync Bot"
+
+          git remote add github https://github.com/craig-sh/my_settings.git
+          git remote set-url origin "https://x-token:$FORGEJO_TOKEN@${FORGEJO_REPO#https://}"
+          git fetch github
+
+          FAILED=0
+          for branch in $WHITELIST; do
+            if ! git rev-parse --verify $branch >/dev/null 2>&1; then
+              echo "SKIP: $branch does not exist locally"
+              continue
+            fi
+
+            LOCAL=$(git rev-parse $branch)
+            REMOTE=$(git rev-parse github/$branch 2>/dev/null || echo "")
+
+            if [ -z "$REMOTE" ]; then
+              echo "SKIP: $branch not found on GitHub"
+              continue
+            fi
+
+            if [ "$LOCAL" = "$REMOTE" ]; then
+              echo "$branch: already in sync"
+            elif git merge-base --is-ancestor $LOCAL $REMOTE; then
+              echo "$branch: GitHub is ahead, fast-forwarding"
+              git checkout $branch
+              git merge --ff-only github/$branch
+              git push origin $branch
+            elif git merge-base --is-ancestor $REMOTE $LOCAL; then
+              echo "$branch: Forgejo is ahead, push mirror handles this direction"
+            else
+              echo "ERROR: $branch has diverged — manual intervention required"
+              FAILED=1
+            fi
+          done
+
+          exit $FAILED
