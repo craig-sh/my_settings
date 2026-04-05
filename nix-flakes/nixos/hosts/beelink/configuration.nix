@@ -19,6 +19,7 @@ in
     # ../../services/scrypted.nix
     #./frigate.nix
     ./backup.nix
+    ./sync-from-github.nix
     ../../services/caddy.nix
   ];
 
