@@ -43,6 +43,7 @@
   fileSystems."/mnt/main-nfs" = {
     device = "trunas.localdomain:/mnt/mainpool/kubernetes/";
     fsType = "nfs";
+    options = [ "_netdev" "nofail" "x-systemd.requires=network-online.target" "x-systemd.after=network-online.target" ];
   };
 
   swapDevices = [ ];
