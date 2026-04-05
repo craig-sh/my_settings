@@ -7,7 +7,7 @@
     #./programs/jellyfin.nix
   ];
 
-  programs.zsh.loginShellInit = ''
+  home.file.".zlogin".text = ''
     if [[ -n "$SSH_TTY" && -z "$TMUX" ]]; then
       if ! tmux has-session -t main 2>/dev/null; then
         tmux new-session -d -s main -n "config"

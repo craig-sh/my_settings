@@ -68,7 +68,7 @@ local function setup_autosave_timer()
   end
 
   local interval = 300000 -- 5 minutes
-  local target_dir = vim.fn.expand("~/workspace/grepo/scratch")
+  local target_dir = vim.fn.expand("~/Documents")
 
   local timer = vim.loop.new_timer()
   if not timer then

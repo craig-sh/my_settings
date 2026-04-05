@@ -29,10 +29,22 @@ let
   );
 in
 {
-  options.local.backup.onCalendar = lib.mkOption {
-    type = lib.types.str;
-    default = "03:00";
-    description = "When to run the backup timer (systemd OnCalendar format).";
+  options.local.backup = {
+    onCalendar = lib.mkOption {
+      type = lib.types.str;
+      default = "03:00";
+      description = "When to run the backup timer (systemd OnCalendar format).";
+    };
+    tmpDir = lib.mkOption {
+      type = lib.types.str;
+      default = "/root/tmpbackup";
+      description = "Temporary directory for restic (TMPDIR).";
+    };
+    workDir = lib.mkOption {
+      type = lib.types.str;
+      default = "/root/backup";
+      description = "Working directory where backup data is staged before restic.";
+    };
   };
 
   config = lib.mkIf (enabledServices != { }) {
@@ -73,8 +85,8 @@ in
         REMOTE_USER = "ubuntu";
         REMOTE_REPO = "backupbox.localdomain";
         REMOTE_PATH = "/backup/restic";
-        TMPDIR = "/mnt/k8sconfig/tmpbackup";
-        CUSTOM_BACKUP_ROOT = "/mnt/k8sconfig/backup_work_dir";
+        TMPDIR = config.local.backup.tmpDir;
+        CUSTOM_BACKUP_ROOT = config.local.backup.workDir;
       };
       script = ''
         #!/usr/bin/env bash
