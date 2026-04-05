@@ -75,6 +75,7 @@ in
           image = "docker.io/library/redis:8-alpine";
           volumes = [ "paperless-redis:/data:Z" ];
           dropCapabilities = [ "ALL" ];
+          addCapabilities = [ "CHOWN" "SETGID" "SETUID" ];
           noNewPrivileges = true;
         };
         unitConfig.Description = "Paperless-ngx Redis Broker";

@@ -23,10 +23,10 @@ let
       }
 
       location / {
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Proto https;
         proxy_pass http://tandoor;
       }
     }
@@ -53,6 +53,7 @@ in
             CSRF_TRUSTED_ORIGINS = "https://tandoor.localdomain:9443"; # TODO remove after migration is complete
             TZ = "America/Toronto";
             GUNICORN_MEDIA = "0";
+            SECURE_PROXY_SSL_HEADER = "HTTP_X_FORWARDED_PROTO,https";
           };
           volumes = [
             "tandoor-media:/opt/recipes/mediafiles"
