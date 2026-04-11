@@ -23,6 +23,7 @@ in
     ./services/sops.nix
     ./hosts/beelink/hardware-configuration.nix
     ./hosts/beelink/configuration.nix
+    ./services/tailscale_server.nix
   ];
 
   local.services = {
