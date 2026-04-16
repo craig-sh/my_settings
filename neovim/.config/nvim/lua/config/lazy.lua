@@ -32,6 +32,22 @@ vim.o.pumblend = 20
 vim.o.clipboard = 'unnamedplus'
 vim.o.mouse = 'a'
 
+-- When SSH'd into a remote, switch to OSC52 so regular y/p work via kitty
+if vim.env.SSH_TTY then
+  local osc52 = require('vim.ui.clipboard.osc52')
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = osc52.copy('+'),
+      ['*'] = osc52.copy('*'),
+    },
+    paste = {
+      ['+'] = osc52.paste('+'),
+      ['*'] = osc52.paste('*'),
+    },
+  }
+end
+
 vim.o.history = 1000   -- lines of command line history
 vim.o.ruler = true     -- show the cursor position all the time
 vim.o.showcmd = true   -- display incomplete commands

@@ -61,6 +61,7 @@
 
       # For passing through OSC52 copy/paste sequences
       set -g allow-passthrough on
+      set -g set-clipboard on
 
       set-option -ga terminal-overrides ",xterm-kitty:Tc"
 
