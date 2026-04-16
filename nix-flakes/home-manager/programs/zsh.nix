@@ -166,6 +166,8 @@
       ARCHFLAGS = "-arch x86_64";
       FZF_DEFAULT_OPTS = ''--prompt \" λ \"'';
       LANG = "en_US.UTF-8";
+      FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude .git";
+      FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND";
     };
   };
 
