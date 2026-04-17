@@ -72,17 +72,13 @@
       bind-key -T copy-mode-vi 'v' send -X begin-selection
       bind-key -T copy-mode-vi 'V' send -X select-line
       bind-key -T copy-mode-vi 'r' send -X rectangle-toggle
-      bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel "wl-copy"
-
+      # 'y' and mouse selection handled by tmux-yank plugin (auto-detects wl-copy vs OSC52 for SSH)
+      set -g @yank_selection 'clipboard'
+      set -g @yank_selection_mouse 'clipboard'
 
       # extra commands for interacting with the ICCCM clipboard
       bind C-c run "tmux save-buffer - | wl-copy"
       bind C-v run "tmux set-buffer \"$(wl-paste)\"; tmux paste-buffer"
-
-
-      # Selection with mouse should copy to clipboard right away, in addition to the default action.
-      unbind -n -Tcopy-mode-vi MouseDragEnd1Pane
-      bind -Tcopy-mode-vi MouseDragEnd1Pane send -X copy-selection-and-cancel\; run "tmux save-buffer - | wl-copy"
 
 
       # Middle click to paste from the clipboard
