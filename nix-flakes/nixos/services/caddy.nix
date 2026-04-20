@@ -9,7 +9,7 @@ let
           ca local
         }
       }
-      reverse_proxy http://localhost:${toString svc.port}
+      reverse_proxy http://127.0.0.1:${toString svc.port}
     '';
   };
 in
