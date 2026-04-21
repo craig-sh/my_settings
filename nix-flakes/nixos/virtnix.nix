@@ -67,6 +67,18 @@ in
         pgDumps = [ { container = "immichdb"; } ];
       };
     };
+    syncthing = {
+      user = "craig";
+      port = 8797;
+      version = "2.0.16";
+      firewall.extraTCPPorts = [ 22000 ];
+      firewall.extraUDPPorts = [
+        22000
+        21027
+      ];
+      hmModule = ../home-manager/programs/local_services/syncthing.nix;
+      backup.enable = true;
+    };
   };
 
   home-manager = {
