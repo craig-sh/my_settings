@@ -1,9 +1,17 @@
-{ inputs, outputs, username, config, lib, ... }:
+{
+  inputs,
+  outputs,
+  username,
+  config,
+  lib,
+  ...
+}:
 let
-  serviceModulesFor = user:
-    lib.mapAttrsToList (_: svc: svc.hmModule)
-      (lib.filterAttrs (_: svc: svc.hmModule != null && svc.user == user)
-        config.local.services);
+  serviceModulesFor =
+    user:
+    lib.mapAttrsToList (_: svc: svc.hmModule) (
+      lib.filterAttrs (_: svc: svc.hmModule != null && svc.user == user) config.local.services
+    );
 in
 {
   imports = [
@@ -26,6 +34,7 @@ in
   systemd.tmpfiles.rules = [
     "d /mnt/k8sconfig/podman/conrun 0700 conrun - - -"
     "d /mnt/k8sconfig/podman/craig  0700 craig  - - -"
+    "d /mnt/k8sconfig/podman/podMedia 0700 podMedia - - -"
   ];
 
   local.caddy.httpsPort = 9443;
@@ -47,6 +56,17 @@ in
         pgDumps = [ { container = "paperlessdb"; } ];
       };
     };
+    immich = {
+      user = "craig";
+      port = 8796;
+      version = "v2.5.6";
+      hmModule = ../home-manager/programs/local_services/immich.nix;
+      backup = {
+        enable = true;
+        scriptFile = null;
+        pgDumps = [ { container = "immichdb"; } ];
+      };
+    };
   };
 
   home-manager = {
@@ -54,7 +74,8 @@ in
     useUserPackages = true;
     users.craig.imports = [
       ../home-manager/virtnix.nix
-    ] ++ serviceModulesFor "craig";
+    ]
+    ++ serviceModulesFor "craig";
     users.conrun.imports = [
       ../home-manager/conrun.nix
       {
@@ -64,7 +85,19 @@ in
           graphRoot = "/mnt/k8sconfig/podman/conrun"
         '';
       }
-    ] ++ serviceModulesFor "conrun";
+    ]
+    ++ serviceModulesFor "conrun";
+    users.podMedia.imports = [
+      ../home-manager/conrun.nix
+      {
+        home.file.".config/containers/storage.conf".text = ''
+          [storage]
+          driver = "overlay"
+          graphRoot = "/mnt/k8sconfig/podman/podMedia"
+        '';
+      }
+    ]
+    ++ serviceModulesFor "podMedia";
     extraSpecialArgs = { inherit inputs outputs username; };
   };
 }

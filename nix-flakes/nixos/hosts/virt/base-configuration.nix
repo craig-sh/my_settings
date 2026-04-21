@@ -48,6 +48,10 @@ in
       format = "yaml";
       owner = "craig";
     };
+    immich-db-password = {
+      format = "yaml";
+      owner = "craig";
+    };
   };
   sops.secrets.user_healthcheck_key = {
     format = "yaml";
@@ -89,8 +93,8 @@ in
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
-      intel-media-driver  # iHD VA-API driver (Broadwell+)
-      libvdpau-va-gl      # VDPAU via VA-API
+      intel-vaapi-driver # i965 VA-API driver (Gen4–Gen9, required for Ivy/Haswell Gen7)
+      libvdpau-va-gl # VDPAU via VA-API
     ];
   };
 
@@ -157,7 +161,11 @@ in
     users = {
       craig = {
         isNormalUser = true;
-        extraGroups = [ "wheel" "render" "video" ];
+        extraGroups = [
+          "wheel"
+          "render"
+          "video"
+        ];
         linger = true;
         #packages = with pkgs; [
         #  firefox
@@ -169,12 +177,18 @@ in
         uid = 1010;
         linger = true;
         autoSubUidGidRange = true;
+        extraGroups = [
+          "render"
+          "video"
+          "media"
+        ];
       };
-      media = {
-        isNormalUser = false;
-        isSystemUser = true;
+      podMedia = {
+        isNormalUser = true;
         group = "media";
-        uid = 995;
+        uid = 1020;
+        linger = true;
+        autoSubUidGidRange = true;
       };
       tandoor = {
         isNormalUser = false;
