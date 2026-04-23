@@ -23,7 +23,7 @@ let
           BACKUP_FAILED=1
         fi
       '') svc.backup.pgDumps}
-      rsync -a "$STAGING_DIR/" "$BACKUP_DIR/"
+      rsync -a --delete "$STAGING_DIR/" "$BACKUP_DIR/"
       rm -rf "$STAGING_DIR"
     '') enabledServices
   );
