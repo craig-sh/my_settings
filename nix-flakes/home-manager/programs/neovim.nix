@@ -10,6 +10,8 @@
     enable = true;
     viAlias = true;
     vimAlias = true;
+    withPython3 = true;
+    withRuby = false;
     # Currently breaking. When below is set we actually use the latest neovim from git
     # package = pkgs.neovim;
     # magick is for images in nvim
@@ -20,7 +22,7 @@
       pkgs.nixfmt
     ];
   };
-  xdg.configFile."nvim/init.lua".enable = false; # disable the auto generated init.lua
+  xdg.configFile."nvim/init.lua".enable = lib.mkForce false; # disable the auto generated init.lua
   home.file = {
     ".config/nvim/init.lua".source =
       config.lib.file.mkOutOfStoreSymlink "/home/craig/my_settings/neovim/.config/nvim/init.lua";

@@ -2,6 +2,7 @@
 {
   programs.git = {
     enable = true;
+    signing.format = null;
     settings = {
       user.name = lib.mkDefault "craig-sh";
       user.email = lib.mkDefault "craig.s.henriques@gmail.com";
