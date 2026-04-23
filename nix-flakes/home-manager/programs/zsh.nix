@@ -1,5 +1,7 @@
 { pkgs, lib, ... }:
-
+let
+  fzf_cmd = ''fd --type f --strip-cwd-prefix --hidden --follow --exclude .git'';
+in 
 {
   programs.zsh = {
     enable = true;
@@ -139,6 +141,8 @@
       }
 
       notmux() { ssh -t "$1" "bash --norc" }
+      export FZF_DEFAULT_COMMAND="${fzf_cmd}";
+      export FZF_CTRL_T_COMMAND="${fzf_cmd}";
 
     '';
 
@@ -166,8 +170,8 @@
       ARCHFLAGS = "-arch x86_64";
       FZF_DEFAULT_OPTS = ''--prompt \" λ \"'';
       LANG = "en_US.UTF-8";
-      FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude .git";
-      FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND";
+      FZF_DEFAULT_COMMAND=fzf_cmd;
+      FZF_CTRL_T_COMMAND=fzf_cmd;
     };
   };
 
