@@ -14,7 +14,7 @@ in
 
     pods.immichpod = {
       autoStart = true;
-      podConfig.publishPorts = [ "127.0.0.1:${servicePort}:${internalPort}" ];
+      podConfig.publishPorts = [ "0.0.0.0:${servicePort}:${internalPort}" ];
     };
 
     containers = {

@@ -53,13 +53,15 @@ in
       hmModule = ../home-manager/programs/local_services/paperless.nix;
       backup = {
         enable = true;
+        scriptFile = null;
         pgDumps = [ { container = "paperlessdb"; } ];
       };
     };
     immich = {
       user = "craig";
-      port = 8796;
+      port = 31113;
       version = "v2.5.6";
+      firewall.extraTCPPorts = [ 31113 ];
       hmModule = ../home-manager/programs/local_services/immich.nix;
       backup = {
         enable = true;

@@ -154,7 +154,6 @@ in
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # for k8s nfs
   # Define a user account. Don't forget to set a password with 'passwd'.
   users = {
     defaultUserShell = pkgs.zsh;
@@ -222,6 +221,9 @@ in
       homelab = {
         gid = 453;
       };
+      systemd-oom = {
+        gid = 990;
+      };
     };
   };
 
@@ -280,14 +282,8 @@ in
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   #networking.firewall.enable = false;
-  #services.k3s.enable = true;
-  #services.k3s.role = "server";
-  #services.k3s.extraFlags = toString [
-  #  " --disable=traefik" # Optionally add additional args to k3s
-  #  " --write-kubeconfig-mode=0644"
-  #];
   services = {
-    rpcbind.enable = true; # for k8s nfs
+    rpcbind.enable = true; # for NFS client
     openssh.enable = true;
     qemuGuest.enable = true;
   };

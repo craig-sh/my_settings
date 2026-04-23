@@ -27,7 +27,7 @@ in
             PAPERLESS_DBUSER = "paperless";
             PAPERLESS_ADMIN_USER = "admin";
             PAPERLESS_ADMIN_MAIL = "craig@localdomain";
-            PAPERLESS_URL = "https://paperless.localdomain:9443";
+            PAPERLESS_URL = "https://paperless.localdomain";
             PAPERLESS_TIME_ZONE = "America/Toronto";
             PAPERLESS_OCR_LANGUAGE = "eng";
             USERMAP_UID = "0";

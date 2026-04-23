@@ -50,7 +50,7 @@ in
             POSTGRES_HOST = "localhost";
             POSTGRES_PORT = "5432";
             ALLOWED_HOSTS = "*";
-            CSRF_TRUSTED_ORIGINS = "https://tandoor.localdomain:9443"; # TODO remove after migration is complete
+            CSRF_TRUSTED_ORIGINS = "https://tandoor.localdomain";
             TZ = "America/Toronto";
             GUNICORN_MEDIA = "0";
             SECURE_PROXY_SSL_HEADER = "HTTP_X_FORWARDED_PROTO,https";
