@@ -42,7 +42,7 @@ in
       '';
       virtualHosts = lib.mapAttrs' (
         name: svc: lib.nameValuePair "${svc.domain}:${toString httpsPort}" (mkVirtualHost name svc)
-      ) config.local.services;
+      ) (lib.filterAttrs (_: svc: svc.caddy.enable) config.local.services);
     };
   };
 }

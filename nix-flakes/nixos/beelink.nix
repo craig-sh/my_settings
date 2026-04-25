@@ -33,6 +33,9 @@ in
     frigate.hmModule    = ../home-manager/programs/local_services/frigate.nix;
     sparkyfitness.hmModule = ../home-manager/programs/local_services/sparkyfitness.nix;
     donetick.hmModule = ../home-manager/programs/local_services/donetick.nix;
+    beszel.hmModule = ../home-manager/programs/local_services/beszel-hub.nix;
+    beszel-agent-conrun.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
+    beszel-agent-craig.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
   };
 
   home-manager = {

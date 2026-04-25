@@ -81,6 +81,16 @@ in
       format = "yaml";
       owner = "conrun";
     };
+
+    bz-universal-key = {
+      format = "yaml";
+    };
+    bz-beelink-conrun = {
+      format = "yaml";
+    };
+    bz-beelink-craig = {
+      format = "yaml";
+    };
   };
   # TODO move this to home manager config?
   #  Do not double qoute below strings. This is passed to systemd enviornment not regular bash env!!!!!
@@ -128,6 +138,20 @@ in
   sops.templates."donetick.env" = {
     content = "DT_JWT_SECRET=${config.sops.placeholder.dt-jwt-secret}";
     owner = "conrun";
+  };
+  sops.templates."beszel-agent-conrun.env" = {
+    content = ''
+      TOKEN=${config.sops.placeholder.bz-beelink-conrun}
+      KEY=${config.sops.placeholder.bz-universal-key}
+    '';
+    owner = "conrun";
+  };
+  sops.templates."beszel-agent-craig.env" = {
+    content = ''
+      TOKEN=${config.sops.placeholder.bz-beelink-craig}
+      KEY=${config.sops.placeholder.bz-universal-key}
+    '';
+    owner = "craig";
   };
 
   # Use the systemd-boot EFI boot loader.
@@ -367,6 +391,21 @@ in
       port = 2021;
       backup.enable = true;
       firewall.extraTCPPorts = [ 2021 ];
+    };
+    beszel = {
+      port = 8090;
+      version = "0.18.7";
+      backup.enable = false;
+    };
+    beszel-agent-conrun = {
+      user = "conrun";
+      version = "0.18.7";
+      caddy.enable = false;
+    };
+    beszel-agent-craig = {
+      user = "craig";
+      version = "0.18.7";
+      caddy.enable = false;
     };
   };
 

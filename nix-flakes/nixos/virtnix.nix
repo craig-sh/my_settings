@@ -81,6 +81,24 @@ in
       hmModule = ../home-manager/programs/local_services/syncthing.nix;
       backup.enable = true;
     };
+    beszel-agent-conrun = {
+      user = "conrun";
+      version = "0.18.7";
+      caddy.enable = false;
+      hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
+    };
+    beszel-agent-craig = {
+      user = "craig";
+      version = "0.18.7";
+      caddy.enable = false;
+      hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
+    };
+    beszel-agent-podMedia = {
+      user = "podMedia";
+      version = "0.18.7";
+      caddy.enable = false;
+      hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
+    };
   };
 
   home-manager = {

@@ -34,6 +34,16 @@
                 description = "Additional UDP ports to open in the firewall.";
               };
             };
+            caddy.enable = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether to expose this service via the Caddy reverse proxy.";
+            };
+            version = lib.mkOption {
+              type = lib.types.str;
+              default = "latest";
+              description = "Container image version tag for this service.";
+            };
             hmModule = lib.mkOption {
               type = lib.types.nullOr lib.types.path;
               default = null;

@@ -48,6 +48,10 @@ in
       format = "yaml";
       owner = "craig";
     };
+    gmail_json = {
+      format = "yaml";
+      owner = "podMedia";
+    };
     immich-db-password = {
       format = "yaml";
       owner = "craig";
@@ -88,6 +92,34 @@ in
       PAPERLESS_ADMIN_PASSWORD=${config.sops.placeholder.paperless-admin-password}
     '';
     owner = "craig";
+  };
+  sops.templates."immich.env" = {
+    content = ''
+      DB_PASSWORD=${config.sops.placeholder.immich-db-password}
+      POSTGRES_PASSWORD=${config.sops.placeholder.immich-db-password}
+    '';
+    owner = "craig";
+  };
+  sops.templates."beszel-agent-conrun.env" = {
+    content = ''
+      TOKEN=${config.sops.placeholder.bz-virtnix-conrun}
+      KEY=${config.sops.placeholder.bz-universal-key}
+    '';
+    owner = "conrun";
+  };
+  sops.templates."beszel-agent-craig.env" = {
+    content = ''
+      TOKEN=${config.sops.placeholder.bz-virtnix-craig}
+      KEY=${config.sops.placeholder.bz-universal-key}
+    '';
+    owner = "craig";
+  };
+  sops.templates."beszel-agent-podMedia.env" = {
+    content = ''
+      TOKEN=${config.sops.placeholder.bz-virtnix-podMedia}
+      KEY=${config.sops.placeholder.bz-universal-key}
+    '';
+    owner = "podMedia";
   };
 
   hardware.graphics = {
