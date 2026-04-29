@@ -24,7 +24,6 @@ in
     ./services/caddy.nix
     ./hosts/virt/hardware-configuration.nix
     ./hosts/virt/base-configuration.nix
-    ./hosts/virt/k3s-controller.nix
     ./services/tailscale_server.nix
     ./hosts/virt/backup.nix
   ];
