@@ -56,6 +56,23 @@ in
       format = "yaml";
       owner = "craig";
     };
+    bz-universal-key = {
+      format = "yaml";
+    };
+    bz-virtnix-conrun = {
+      format = "yaml";
+    };
+    bz-virtnix-craig = {
+      format = "yaml";
+    };
+    bz-virtnix-podMedia = {
+      format = "yaml";
+    };
+    #hp-immich-key = { format = "yaml"; owner = "conrun"; };
+    #hp-paperless-key = { format = "yaml"; owner = "conrun"; };
+    #hp-tandoor-user = { format = "yaml"; owner = "conrun"; };
+    #hp-tandoor-pass = { format = "yaml"; owner = "conrun"; };
+    #hp-forgejo-key = { format = "yaml"; owner = "conrun"; };
   };
   sops.secrets.user_healthcheck_key = {
     format = "yaml";
@@ -121,6 +138,16 @@ in
     '';
     owner = "podMedia";
   };
+  #sops.templates."homepage.env" = {
+  #  content = ''
+  #    HOMEPAGE_VAR_IMMICH_KEY=${config.sops.placeholder.hp-immich-key}
+  #    HOMEPAGE_VAR_PAPERLESS_KEY=${config.sops.placeholder.hp-paperless-key}
+  #    HOMEPAGE_VAR_TANDOOR_USER=${config.sops.placeholder.hp-tandoor-user}
+  #    HOMEPAGE_VAR_TANDOOR_PASS=${config.sops.placeholder.hp-tandoor-pass}
+  #    HOMEPAGE_VAR_FORGEJO_KEY=${config.sops.placeholder.hp-forgejo-key}
+  #  '';
+  #  owner = "conrun";
+  #};
 
   hardware.graphics = {
     enable = true;

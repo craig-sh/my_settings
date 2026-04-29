@@ -16,9 +16,9 @@
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home = {
-    username = "conrun";
-    homeDirectory = "/home/conrun";
-
+    # username and homeDirectory are auto-set by home-manager's NixOS module
+    # from the users.<name> attribute key, so this module can be imported by
+    # any user (conrun on beelink/virtnix, podMedia on virtnix).
     # This value determines the Home Manager release that your configuration is
     # compatible with. This helps avoid breakage when a new Home Manager release
     # introduces backwards incompatible changes.

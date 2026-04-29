@@ -28,6 +28,8 @@ in
     ./hosts/virt/backup.nix
   ];
 
+  networking.hostName = "virtnix";
+
   virtualisation.quadlet.enable = true;
 
   systemd.tmpfiles.rules = [
@@ -36,11 +38,16 @@ in
     "d /mnt/k8sconfig/podman/podMedia 0700 podMedia - - -"
   ];
 
-  local.caddy.httpsPort = 9443;
   local.services = {
     tandoor = {
       port = 8787;
       hmModule = ../home-manager/programs/local_services/tandoor.nix;
+      category = "Recipes";
+      widget = {
+        type = "tandoor";
+        username = "{{HOMEPAGE_VAR_TANDOOR_USER}}";
+        password = "{{HOMEPAGE_VAR_TANDOOR_PASS}}";
+      };
       backup = {
         enable = true;
         pgDumps = [ { container = "tandoordb"; } ];
@@ -50,6 +57,11 @@ in
       user = "craig";
       port = 8788;
       hmModule = ../home-manager/programs/local_services/paperless.nix;
+      category = "Documents";
+      widget = {
+        type = "paperlessngx";
+        key = "{{HOMEPAGE_VAR_PAPERLESS_KEY}}";
+      };
       backup = {
         enable = true;
         scriptFile = null;
@@ -62,6 +74,11 @@ in
       version = "v2.5.6";
       firewall.extraTCPPorts = [ 31113 ];
       hmModule = ../home-manager/programs/local_services/immich.nix;
+      category = "Photos";
+      widget = {
+        type = "immich";
+        key = "{{HOMEPAGE_VAR_IMMICH_KEY}}";
+      };
       backup = {
         enable = true;
         scriptFile = null;
@@ -97,6 +114,11 @@ in
       version = "0.18.7";
       caddy.enable = false;
       hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
+    };
+    homepage = {
+      port = 3000;
+      version = "v1.12.3";
+      hmModule = ../home-manager/programs/local_services/homepage.nix;
     };
   };
 

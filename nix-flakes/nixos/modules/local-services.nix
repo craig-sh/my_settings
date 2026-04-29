@@ -14,8 +14,28 @@
               description = "User who owns this service (runs containers, HM module owner, used for backups).";
             };
             port = lib.mkOption {
-              type = lib.types.port;
-              description = "Port the service listens on locally.";
+              type = lib.types.nullOr lib.types.port;
+              default = null;
+              description = "Port the service listens on locally. Required when caddy.enable is true.";
+            };
+            widget = lib.mkOption {
+              type = lib.types.nullOr (lib.types.attrsOf lib.types.anything);
+              default = null;
+              description = ''
+                Homepage widget config for this service, rendered as-is into services.yaml.
+                If `url` is omitted and the service is on the same host as homepage, it
+                auto-fills to `http://host.containers.internal:<port>`. Cross-host widgets
+                must specify `url` explicitly.
+              '';
+            };
+            category = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = ''
+                Homepage dashboard category for this service's tile. Used only when
+                `widget` is set; widget-less services are grouped under "Links". If
+                omitted on a widget service, falls back to "Other".
+              '';
             };
             domain = lib.mkOption {
               type = lib.types.str;

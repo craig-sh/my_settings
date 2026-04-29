@@ -27,10 +27,28 @@ in
   ];
 
   local.services = {
-    forgejo.hmModule    = ../home-manager/programs/local_services/forgejo.nix;
-    ghostfolio.hmModule = ../home-manager/programs/local_services/ghostfolio.nix;
+    forgejo = {
+      hmModule = ../home-manager/programs/local_services/forgejo.nix;
+      category = "Code";
+      widget = {
+        type = "forgejo";
+        key = "{{HOMEPAGE_VAR_FORGEJO_KEY}}";
+      };
+    };
+    ghostfolio = {
+      hmModule = ../home-manager/programs/local_services/ghostfolio.nix;
+      category = "Finance";
+      widget = {
+        type = "ghostfolio";
+        key = "{{HOMEPAGE_VAR_GHOSTFOLIO_KEY}}";
+      };
+    };
     actualbudget.hmModule = ../home-manager/programs/local_services/actualbudget.nix;
-    frigate.hmModule    = ../home-manager/programs/local_services/frigate.nix;
+    frigate = {
+      hmModule = ../home-manager/programs/local_services/frigate.nix;
+      category = "Monitoring";
+      widget.type = "frigate";
+    };
     sparkyfitness.hmModule = ../home-manager/programs/local_services/sparkyfitness.nix;
     donetick.hmModule = ../home-manager/programs/local_services/donetick.nix;
     beszel.hmModule = ../home-manager/programs/local_services/beszel-hub.nix;

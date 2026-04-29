@@ -1,8 +1,7 @@
 { config, lib, ... }:
 let
-  httpsPort = config.local.caddy.httpsPort;
   mkVirtualHost = _name: svc: {
-    serverAliases = [ "www.${svc.domain}:${toString httpsPort}" ];
+    serverAliases = [ "www.${svc.domain}" ];
     extraConfig = ''
       tls {
         issuer internal {
@@ -14,35 +13,30 @@ let
   };
 in
 {
-  options.local.caddy.httpsPort = lib.mkOption {
-    type = lib.types.port;
-    default = 443;
-    description = "HTTPS port for Caddy to listen on.";
+  sops.secrets.ca_pub_cert = {
+    owner = lib.mkDefault config.systemd.services.caddy.serviceConfig.User;
+    mode = "0444";
   };
-
-  config = {
-    sops.secrets.ca_pub_cert.owner = lib.mkDefault config.systemd.services.caddy.serviceConfig.User;
-    sops.secrets.ca_cert_key = {
-      format = "yaml";
-      owner = lib.mkDefault config.systemd.services.caddy.serviceConfig.User;
-    };
-    networking.firewall.allowedTCPPorts = [ httpsPort ];
-    services.caddy = {
-      enable = true;
-      globalConfig = ''
-        pki {
-          ca local {
-            name "Baggins CA"
-            root {
-              cert ${config.sops.secrets.ca_pub_cert.path}
-              key ${config.sops.secrets.ca_cert_key.path}
-            }
+  sops.secrets.ca_cert_key = {
+    format = "yaml";
+    owner = lib.mkDefault config.systemd.services.caddy.serviceConfig.User;
+  };
+  networking.firewall.allowedTCPPorts = [ 443 ];
+  services.caddy = {
+    enable = true;
+    globalConfig = ''
+      pki {
+        ca local {
+          name "Baggins CA"
+          root {
+            cert ${config.sops.secrets.ca_pub_cert.path}
+            key ${config.sops.secrets.ca_cert_key.path}
           }
         }
-      '';
-      virtualHosts = lib.mapAttrs' (
-        name: svc: lib.nameValuePair "${svc.domain}:${toString httpsPort}" (mkVirtualHost name svc)
-      ) (lib.filterAttrs (_: svc: svc.caddy.enable) config.local.services);
-    };
+      }
+    '';
+    virtualHosts = lib.mapAttrs' (
+      name: svc: lib.nameValuePair svc.domain (mkVirtualHost name svc)
+    ) config.local.services;
   };
 }
