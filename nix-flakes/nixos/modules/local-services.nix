@@ -69,6 +69,26 @@
               default = null;
               description = "Path to the Home Manager module for this service.";
             };
+            tier = lib.mkOption {
+              type = lib.types.enum [
+                "normal"
+                "critical"
+              ];
+              default = "normal";
+              description = ''
+                Healthcheck tier — units in different tiers ping separate healthchecks.io
+                endpoints. Only takes effect for units enumerated in `units`; auto-discovered
+                units not listed by any service fall back to "normal".
+              '';
+            };
+            units = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = ''
+                Systemd unit names belonging to this service (e.g. "tandoor.service",
+                "tandoordb.service"). Used by container-healthcheck to map units to tiers.
+              '';
+            };
             backup = {
               enable = lib.mkEnableOption "backup for this service";
               scriptFile = lib.mkOption {

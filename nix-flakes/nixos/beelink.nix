@@ -24,7 +24,13 @@ in
     ./hosts/beelink/hardware-configuration.nix
     ./hosts/beelink/configuration.nix
     ./services/tailscale_server.nix
+    ./services/container-healthcheck.nix
   ];
+
+  local.containerHealthcheck = {
+    enable = true;
+    slugPrefix = "beelink-containers";
+  };
 
   local.services = {
     forgejo = {
@@ -48,9 +54,15 @@ in
       hmModule = ../home-manager/programs/local_services/frigate.nix;
       category = "Monitoring";
       widget.type = "frigate";
+      tier = "critical";
+      units = [ "frigate.service" ];
     };
     sparkyfitness.hmModule = ../home-manager/programs/local_services/sparkyfitness.nix;
-    donetick.hmModule = ../home-manager/programs/local_services/donetick.nix;
+    donetick = {
+      hmModule = ../home-manager/programs/local_services/donetick.nix;
+      tier = "critical";
+      units = [ "donetick.service" ];
+    };
     beszel.hmModule = ../home-manager/programs/local_services/beszel-hub.nix;
     beszel-agent-conrun.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
     beszel-agent-craig.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;

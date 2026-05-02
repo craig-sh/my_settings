@@ -26,7 +26,13 @@ in
     ./hosts/virt/base-configuration.nix
     ./services/tailscale_server.nix
     ./hosts/virt/backup.nix
+    ./services/container-healthcheck.nix
   ];
+
+  local.containerHealthcheck = {
+    enable = true;
+    slugPrefix = "virtnix-containers";
+  };
 
   networking.hostName = "virtnix";
 
@@ -67,6 +73,13 @@ in
         scriptFile = null;
         pgDumps = [ { container = "paperlessdb"; } ];
       };
+      tier = "critical";
+      units = [
+        "paperless.service"
+        "paperlessdb.service"
+        "paperlessredis.service"
+        "paperlesspod-pod.service"
+      ];
     };
     immich = {
       user = "craig";
@@ -84,6 +97,14 @@ in
         scriptFile = null;
         pgDumps = [ { container = "immichdb"; } ];
       };
+      tier = "critical";
+      units = [
+        "immich.service"
+        "immich-ml.service"
+        "immichdb.service"
+        "immichvalkey.service"
+        "immichpod-pod.service"
+      ];
     };
     syncthing = {
       user = "craig";
