@@ -1,5 +1,5 @@
 let
-  version = "26.4.0";
+  version = "26.5.0";
   port = toString 5006;
 in
 {
