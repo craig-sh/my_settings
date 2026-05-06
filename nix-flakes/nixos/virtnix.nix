@@ -84,7 +84,7 @@ in
     immich = {
       user = "craig";
       port = 31113;
-      version = "v2.5.6";
+      version = "v2.7.5";
       firewall.extraTCPPorts = [ 31113 ];
       hmModule = ../home-manager/programs/local_services/immich.nix;
       category = "Photos";
