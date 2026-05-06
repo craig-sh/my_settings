@@ -59,3 +59,20 @@ rm -f .test_os_before_* .test_os_after_* .test_hm_before_* .test_hm_after_*
 - **home-manager/**: Home manager configurations
 - **nixos/**: OS level configuration
 
+### Container healthcheck
+
+`nixos/services/container-healthcheck.nix` runs a periodic root oneshot that verifies every auto-started quadlet container/pod (across system + all home-manager users) is `is-active`, then pings healthchecks.io. Units are split into two tiers (`critical`, `normal`) that ping separate slugs.
+
+Host opts in via `local.containerHealthcheck`:
+- `enable` — turn the service + timer on
+- `slugPrefix` — base of the ping URL; final slug is `<slugPrefix>-<tier>` (e.g. `virtnix-containers-critical`)
+- `interval` — systemd `OnUnitActiveSec` (default `5min`)
+- `startupDelay` — systemd `OnBootSec` (default `5min`)
+- `excludeUnits` — list of auto-discovered unit names to skip
+
+Per-service tier classification (on `local.services.<name>`):
+- `tier` — `"normal"` (default) or `"critical"`
+- `units` — explicit systemd unit names (e.g. `"immich.service"`, `"immichpod-pod.service"`) that this service owns. Required for `tier = "critical"` to take effect; otherwise auto-discovered units fall back to `"normal"`.
+
+The script pings `https://hc-ping.com/<healthcheck_key>/<slug>` on success and `<slug>/fail` with the failed-unit list on any down unit. Tiers with zero units are skipped (no ping fired). Reuses the existing `healthcheck_key` sops secret.
+
