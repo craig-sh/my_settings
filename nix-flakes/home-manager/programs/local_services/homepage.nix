@@ -10,7 +10,6 @@ let
   servicePort = toString osConfig.local.services.homepage.port;
   internalPort = "3000";
   homepageDomain = osConfig.local.services.homepage.domain;
-  ourHost = osConfig.networking.hostName;
 
   hasEnvFile = osConfig.sops.templates ? "homepage.env";
   envFilePath = "/run/secrets/rendered/homepage.env";
@@ -20,14 +19,10 @@ let
   ) outputs.nixosConfigurations;
 
   resolveWidget =
-    sameHost: svc:
+    svc:
     let
       autoUrl = lib.optionalAttrs (!(svc.widget ? url)) {
-        url =
-          if sameHost then
-            "http://host.containers.internal:${toString svc.port}"
-          else
-            "https://${svc.domain}";
+        url = "https://${svc.domain}";
       };
     in
     autoUrl // svc.widget;
@@ -38,20 +33,19 @@ let
       ${entry.svcName} = {
         href = "https://${entry.svc.domain}";
       } // lib.optionalAttrs (entry.svc.widget != null) {
-        widget = resolveWidget entry.sameHost entry.svc;
+        widget = resolveWidget entry.svc;
       };
     };
 
   allServices = lib.concatLists (
     lib.mapAttrsToList (
-      hostName: hostCfg:
+      _: hostCfg:
       let
-        sameHost = hostName == ourHost;
         services = lib.filterAttrs (
           n: svc: n != "homepage" && svc.caddy.enable
         ) hostCfg.config.local.services;
       in
-      lib.mapAttrsToList (svcName: svc: { inherit svcName svc sameHost; }) services
+      lib.mapAttrsToList (svcName: svc: { inherit svcName svc; }) services
     ) hostsWithServices
   );
 
