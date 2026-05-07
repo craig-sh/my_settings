@@ -1,6 +1,6 @@
 { config, osConfig, pkgs, ... }:
 let
-  version = "2.4";
+  version = "2.6.9";
   servicePort = toString osConfig.local.services.tandoor.port;
   internalPort = "8080";
   inherit (config.virtualisation.quadlet) pods;

@@ -1,6 +1,6 @@
 { osConfig, ... }:
 let
-  version = "14.0.4";
+  version = "14.0.5";
   httpPort = "3001";
   sshPort = "2222";
   uid = toString osConfig.users.users.conrun.uid;

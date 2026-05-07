@@ -105,7 +105,7 @@ in
       POSTGRES_PASSWORD=${config.sops.placeholder.gf-pg-pw}
 
       ACCESS_TOKEN_SALT=${config.sops.placeholder.gf-gf-salt}
-      DATABASE_URL=postgresql://pguser:${config.sops.placeholder.gf-pg-pw}@gfpostgres:5432/ghostfolio-db?connect_timeout=300&sslmode=prefer
+      DATABASE_URL=postgresql://pguser:${config.sops.placeholder.gf-pg-pw}@gfpostgres:5432/ghostfolio-db?connect_timeout=300&sslmode=disable
       JWT_SECRET_KEY=${config.sops.placeholder.gf-gf-jwt}
     '';
     owner = "conrun";
