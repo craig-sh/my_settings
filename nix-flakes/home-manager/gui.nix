@@ -10,7 +10,8 @@
       enable = true;
     };
     firefox = {
-      enable = true;
+        configPath = ".mozilla/firefox";
+        enable = true;
     };
   };
 
