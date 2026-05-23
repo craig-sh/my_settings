@@ -26,13 +26,16 @@ let
   sunshine-prep = pkgs.writeShellApplication {
     name = "sunshine-prep";
     runtimeInputs = [ pkgs.hyprland ];
+    # Hyprland 0.55+ ships a Lua config: `hyprctl keyword` is gone, and IPC
+    # mutations go through `hyprctl eval` (runs raw Lua) or `hyprctl dispatch`
+    # (shorthand for `eval 'hl.dispatch(...)'`).
     text = ''
       pkill -USR1 hyprlock || true
-      #hyprctl keyword  monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1, bitdepth,10, cm, hdr, sdrbrightness, 1.33, sdrsaturation, 1.12;
-      #disable HDR for now since its not getting picked up by moonlight
-      hyprctl keyword monitor DP-3, 2560x1440@180, 0x0, 1, vrr, 1,bitdepth,10
-      hyprctl keyword monitor HDMI-A-1, disable
-      hyprctl dispatch workspace 8
+      # HDR variant disabled for now since moonlight isn't picking it up:
+      #hyprctl eval 'hl.monitor({ output = "DP-3", mode = "2560x1440@180", position = "0x0", scale = 1, vrr = 1, bitdepth = 10, cm = "hdr", sdrbrightness = 1.33, sdrsaturation = 1.12 })'
+      hyprctl eval 'hl.monitor({ output = "DP-3", mode = "2560x1440@180", position = "0x0", scale = 1, vrr = 1, bitdepth = 10 })'
+      hyprctl eval 'hl.monitor({ output = "HDMI-A-1", disabled = true })'
+      hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'
     '';
   };
   steam-run-url = pkgs.writeShellApplication {

@@ -1,4 +1,4 @@
-_: {
+{ lib, ... }: {
   programs.waybar = {
     settings = {
       mainBar = {
@@ -32,12 +32,7 @@ _: {
       };
     };
   };
-  wayland.windowManager.hyprland.settings = {
-    # See https://wiki.hypr.land/Configuring/Monitors/
-    ################
-    ### MONITORS ###
-    ################
-    "$monitor" = ",preferred,auto,auto";
-  };
-
+  # Per-machine Hyprland Lua config. hyprland.lua loads this via
+  # require("machine").
+  xdg.configFile."hypr/machine.lua".text = lib.fileContents ./carbonnix.lua;
 }
