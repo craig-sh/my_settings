@@ -16,6 +16,6 @@
     rocmOverrideGfx = "11.0.1";
     host = "0.0.0.0";
   };
-  services.open-webui.enable = true;
+  services.open-webui.enable = false;
   networking.firewall.allowedTCPPorts = [ 11434 ];
 }

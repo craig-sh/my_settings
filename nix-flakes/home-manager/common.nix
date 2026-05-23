@@ -44,9 +44,9 @@
       pkgs.ty
       (pkgs.python313.withPackages (ppkgs: [
         ppkgs.mypy
-        ppkgs.python-lsp-server
-        ppkgs.pylsp-mypy
-        ppkgs.python-lsp-ruff
+        #ppkgs.python-lsp-server
+        #ppkgs.pylsp-mypy
+        #ppkgs.python-lsp-ruff
       ]))
       pkgs.nixpkgs-fmt
       pkgs.dix
