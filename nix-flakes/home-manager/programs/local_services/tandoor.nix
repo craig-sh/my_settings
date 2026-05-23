@@ -58,7 +58,7 @@ in
           volumes = [
             "tandoor-media:/opt/recipes/mediafiles"
             "tandoor-static:/opt/recipes/staticfiles"
-            "tandoor-socket:/run/"
+            "tandoor-socket:/tmp/"
           ];
           dropCapabilities = [ "ALL" ];
           noNewPrivileges = true;
