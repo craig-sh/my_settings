@@ -18,7 +18,11 @@ let
   sunshine-undo = pkgs.writeShellApplication {
     name = "sunshine-undo";
     runtimeInputs = [ pkgs.hyprland steam-run-url ];
+    # `hyprctl reload` re-runs hypernix.lua's hl.monitor for HDMI-A-1 without
+    # `disabled = false`, so the prep's `disabled = true` would otherwise stick.
+    # Explicitly re-enable before reload restores DP-3's HDR settings.
     text = ''
+      hyprctl eval 'hl.monitor({ output = "HDMI-A-1", disabled = false })'
       hyprctl reload
       steam-run-url -shutdown
     '';
@@ -29,11 +33,16 @@ let
     # Hyprland 0.55+ ships a Lua config: `hyprctl keyword` is gone, and IPC
     # mutations go through `hyprctl eval` (runs raw Lua) or `hyprctl dispatch`
     # (shorthand for `eval 'hl.dispatch(...)'`).
+    # `hl.monitor` merges into the existing config — omitted fields keep their
+    # prior values. hypernix.lua sets DP-3 with cm=hdr and sdrbrightness=0.33,
+    # so without explicit overrides here the streamed surface stays HDR-dim
+    # and Moonlight sees what looks like an empty desktop.
     text = ''
       pkill -USR1 hyprlock || true
+
       # HDR variant disabled for now since moonlight isn't picking it up:
       #hyprctl eval 'hl.monitor({ output = "DP-3", mode = "2560x1440@180", position = "0x0", scale = 1, vrr = 1, bitdepth = 10, cm = "hdr", sdrbrightness = 1.33, sdrsaturation = 1.12 })'
-      hyprctl eval 'hl.monitor({ output = "DP-3", mode = "2560x1440@180", position = "0x0", scale = 1, vrr = 1, bitdepth = 10 })'
+      hyprctl eval 'hl.monitor({ output = "DP-3", mode = "2560x1440@180", position = "0x0", scale = 1, vrr = 1, bitdepth = 10, cm = "srgb", sdrbrightness = 1.0, sdrsaturation = 1.0 })'
       hyprctl eval 'hl.monitor({ output = "HDMI-A-1", disabled = true })'
       hyprctl dispatch 'hl.dsp.focus({ workspace = 8 })'
     '';
@@ -54,6 +63,10 @@ in
     autoStart = true;
     capSysAdmin = true; # only needed for Wayland -- omit this when using with Xorg
     openFirewall = true;
+    settings = {
+      capture = "wlr";
+      output = "2";
+    };
     applications = {
       env = {
         PATH = "$(PATH):$(HOME)/.local/bin";
@@ -70,6 +83,10 @@ in
           detached = [ "steam-run-url steam://open/bigpicture" ];
           exclude-global-prep-cmd = "false";
           auto-detach = "true";
+        }
+        {
+          name = "Test";
+          detached = [ "steam-run-url steam://open/bigpicture" ];
         }
       ];
     };
