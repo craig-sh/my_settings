@@ -32,6 +32,8 @@ let
     {
       ${entry.svcName} = {
         href = "https://${entry.svc.domain}";
+      } // lib.optionalAttrs (entry.svc.icon != null) {
+        icon = entry.svc.icon;
       } // lib.optionalAttrs (entry.svc.widget != null) {
         widget = resolveWidget entry.svc;
       };

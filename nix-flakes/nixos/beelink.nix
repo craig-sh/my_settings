@@ -36,6 +36,7 @@ in
     forgejo = {
       hmModule = ../home-manager/programs/local_services/forgejo.nix;
       category = "Code";
+      icon = "forgejo.png";
       widget = {
         type = "forgejo";
         key = "{{HOMEPAGE_VAR_FORGEJO_KEY}}";
@@ -44,15 +45,20 @@ in
     ghostfolio = {
       hmModule = ../home-manager/programs/local_services/ghostfolio.nix;
       category = "Finance";
+      icon = "ghostfolio.png";
       widget = {
         type = "ghostfolio";
         key = "{{HOMEPAGE_VAR_GHOSTFOLIO_KEY}}";
       };
     };
-    actualbudget.hmModule = ../home-manager/programs/local_services/actualbudget.nix;
+    actualbudget = {
+      hmModule = ../home-manager/programs/local_services/actualbudget.nix;
+      icon = "actual.png";
+    };
     frigate = {
       hmModule = ../home-manager/programs/local_services/frigate.nix;
       category = "Monitoring";
+      icon = "frigate.png";
       widget.type = "frigate";
       tier = "critical";
       units = [ "frigate.service" ];
@@ -60,10 +66,21 @@ in
     sparkyfitness.hmModule = ../home-manager/programs/local_services/sparkyfitness.nix;
     donetick = {
       hmModule = ../home-manager/programs/local_services/donetick.nix;
+      icon = "donetick.png";
       tier = "critical";
       units = [ "donetick.service" ];
     };
-    beszel.hmModule = ../home-manager/programs/local_services/beszel-hub.nix;
+    beszel = {
+      hmModule = ../home-manager/programs/local_services/beszel-hub.nix;
+      category = "Monitoring";
+      icon = "beszel.png";
+      widget = {
+        type = "beszel";
+        username = "{{HOMEPAGE_VAR_BESZEL_USER}}";
+        password = "{{HOMEPAGE_VAR_BESZEL_PASS}}";
+        version = 2;
+      };
+    };
     beszel-agent-conrun.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
     beszel-agent-craig.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
   };

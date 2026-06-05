@@ -39,8 +39,10 @@ in
   virtualisation.quadlet.enable = true;
 
   systemd.tmpfiles.rules = [
-    "d /mnt/k8sconfig/podman/conrun 0700 conrun - - -"
-    "d /mnt/k8sconfig/podman/craig  0700 craig  - - -"
+    "d /mnt/k8sconfig        0755 root   root   - -"
+    "d /mnt/k8sconfig/podman 0755 root   root   - -"
+    "d /mnt/k8sconfig/podman/conrun   0700 conrun   - - -"
+    "d /mnt/k8sconfig/podman/craig    0700 craig    - - -"
     "d /mnt/k8sconfig/podman/podMedia 0700 podMedia - - -"
   ];
 
@@ -49,10 +51,10 @@ in
       port = 8787;
       hmModule = ../home-manager/programs/local_services/tandoor.nix;
       category = "Recipes";
+      icon = "tandoor.png";
       widget = {
         type = "tandoor";
-        username = "{{HOMEPAGE_VAR_TANDOOR_USER}}";
-        password = "{{HOMEPAGE_VAR_TANDOOR_PASS}}";
+        key = "{{HOMEPAGE_VAR_TANDOOR_KEY}}";
       };
       backup = {
         enable = true;
@@ -64,6 +66,7 @@ in
       port = 8788;
       hmModule = ../home-manager/programs/local_services/paperless.nix;
       category = "Documents";
+      icon = "paperless-ngx.png";
       widget = {
         type = "paperlessngx";
         key = "{{HOMEPAGE_VAR_PAPERLESS_KEY}}";
@@ -88,6 +91,7 @@ in
       firewall.extraTCPPorts = [ 31113 ];
       hmModule = ../home-manager/programs/local_services/immich.nix;
       category = "Photos";
+      icon = "immich.png";
       widget = {
         type = "immich";
         key = "{{HOMEPAGE_VAR_IMMICH_KEY}}";
@@ -116,6 +120,7 @@ in
         21027
       ];
       hmModule = ../home-manager/programs/local_services/syncthing.nix;
+      icon = "syncthing.png";
       backup.enable = true;
     };
     beszel-agent-conrun = {

@@ -37,6 +37,15 @@
                 omitted on a widget service, falls back to "Other".
               '';
             };
+            icon = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = ''
+                Homepage tile icon. Accepts a Dashboard Icons name (e.g. "jellyfin.png"),
+                a Material Design Icon (e.g. "mdi-folder-#ff0000"), Simple Icons / Selfh.st
+                references, or a full URL. See https://gethomepage.dev/configs/services/#icons.
+              '';
+            };
             domain = lib.mkOption {
               type = lib.types.str;
               default = "${name}.localdomain";
