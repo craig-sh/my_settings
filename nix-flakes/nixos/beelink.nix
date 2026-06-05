@@ -44,12 +44,7 @@ in
     };
     ghostfolio = {
       hmModule = ../home-manager/programs/local_services/ghostfolio.nix;
-      category = "Finance";
       icon = "ghostfolio.png";
-      widget = {
-        type = "ghostfolio";
-        key = "{{HOMEPAGE_VAR_GHOSTFOLIO_KEY}}";
-      };
     };
     actualbudget = {
       hmModule = ../home-manager/programs/local_services/actualbudget.nix;
