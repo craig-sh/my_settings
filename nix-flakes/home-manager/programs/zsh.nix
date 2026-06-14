@@ -168,7 +168,7 @@ in
       EDITOR = "nvim";
       VISUAL = "nvim";
       ARCHFLAGS = "-arch x86_64";
-      FZF_DEFAULT_OPTS = ''--prompt \" λ \"'';
+      FZF_DEFAULT_OPTS = "--prompt ' λ '";
       LANG = "en_US.UTF-8";
       FZF_DEFAULT_COMMAND=fzf_cmd;
       FZF_CTRL_T_COMMAND=fzf_cmd;
