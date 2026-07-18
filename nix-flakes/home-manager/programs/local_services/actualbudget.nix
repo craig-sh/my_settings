@@ -9,6 +9,7 @@ in
       actualbudget = {
         containerConfig = {
           image = "docker.io/actualbudget/actual-server:${version}";
+          pull = "newer";
           publishPorts = [ "127.0.0.1:${port}:${port}" ];
           volumes = [ "actualbudget-data:/data" ];
           dropCapabilities = [ "ALL" ];

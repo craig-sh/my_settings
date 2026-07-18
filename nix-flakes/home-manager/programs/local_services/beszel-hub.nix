@@ -16,6 +16,7 @@ in
       };
       containerConfig = {
         image = "docker.io/henrygd/beszel:${version}";
+        pull = "newer";
         publishPorts = [ "127.0.0.1:${servicePort}:${internalPort}" ];
         volumes = [ "beszel-data:/beszel_data" ];
         environments = {

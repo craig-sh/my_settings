@@ -17,6 +17,7 @@ in
         };
         containerConfig = {
           image = "docker.io/syncthing/syncthing:${version}";
+          pull = "newer";
           publishPorts = [
             "127.0.0.1:${servicePort}:${internalPort}/tcp"
             "0.0.0.0:22000:22000/tcp"

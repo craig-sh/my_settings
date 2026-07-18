@@ -1,4 +1,10 @@
-{ osConfig, config, pkgs, lib, ... }:
+{
+  osConfig,
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
   username = config.home.username;
   serviceName = "beszel-agent-${username}";
@@ -48,6 +54,7 @@ in
       };
       containerConfig = {
         image = "docker.io/henrygd/beszel-agent:${version}";
+        pull = "newer";
         environments = {
           HUB_URL = "https://beszel.localdomain";
           SYSTEM_NAME = "${osConfig.networking.hostName}-${username}";
@@ -63,7 +70,8 @@ in
         ];
         dropCapabilities = [ "ALL" ];
         noNewPrivileges = true;
-      } // hairpinFix;
+      }
+      // hairpinFix;
       serviceConfig.Restart = "always";
     };
     volumes."beszel-agent-data" = { };

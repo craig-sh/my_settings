@@ -11,6 +11,7 @@ in
     containers.forgejo = {
       containerConfig = {
         image = "codeberg.org/forgejo/forgejo:${version}-rootless";
+        pull = "newer";
         user = "${uid}:${uid}";
         userns = "keep-id";
         publishPorts = [

@@ -22,6 +22,7 @@ in
           pod = pods.ghostfoliopod.ref;
           environmentFiles = [ "/run/secrets/rendered/ghostfolio.env" ];
           image = "docker.io/ghostfolio/ghostfolio:${version}";
+          pull = "newer";
           #timezone = "America/Toronto";
           dropCapabilities = [ "ALL" ];
           noNewPrivileges = true;
@@ -55,6 +56,7 @@ in
         containerConfig = {
           pod = pods.ghostfoliopod.ref;
           image = "docker.io/library/redis:alpine";
+          pull = "newer";
           dropCapabilities = [ "ALL" ];
           #userns = "keep-id:uid=999"; # this is redis user id inside the container
           noNewPrivileges = true;
@@ -78,6 +80,7 @@ in
         containerConfig = {
           pod = pods.ghostfoliopod.ref;
           image = "docker.io/library/postgres:15-alpine";
+          pull = "newer";
           volumes = [ "gf-postgres:/var/lib/postgresql/data" ];
           environmentFiles = [ "/run/secrets/rendered/ghostfolio.env" ];
           dropCapabilities = [ "ALL" ];

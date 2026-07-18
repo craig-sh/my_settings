@@ -37,6 +37,7 @@ in
         containerConfig = {
           pod = pods.immichpod.ref;
           image = "ghcr.io/immich-app/immich-server:${version}";
+          pull = "newer";
           user = "0:0";
           environmentFiles = [ "/run/secrets/rendered/immich.env" ];
           environments = {
@@ -62,6 +63,7 @@ in
         containerConfig = {
           pod = pods.immichpod.ref;
           image = "ghcr.io/immich-app/immich-machine-learning:${version}";
+          pull = "newer";
           environments.TZ = "America/Toronto";
           volumes = [ "immich-ml-cache:/cache" ];
         };
@@ -74,6 +76,7 @@ in
         containerConfig = {
           pod = pods.immichpod.ref;
           image = "ghcr.io/immich-app/postgres:16-vectorchord0.4.3";
+          pull = "newer";
           volumes = [ "immich-db:/var/lib/postgresql/data:Z" ];
           environmentFiles = [ "/run/secrets/rendered/immich.env" ];
           environments = {
@@ -100,6 +103,7 @@ in
         containerConfig = {
           pod = pods.immichpod.ref;
           image = "docker.io/valkey/valkey:8-bookworm";
+          pull = "newer";
           volumes = [ "immich-valkey:/data:Z" ];
           dropCapabilities = [ "ALL" ];
           addCapabilities = [

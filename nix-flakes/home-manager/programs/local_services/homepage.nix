@@ -27,17 +27,17 @@ let
     in
     autoUrl // svc.widget;
 
-  mkTile =
-    entry:
-    {
-      ${entry.svcName} = {
-        href = "https://${entry.svc.domain}";
-      } // lib.optionalAttrs (entry.svc.icon != null) {
-        icon = entry.svc.icon;
-      } // lib.optionalAttrs (entry.svc.widget != null) {
-        widget = resolveWidget entry.svc;
-      };
+  mkTile = entry: {
+    ${entry.svcName} = {
+      href = "https://${entry.svc.domain}";
+    }
+    // lib.optionalAttrs (entry.svc.icon != null) {
+      icon = entry.svc.icon;
+    }
+    // lib.optionalAttrs (entry.svc.widget != null) {
+      widget = resolveWidget entry.svc;
     };
+  };
 
   allServices = lib.concatLists (
     lib.mapAttrsToList (
@@ -68,19 +68,19 @@ let
     Links = map mkTile (sortByName withoutWidgets);
   };
 
-  servicesYaml = pkgs.writeText "services.yaml" (builtins.toJSON (
-    categoryGroups ++ linksGroup
-  ));
+  servicesYaml = pkgs.writeText "services.yaml" (builtins.toJSON (categoryGroups ++ linksGroup));
 
-  settingsYaml = pkgs.writeText "settings.yaml" (builtins.toJSON {
-    title = "Homepage";
-    layout = {
-      Links = {
-        style = "row";
-        columns = 4;
+  settingsYaml = pkgs.writeText "settings.yaml" (
+    builtins.toJSON {
+      title = "Homepage";
+      layout = {
+        Links = {
+          style = "row";
+          columns = 4;
+        };
       };
-    };
-  });
+    }
+  );
 in
 {
   virtualisation.quadlet = {
@@ -94,6 +94,7 @@ in
       };
       containerConfig = {
         image = "ghcr.io/gethomepage/homepage:${version}";
+        pull = "newer";
         user = "0:0";
         publishPorts = [
           "127.0.0.1:${servicePort}:${internalPort}/tcp"

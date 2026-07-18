@@ -17,6 +17,7 @@ in
         containerConfig = {
           pod = pods.paperlesspod.ref;
           image = "ghcr.io/paperless-ngx/paperless-ngx:${version}";
+          pull = "newer";
           environmentFiles = [ "/run/secrets/rendered/paperless.env" ];
           environments = {
             PAPERLESS_REDIS = "redis://localhost:6379";
@@ -41,8 +42,14 @@ in
         };
         unitConfig = {
           Description = "Paperless-ngx Document Manager";
-          After = [ "paperlessdb.service" "paperlessredis.service" ];
-          Requires = [ "paperlessdb.service" "paperlessredis.service" ];
+          After = [
+            "paperlessdb.service"
+            "paperlessredis.service"
+          ];
+          Requires = [
+            "paperlessdb.service"
+            "paperlessredis.service"
+          ];
         };
         serviceConfig.Restart = "always";
       };
@@ -50,6 +57,7 @@ in
         containerConfig = {
           pod = pods.paperlesspod.ref;
           image = "docker.io/library/postgres:17-alpine";
+          pull = "newer";
           volumes = [ "paperless-db:/var/lib/postgresql/data:Z" ];
           environmentFiles = [ "/run/secrets/rendered/paperless.env" ];
           environments = {
@@ -73,9 +81,14 @@ in
         containerConfig = {
           pod = pods.paperlesspod.ref;
           image = "docker.io/library/redis:8-alpine";
+          pull = "newer";
           volumes = [ "paperless-redis:/data:Z" ];
           dropCapabilities = [ "ALL" ];
-          addCapabilities = [ "CHOWN" "SETGID" "SETUID" ];
+          addCapabilities = [
+            "CHOWN"
+            "SETGID"
+            "SETUID"
+          ];
           noNewPrivileges = true;
         };
         unitConfig.Description = "Paperless-ngx Redis Broker";

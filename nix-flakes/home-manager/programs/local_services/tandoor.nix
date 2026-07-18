@@ -1,4 +1,9 @@
-{ config, osConfig, pkgs, ... }:
+{
+  config,
+  osConfig,
+  pkgs,
+  ...
+}:
 let
   version = "2.6.13";
   servicePort = toString osConfig.local.services.tandoor.port;
@@ -44,6 +49,7 @@ in
         containerConfig = {
           pod = pods.tandoorpod.ref;
           image = "docker.io/vabene1111/recipes:${version}";
+          pull = "newer";
           environmentFiles = [ "/run/secrets/rendered/tandoor.env" ];
           environments = {
             DB_ENGINE = "django.db.backends.postgresql";
@@ -74,6 +80,7 @@ in
         containerConfig = {
           pod = pods.tandoorpod.ref;
           image = "docker.io/library/nginx:alpine";
+          pull = "newer";
           volumes = [
             "tandoor-media:/media:ro"
             "tandoor-static:/static:ro"
@@ -105,6 +112,7 @@ in
         containerConfig = {
           pod = pods.tandoorpod.ref;
           image = "docker.io/library/postgres:17-alpine";
+          pull = "newer";
           volumes = [ "tandoor-db:/var/lib/postgresql/data:Z" ];
           environmentFiles = [ "/run/secrets/rendered/tandoor.env" ];
           dropCapabilities = [ "ALL" ];

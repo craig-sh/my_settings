@@ -22,6 +22,7 @@ in
         containerConfig = {
           pod = pods.sfpod.ref;
           image = "docker.io/codewithcj/sparkyfitness:${version}";
+          pull = "newer";
           environmentFiles = [ "/run/secrets/rendered/sparkyfitness.env" ];
           dropCapabilities = [ "ALL" ];
           addCapabilities = [
@@ -43,6 +44,7 @@ in
         containerConfig = {
           pod = pods.sfpod.ref;
           image = "docker.io/codewithcj/sparkyfitness_server:${version}";
+          pull = "newer";
           environmentFiles = [ "/run/secrets/rendered/sparkyfitness.env" ];
           volumes = [
             "sf-server-backup:/app/SparkyFitnessServer/backup:Z"
@@ -62,6 +64,7 @@ in
         containerConfig = {
           pod = pods.sfpod.ref;
           image = "docker.io/library/postgres:17-alpine";
+          pull = "newer";
           volumes = [ "sf-postgres:/var/lib/postgresql/data:Z" ];
           environmentFiles = [ "/run/secrets/rendered/sparkyfitness.env" ];
           dropCapabilities = [ "ALL" ];
