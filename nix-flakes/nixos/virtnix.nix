@@ -87,7 +87,7 @@ in
     immich = {
       user = "craig";
       port = 31113;
-      version = "v2.7.5";
+      version = "v3.0.3";
       firewall.extraTCPPorts = [ 31113 ];
       hmModule = ../home-manager/programs/local_services/immich.nix;
       category = "Photos";
@@ -113,7 +113,7 @@ in
     syncthing = {
       user = "craig";
       port = 8797;
-      version = "2.0.16";
+      version = "2.1.2";
       firewall.extraTCPPorts = [ 22000 ];
       firewall.extraUDPPorts = [
         22000
