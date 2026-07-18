@@ -1,4 +1,9 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   setPersonalDisplay = pkgs.writeShellScriptBin "hypr-personal-display" ''
     ddcutil --display 1 setvcp 60 0x12
@@ -21,15 +26,17 @@ let
     LAYOUT=$(hyprctl workspaces -j | ${pkgs.jq}/bin/jq -r --argjson ws "$WS" '.[] | select(.id == $ws) | .tiledLayout')
     ACTIVE=$(hyprctl activewindow -j | ${pkgs.jq}/bin/jq -r '.address')
     PREV_FILE="/tmp/hypr-monocle-prev-ws$WS"
+    # Lua config (Hyprland 0.55+): `hyprctl keyword` is rejected by non-legacy
+    # parsers, so mutate the workspace rule through `hyprctl eval` instead.
     if [ "$LAYOUT" = "monocle" ]; then
       PREV=$(cat "$PREV_FILE" 2>/dev/null || echo "dwindle")
       rm -f "$PREV_FILE"
-      hyprctl keyword workspace "$WS, layout:$PREV"
+      hyprctl eval "hl.workspace_rule({ workspace = \"$WS\", layout = \"$PREV\" })"
     else
       echo "$LAYOUT" > "$PREV_FILE"
-      hyprctl keyword workspace "$WS, layout:monocle"
+      hyprctl eval "hl.workspace_rule({ workspace = \"$WS\", layout = \"monocle\" })"
     fi
-    hyprctl dispatch focuswindow address:$ACTIVE
+    hyprctl dispatch "hl.dsp.focus({ window = \"address:$ACTIVE\" })"
   '';
 in
 {
