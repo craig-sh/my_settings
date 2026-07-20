@@ -31,16 +31,21 @@ hl.monitor({
 ---- WORKSPACES BOUND TO MONITORS ----
 -----------------------------------
 
-hl.workspace_rule({ workspace = "1",  persistent = true, monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "2",  persistent = true, monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "3",  persistent = true, monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "4",  persistent = true, monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "5",  persistent = true, monitor = "HDMI-A-1" })
-hl.workspace_rule({ workspace = "6",  persistent = true, monitor = "DP-3" })
-hl.workspace_rule({ workspace = "7",  persistent = true, monitor = "DP-3" })
-hl.workspace_rule({ workspace = "8",  persistent = true, monitor = "DP-3" })
-hl.workspace_rule({ workspace = "9",  persistent = true, monitor = "DP-3" })
-hl.workspace_rule({ workspace = "10", persistent = true, monitor = "DP-3" })
+-- Persistence is intentionally driven by waybar's persistent-workspaces
+-- (see hypernix.nix), not Hyprland's persistent = true. When Hyprland marks
+-- a workspace persistent, waybar's active-only filter on the taskbar module
+-- treats every workspace as always-visible and renders windows from all
+-- workspaces on that monitor at once.
+hl.workspace_rule({ workspace = "1",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "2",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "3",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "4",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "5",  monitor = "HDMI-A-1" })
+hl.workspace_rule({ workspace = "6",  monitor = "DP-3" })
+hl.workspace_rule({ workspace = "7",  monitor = "DP-3" })
+hl.workspace_rule({ workspace = "8",  monitor = "DP-3" })
+hl.workspace_rule({ workspace = "9",  monitor = "DP-3" })
+hl.workspace_rule({ workspace = "10", monitor = "DP-3" })
 
 ---------------
 ---- BINDS ----

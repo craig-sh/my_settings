@@ -25,10 +25,13 @@ in
         ];
         "hyprland/workspaces" = {
           persistent-workspaces = {
-            "1" = [ ];
-            "4" = [ ];
-            "6" = [ ];
-            "10" = [ ];
+            "HDMI-A-1" = [
+              "1"
+              "2"
+              "3"
+              "4"
+              "5"
+            ];
           };
         };
       };
@@ -39,7 +42,17 @@ in
           "hyprland/workspaces"
           "hyprland/workspaces#windows"
         ];
-        "hyprland/workspaces" = waybarModules.workspaces;
+        "hyprland/workspaces" = waybarModules.workspaces // {
+          persistent-workspaces = {
+            "DP-3" = [
+              "6"
+              "7"
+              "8"
+              "9"
+              "10"
+            ];
+          };
+        };
         "hyprland/workspaces#windows" = waybarModules.workspacesWindows;
       };
     };
