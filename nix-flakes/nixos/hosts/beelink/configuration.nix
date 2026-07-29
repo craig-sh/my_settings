@@ -82,6 +82,15 @@ in
       owner = "conrun";
     };
 
+    dw-db-pw = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    dw-secret-key-base = {
+      format = "yaml";
+      owner = "conrun";
+    };
+
     bz-universal-key = {
       format = "yaml";
     };
@@ -137,6 +146,18 @@ in
   };
   sops.templates."donetick.env" = {
     content = "DT_JWT_SECRET=${config.sops.placeholder.dt-jwt-secret}";
+    owner = "conrun";
+  };
+  # Do not double quote below strings. This is passed to systemd environment not regular bash env!!!!!
+  sops.templates."dawarich.env" = {
+    content = ''
+      POSTGRES_USER=dawarich
+      POSTGRES_DB=dawarich
+      POSTGRES_PASSWORD=${config.sops.placeholder.dw-db-pw}
+
+      DATABASE_PASSWORD=${config.sops.placeholder.dw-db-pw}
+      SECRET_KEY_BASE=${config.sops.placeholder.dw-secret-key-base}
+    '';
     owner = "conrun";
   };
   sops.templates."beszel-agent-conrun.env" = {
@@ -391,6 +412,12 @@ in
       port = 2021;
       backup.enable = true;
       firewall.extraTCPPorts = [ 2021 ];
+    };
+    dawarich = {
+      port = 3005;
+      version = "1.10.1";
+      backup.enable = true;
+      backup.pgDumps = [ { container = "dawarichdb"; } ];
     };
     beszel = {
       port = 8090;

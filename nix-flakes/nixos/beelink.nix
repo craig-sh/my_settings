@@ -76,6 +76,11 @@ in
         version = 2;
       };
     };
+    dawarich = {
+      hmModule = ../home-manager/programs/local_services/dawarich.nix;
+      category = "Tracking";
+      icon = "dawarich.png";
+    };
     beszel-agent-conrun.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
     beszel-agent-craig.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
   };
