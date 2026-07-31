@@ -29,16 +29,28 @@ let
     RAILS_LOG_TO_STDOUT = "true";
     SELF_HOSTED = "true";
     STORE_GEODATA = "true";
+    # Self-hosted photon, reached by pod name over the shared dawarich-net.
+    # Must be a bare host:port with no path. Sidekiq needs this too - it is what
+    # actually runs the geocoding jobs.
+    PHOTON_API_HOST = "photonpod:2322";
+    PHOTON_API_USE_HTTPS = "false";
   };
 
-  inherit (config.virtualisation.quadlet) pods;
+  inherit (config.virtualisation.quadlet) pods networks;
 in
 {
   virtualisation.quadlet = {
     enable = true;
 
+    # Shared with photonpod for reverse geocoding. Also declared in photon.nix -
+    # identical definitions merge, so neither module depends on the other.
+    networks."dawarich-net" = { };
+
     pods.dawarichpod = {
-      podConfig.publishPorts = [ "127.0.0.1:${servicePort}:${internalPort}" ];
+      podConfig = {
+        publishPorts = [ "127.0.0.1:${servicePort}:${internalPort}" ];
+        networks = [ networks."dawarich-net".ref ];
+      };
       autoStart = true;
     };
 

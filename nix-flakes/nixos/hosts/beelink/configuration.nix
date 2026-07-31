@@ -419,6 +419,14 @@ in
       backup.enable = true;
       backup.pgDumps = [ { container = "dawarichdb"; } ];
     };
+    photon = {
+      port = 2322;
+      version = "2.3.1";
+      caddy.enable = false;
+      # The index is a re-downloadable public artifact - no point in restic'ing
+      # 14GiB of it every night.
+      backup.enable = false;
+    };
     beszel = {
       port = 8090;
       version = "0.18.7";
