@@ -1,6 +1,6 @@
 { config, osConfig, ... }:
 let
-  version = "2.20";
+  version = "3.0.5";
   servicePort = toString osConfig.local.services.paperless.port;
   internalPort = "8000";
   inherit (config.virtualisation.quadlet) pods;

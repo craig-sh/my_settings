@@ -87,7 +87,7 @@ in
     immich = {
       user = "craig";
       port = 31113;
-      version = "v3.0.3";
+      version = "v3.1.0";
       firewall.extraTCPPorts = [ 31113 ];
       hmModule = ../home-manager/programs/local_services/immich.nix;
       category = "Photos";
@@ -143,7 +143,7 @@ in
     };
     homepage = {
       port = 3000;
-      version = "v1.12.3";
+      version = "v1.13.2";
       hmModule = ../home-manager/programs/local_services/homepage.nix;
     };
   };
