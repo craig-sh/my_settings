@@ -1,6 +1,6 @@
 { config, ... }:
 let
-  version = "3.40.0";
+  version = "3.65.0";
   internalPort = toString 3333;
   servicePort = toString 3333;
   inherit (config.virtualisation.quadlet) pods;

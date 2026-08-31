@@ -55,7 +55,7 @@ in
     containers = {
       donetick = {
         containerConfig = {
-          image = "docker.io/donetick/donetick:v0.1.76";
+          image = "docker.io/donetick/donetick:v0.1.79";
           pull = "newer";
           publishPorts = [ "0.0.0.0:${port}:${port}" ];
           volumes = [

@@ -415,13 +415,13 @@ in
     };
     dawarich = {
       port = 3005;
-      version = "1.10.3";
+      version = "1.14.1";
       backup.enable = true;
       backup.pgDumps = [ { container = "dawarichdb"; } ];
     };
     photon = {
       port = 2322;
-      version = "2.3.1";
+      version = "2.4.0";
       caddy.enable = false;
       # The index is a re-downloadable public artifact - no point in restic'ing
       # 14GiB of it every night.
@@ -429,17 +429,17 @@ in
     };
     beszel = {
       port = 8090;
-      version = "0.18.7";
+      version = "0.18.8";
       backup.enable = false;
     };
     beszel-agent-conrun = {
       user = "conrun";
-      version = "0.18.7";
+      version = "0.18.8";
       caddy.enable = false;
     };
     beszel-agent-craig = {
       user = "craig";
-      version = "0.18.7";
+      version = "0.18.8";
       caddy.enable = false;
     };
   };

@@ -113,7 +113,7 @@ in
     syncthing = {
       user = "craig";
       port = 8797;
-      version = "2.1.2";
+      version = "2.1.3";
       firewall.extraTCPPorts = [ 22000 ];
       firewall.extraUDPPorts = [
         22000
@@ -125,25 +125,25 @@ in
     };
     beszel-agent-conrun = {
       user = "conrun";
-      version = "0.18.7";
+      version = "0.18.8";
       caddy.enable = false;
       hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
     };
     beszel-agent-craig = {
       user = "craig";
-      version = "0.18.7";
+      version = "0.18.8";
       caddy.enable = false;
       hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
     };
     beszel-agent-podMedia = {
       user = "podMedia";
-      version = "0.18.7";
+      version = "0.18.8";
       caddy.enable = false;
       hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
     };
     homepage = {
       port = 3000;
-      version = "v1.13.2";
+      version = "v2.1.2";
       hmModule = ../home-manager/programs/local_services/homepage.nix;
     };
   };
