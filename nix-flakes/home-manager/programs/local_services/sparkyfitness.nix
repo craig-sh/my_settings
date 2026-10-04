@@ -3,7 +3,7 @@ let
   servicePort = "3004";
   internalPort = "80"; # frontend nginx port
   inherit (config.virtualisation.quadlet) pods;
-  version = "v1.6.4";
+  version = "v1.7.3";
   uid = toString osConfig.users.users.conrun.uid;
 in
 {

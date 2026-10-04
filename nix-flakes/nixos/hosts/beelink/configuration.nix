@@ -415,7 +415,7 @@ in
     };
     dawarich = {
       port = 3005;
-      version = "1.14.1";
+      version = "1.15.3";
       backup.enable = true;
       backup.pgDumps = [ { container = "dawarichdb"; } ];
     };
@@ -429,17 +429,17 @@ in
     };
     beszel = {
       port = 8090;
-      version = "0.18.8";
+      version = "0.21.0";
       backup.enable = false;
     };
     beszel-agent-conrun = {
       user = "conrun";
-      version = "0.18.8";
+      version = "0.21.0";
       caddy.enable = false;
     };
     beszel-agent-craig = {
       user = "craig";
-      version = "0.18.8";
+      version = "0.21.0";
       caddy.enable = false;
     };
   };
