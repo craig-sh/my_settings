@@ -43,7 +43,7 @@ return {
             end,
             desc = "Edit nix files"
           },
-          { '<F3>',               ':NvimTreeFindFileToggle<CR>',                  desc = 'Tree finder' },
+          { '<F3>',               ':NvimTreeFindFileToggle<CR>',                  desc = 'NvimTree',                               },
           { '<leader>cf',         [[:let @+=expand("%")<CR>]],                    desc = 'Copy relative path of file', },
           { '<leader>pwd',        ':! pwd<CR>',                                   desc = 'Print the pwd', },
           { '<leader>ss',         ':syntax sync fromstart<CR>',                   desc = 'Resync syntax', },
@@ -67,6 +67,12 @@ return {
           { '<A-j>',              [[<C-\><C-n><C-w>j]],                           desc = 'Term: (window) move down',       mode = 't' },
           { '<A-k>',              [[<C-\><C-n><C-w>k]],                           desc = 'Term: (window) move up',         mode = 't' },
           { '<A-l>',              [[<C-\><C-n><C-w>l]],                           desc = 'Term: (window) move right',      mode = 't' },
+          { '<leader>q',
+            function()
+	      local mc_ns = vim.api.nvim_create_namespace('nvim.multicursor')
+	      vim.api.nvim_buf_clear_namespace(0, mc_ns, 0, -1)
+            end, {desc = "Clear Multicursors"}
+          },
           { '<leader>y',          require('vim.ui.clipboard.osc52').copy,         expr = true },
           { '<leader>yy',         '<leader>y_',                                   remap = true },
           { '<leader>y',          require('vim.ui.clipboard.osc52').copy,         mode = 'v' },

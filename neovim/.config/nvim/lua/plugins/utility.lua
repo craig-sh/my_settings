@@ -3,17 +3,18 @@ return {
   { 'mbbill/undotree' },
   { 'tpope/vim-repeat' },
   {
-      "3rd/image.nvim",
-      build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
-      --opts = {
-      --    processor = "magick_rock",
-      --}
+    "3rd/image.nvim",
+    build = false,   -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+    --opts = {
+    --    processor = "magick_rock",
+    --}
   },
   { 'tpope/vim-sleuth' }, --  Indentation settings
   { 'norcalli/nvim-colorizer.lua', opts = {} },
   { 'farmergreg/vim-lastplace' },
-  { url = 'https://codeberg.org/andyg/leap.nvim',
-    config = function ()
+  {
+    url = 'https://codeberg.org/andyg/leap.nvim',
+    config = function()
       -- Highly recommended: define a preview filter to reduce visual noise
       -- and the blinking effect after the first keypress
       -- (`:h leap.opts.preview`). You can still target any visible
@@ -22,7 +23,7 @@ return {
       -- Exclude whitespace and the middle of alphabetic words from preview:
       --   foobar[baaz] = quux
       --   ^----^^^--^^-^-^--^
-      require('leap').opts.preview = function (ch0, ch1, ch2)
+      require('leap').opts.preview = function(ch0, ch1, ch2)
         return not (
           ch1:match('%s')
           or (ch0:match('%a') and ch1:match('%a') and ch2:match('%a'))
@@ -41,24 +42,21 @@ return {
       --require('leap.user').set_repeat_keys('<enter>', '<backspace>')
 
 
-      vim.keymap.set({'n', 'x', 'o'}, 's', '<Plug>(leap)')
-      vim.keymap.set('n',             'S', '<Plug>(leap-from-window)')
+      vim.keymap.set({ 'n', 'x', 'o' }, 's', '<Plug>(leap)')
+      vim.keymap.set('n', 'S', '<Plug>(leap-from-window)')
     end
   },
-  {
-    'nvim-tree/nvim-tree.lua',
-    opts = {
-      hijack_directories = {
-        enable = false,
-        auto_open = false,
-      }
-    },
-    keys = {
-      '<F3>',
-      '<cmd>NvimTreeFindFileToggle<cr>',
-      desc = 'NvimTree',
-    }
-  },
+-- Until this is fixed [[https://github.com/nvim-neo-tree/neo-tree.nvim/issues/2080]]
+--  {
+--    'nvim-tree/nvim-tree.lua',
+--    config = function()
+--      require('nvim-tree').setup({
+--        view = {
+--          width = 75,
+--        },
+--      })
+--    end,
+--  },
   {
     'nvim-lualine/lualine.nvim',
     opts = {
@@ -116,5 +114,15 @@ return {
       },
     },
     cmd = { "CsvViewEnable", "CsvViewDisable", "CsvViewToggle" },
+  },
+  {
+    "richardhapb/pytest.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      open_output_onfail = true
+    }, -- Define the options here
+    config = function(_, opts)
+      require('pytest').setup(opts)
+    end
   }
 }
