@@ -59,12 +59,13 @@ in
           HUB_URL = "https://beszel.localdomain";
           SYSTEM_NAME = "${osConfig.networking.hostName}-${username}";
           DATA_DIR = "/data";
+          CA_CERT_FILE = "/etc/ssl/certs/internal-ca.crt";
         };
         environmentFiles = [ "/run/secrets/rendered/beszel-agent-${username}.env" ];
         volumes = [
           "%t/podman/podman.sock:/var/run/docker.sock:ro"
-          # Mount host CA bundle so the agent trusts the internal Caddy cert.
-          "/etc/ssl/certs:/etc/ssl/certs:ro"
+          # Agents verify the hub's TLS cert (beszel >= 0.19); trust the internal Caddy CA.
+          "${osConfig.sops.secrets.ca_pub_cert.path}:/etc/ssl/certs/internal-ca.crt:ro"
           # Persist the agent's identity keypair across container recreation.
           "beszel-agent-data:/data"
         ];
