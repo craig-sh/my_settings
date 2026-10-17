@@ -415,7 +415,7 @@ in
     };
     dawarich = {
       port = 3005;
-      version = "1.15.3";
+      version = "1.16.0";
       backup.enable = true;
       backup.pgDumps = [ { container = "dawarichdb"; } ];
     };
