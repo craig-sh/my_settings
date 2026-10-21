@@ -2,10 +2,16 @@
 -- Per-machine bits live in machine.lua (one of hypernix.lua / carbonnix.lua,
 -- installed at ~/.config/hypr/machine.lua via xdg.configFile in each host's
 -- home-manager module) and is loaded via the require call at the bottom.
+-- Desktop-shell bits (bar, notifications, launcher, lock, media keys) live in
+-- shell.lua (shell-classic.lua or shell-noctalia.lua), whichever shell module
+-- the host imports.
 
 local mainMod  = "SUPER"
 local terminal = "kitty"
-local menu     = "rofi -show drun"
+
+-- pcall so booting on a host that hasn't shipped a shell.lua doesn't fail.
+-- Loading registers the shell's binds; the returned table carries autostart.
+local shell_ok, shell = pcall(require, "shell")
 
 -------------------------------
 ---- ENVIRONMENT VARIABLES ----
@@ -21,12 +27,10 @@ hl.env("HYPRCURSOR_THEME", "rose-pine-hyprcursor")
 -------------------
 
 hl.on("hyprland.start", function()
-    hl.exec_cmd("waybar")
+    if shell_ok and type(shell) == "table" and shell.autostart then
+        shell.autostart()
+    end
     hl.exec_cmd("hyprctl setcursor rose-pine-hyprcursor 16")
-    hl.exec_cmd("wl-paste --watch cliphist store")
-    hl.exec_cmd("wl-paste --type text --watch cliphist store")
-    hl.exec_cmd("wl-paste --type image --watch cliphist store")
-    hl.exec_cmd("wl-clip-persist --clipboard regular")
     hl.dispatch(hl.dsp.exec_cmd("kitty hypr-startup-tmux-w1", { workspace = "1 silent" }))
     hl.dispatch(hl.dsp.exec_cmd("kitty",     { workspace = "2 silent" }))
     hl.dispatch(hl.dsp.exec_cmd("kitty",     { workspace = "7 silent" }))
@@ -51,7 +55,7 @@ hl.config({
 
         resize_on_border = false,
         allow_tearing    = false,
-        layout           = "dwindle",
+        layout           = "scrolling",
     },
 
     decoration = {
@@ -179,11 +183,6 @@ hl.workspace_rule({
 -- No gaps / border when only one fullscreen window
 hl.workspace_rule({ workspace = "f[1]", gaps_out = 0, gaps_in = 0, border_size = 0 })
 
--- Per-workspace layouts
-hl.workspace_rule({ workspace = "4",  layout = "scrolling" })
-hl.workspace_rule({ workspace = "6",  layout = "scrolling" })
-hl.workspace_rule({ workspace = "10", layout = "scrolling" })
-
 -- Named ad-hoc rules
 hl.window_rule({
     name = "fix-xwayland-drags",
@@ -239,8 +238,6 @@ hl.bind(mainMod .. " + ALT + J", hl.dsp.window.resize({ x = 0,   y = 10,  relati
 
 -- mod
 hl.bind(mainMod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + Space",  hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + S",      hl.dsp.exec_cmd("grimblast copy area"))
 
 hl.bind(mainMod .. " + H", hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + L", hl.dsp.focus({ direction = "right" }))
@@ -249,11 +246,6 @@ hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
 
 -- cyclenext tiled works correctly in monocle layout (plain cyclenext does not)
 hl.bind(mainMod .. " + C", hl.dsp.window.cycle_next({ tiled = true }))
-
-hl.bind(mainMod .. " + Y", hl.dsp.exec_cmd("dunstctl history-pop"))
-hl.bind(mainMod .. " + T", hl.dsp.exec_cmd("dunstctl close"))
-hl.bind(mainMod .. " + N", hl.dsp.exec_cmd("dunstctl close-all"))
-hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("rofi -modi clipboard:cliphist-rofi-img -show clipboard -show-icons"))
 
 hl.bind(mainMod .. " + backslash",    hl.dsp.focus({ monitor = "+1" }))
 hl.bind(mainMod .. " + bracketleft",  hl.dsp.focus({ workspace = "m-1" }))
@@ -272,21 +264,6 @@ hl.bind(mainMod .. " + CTRL + Q", hl.dsp.exit())
 hl.bind(mainMod .. " + CTRL + R", hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(mainMod .. " + CTRL + W", hl.dsp.exec_cmd("hypr-work-display"))
 hl.bind(mainMod .. " + CTRL + P", hl.dsp.exec_cmd("hypr-personal-display"))
-hl.bind(mainMod .. " + CTRL + L", hl.dsp.exec_cmd("hyprlock"))
-
--- Media (locked: fires while screen is locked)
-hl.bind("XF86AudioNext",  hl.dsp.exec_cmd("playerctl -p spotify next"),       { locked = true })
-hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl -p spotify play-pause"), { locked = true })
-hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl -p spotify play-pause"), { locked = true })
-hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl -p spotify previous"),   { locked = true })
-
--- Volume / brightness (locked + repeating)
-hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
-hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"),      { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"),     { locked = true, repeating = true })
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"),   { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%+"),                  { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl -e4 -n2 set 5%-"),                  { locked = true, repeating = true })
 
 -- Mouse drag / resize
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })

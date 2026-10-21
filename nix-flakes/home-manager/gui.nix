@@ -10,13 +10,7 @@
       enable = true;
     };
     firefox = {
-        configPath = ".mozilla/firefox";
-        enable = true;
-    };
-  };
-
-  services = {
-    dunst = {
+      configPath = ".mozilla/firefox";
       enable = true;
     };
   };
@@ -44,10 +38,6 @@
     };
     ".config/qtile" = {
       source = programs/qtile;
-      recursive = true;
-    };
-    ".config/dunst" = {
-      source = programs/dunst;
       recursive = true;
     };
   };

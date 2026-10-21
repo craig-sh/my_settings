@@ -1,4 +1,15 @@
-{ lib, ... }: {
+# carbonnix classic desktop shell: waybar + dunst + hyprlock + hypridle.
+# Swap for carbonnix-noctalia.nix in home-manager/carbonnix.nix.
+_: {
+  imports = [
+    ./shell-classic.nix
+    (import ./hypridle.nix {
+      lockTimeout = 300; # 5 min
+      dpmsTimeout = 600; # 10 min
+      suspendTimeout = 1200; # 20 min
+    })
+  ];
+
   programs.waybar = {
     settings = {
       mainBar = {
@@ -32,7 +43,4 @@
       };
     };
   };
-  # Per-machine Hyprland Lua config. hyprland.lua loads this via
-  # require("machine").
-  xdg.configFile."hypr/machine.lua".text = lib.fileContents ./carbonnix.lua;
 }

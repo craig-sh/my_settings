@@ -29,7 +29,7 @@ let
     # Lua config (Hyprland 0.55+): `hyprctl keyword` is rejected by non-legacy
     # parsers, so mutate the workspace rule through `hyprctl eval` instead.
     if [ "$LAYOUT" = "monocle" ]; then
-      PREV=$(cat "$PREV_FILE" 2>/dev/null || echo "dwindle")
+      PREV=$(cat "$PREV_FILE" 2>/dev/null || echo "scrolling")
       rm -f "$PREV_FILE"
       hyprctl eval "hl.workspace_rule({ workspace = \"$WS\", layout = \"$PREV\" })"
     else

@@ -8,6 +8,7 @@
     ../../services/sunshine.nix
     ../../services/podman.nix
     ../../desktop/hyprland.nix
+    ../../desktop/noctalia.nix # enable with the home-manager <host>-noctalia.nix shell
     ../../services/ai.nix
     #../../desktop/qtile.nix
     #./gpu_passthrough.nix
@@ -56,7 +57,6 @@
       Option "AsyncFlipSecondaries" "true"
     '';
   };
-
 
   networking.firewall = {
     allowedTCPPorts = [

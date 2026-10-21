@@ -9,6 +9,7 @@
     ../../desktop/x11.nix
     ../../hardware/laptop.nix
     ../../desktop/hyprland.nix
+    ../../desktop/noctalia.nix # enable with the home-manager <host>-noctalia.nix shell
   ];
 
   #      (_: { nixpkgs.overlays = [ qtile-flake.overlays.default ]; })

@@ -1,8 +1,19 @@
-{ lib, ... }:
+# hypernix classic desktop shell: waybar (one bar per monitor) + dunst +
+# hyprlock + hypridle. Swap for hypernix-noctalia.nix in home-manager/hypernix.nix.
+_:
 let
   waybarModules = import ./waybar-modules.nix;
 in
 {
+  imports = [
+    ./shell-classic.nix
+    (import ./hypridle.nix {
+      lockTimeout = 600; # 10 min
+      dpmsTimeout = 900; # 15 min
+      suspendTimeout = 1800; # 30 min
+    })
+  ];
+
   programs.waybar = {
     settings = {
       mainBar = {
@@ -57,7 +68,4 @@ in
       };
     };
   };
-  # Per-machine Hyprland Lua config (monitors, workspace assignments,
-  # host-specific binds). hyprland.lua loads this via require("machine").
-  xdg.configFile."hypr/machine.lua".text = lib.fileContents ./hypernix.lua;
 }

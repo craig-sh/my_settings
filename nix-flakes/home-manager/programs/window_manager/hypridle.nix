@@ -5,17 +5,7 @@
 }:
 { pkgs, ... }:
 let
-  suspendIfIdle = pkgs.writeShellScriptBin "hypridle-suspend-if-idle" ''
-    # long running jobs
-    if pgrep -x 'rsync|scp|cp' > /dev/null; then
-      exit 0
-    fi
-    # Is anyone logged in remotely
-    if [ -n "$(who | grep pts)" ]; then
-      exit 0
-    fi
-    systemctl suspend
-  '';
+  suspendIfIdle = import ./suspend-if-idle.nix { inherit pkgs; };
 in
 {
   services.hypridle = {
@@ -40,7 +30,7 @@ in
         }
         {
           timeout = suspendTimeout;
-          on-timeout = "${suspendIfIdle}/bin/hypridle-suspend-if-idle";
+          on-timeout = "${suspendIfIdle}/bin/suspend-if-idle";
         }
       ];
     };

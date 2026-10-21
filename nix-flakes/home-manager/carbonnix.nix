@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, lib, ... }:
 
 {
   imports = [
@@ -12,13 +12,12 @@
     #./programs/aider.nix
     ./programs/neovim_git.nix
     ./programs/window_manager/hyprland.nix
-    ./programs/window_manager/hyprlock.nix
-    ./programs/window_manager/waybar.nix
-    ./programs/window_manager/carbonnix.nix
-    (import ./programs/window_manager/hypridle.nix {
-      lockTimeout = 300; # 5 min
-      dpmsTimeout = 600; # 10 min
-      suspendTimeout = 1200; # 20 min
-    })
+    # Desktop shell: keep exactly one of these uncommented.
+    #./programs/window_manager/carbonnix-classic.nix # waybar + dunst + hyprlock + hypridle
+    ./programs/window_manager/carbonnix-noctalia.nix # noctalia v5
   ];
+
+  # Per-machine Hyprland Lua config. hyprland.lua loads this via
+  # require("machine").
+  xdg.configFile."hypr/machine.lua".text = lib.fileContents ./programs/window_manager/carbonnix.lua;
 }
