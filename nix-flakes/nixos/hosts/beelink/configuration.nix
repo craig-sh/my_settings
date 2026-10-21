@@ -91,6 +91,19 @@ in
       owner = "conrun";
     };
 
+    en-db-pw = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    en-secret-key = {
+      format = "yaml";
+      owner = "conrun";
+    };
+    en-fernet-key = {
+      format = "yaml";
+      owner = "conrun";
+    };
+
     bz-universal-key = {
       format = "yaml";
     };
@@ -157,6 +170,16 @@ in
 
       DATABASE_PASSWORD=${config.sops.placeholder.dw-db-pw}
       SECRET_KEY_BASE=${config.sops.placeholder.dw-secret-key-base}
+    '';
+    owner = "conrun";
+  };
+  # Do not double quote below strings. This is passed to systemd environment not regular bash env!!!!!
+  sops.templates."endurain.env" = {
+    content = ''
+      POSTGRES_PASSWORD=${config.sops.placeholder.en-db-pw}
+      DB_PASSWORD=${config.sops.placeholder.en-db-pw}
+      SECRET_KEY=${config.sops.placeholder.en-secret-key}
+      FERNET_KEY=${config.sops.placeholder.en-fernet-key}
     '';
     owner = "conrun";
   };
@@ -418,6 +441,12 @@ in
       version = "1.16.0";
       backup.enable = true;
       backup.pgDumps = [ { container = "dawarichdb"; } ];
+    };
+    endurain = {
+      port = 3006;
+      version = "v0.19.4";
+      backup.enable = true;
+      backup.pgDumps = [ { container = "endurainpostgres"; } ];
     };
     photon = {
       port = 2322;

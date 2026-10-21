@@ -81,6 +81,11 @@ in
       category = "Tracking";
       icon = "dawarich.png";
     };
+    endurain = {
+      hmModule = ../home-manager/programs/local_services/endurain.nix;
+      category = "Tracking";
+      icon = "endurain.png";
+    };
     # Reverse geocoder backing dawarich. Internal API, so no dashboard tile.
     photon.hmModule = ../home-manager/programs/local_services/photon.nix;
     beszel-agent-conrun.hmModule = ../home-manager/programs/local_services/beszel-agent.nix;
