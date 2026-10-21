@@ -18,6 +18,7 @@ _: {
       ];
       center = [ ];
       end = [
+        "media"
         "net_rx"
         "net_tx"
         "disk"
@@ -34,6 +35,11 @@ _: {
         match = "DP-3";
         end = [ ];
       };
+    };
+
+    widget.media = {
+      font_scale = 0.8;
+      scale = 0.85;
     };
 
     idle.behavior = {
