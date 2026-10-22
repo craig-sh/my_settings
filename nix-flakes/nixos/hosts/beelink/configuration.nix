@@ -444,7 +444,7 @@ in
     };
     endurain = {
       port = 3006;
-      version = "v0.19.4";
+      version = "v0.20.1";
       backup.enable = true;
       backup.pgDumps = [ { container = "endurainpostgres"; } ];
     };
