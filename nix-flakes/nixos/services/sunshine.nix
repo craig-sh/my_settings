@@ -17,19 +17,30 @@ let
   # undo = "${pkgs.kdePackages.libkscreen}/bin/kscreen-doctor output.HDMI-A-1.enable  output.DP-3.position.1707,0  output.HDMI-A-1.position.0,0";
   sunshine-undo = pkgs.writeShellApplication {
     name = "sunshine-undo";
-    runtimeInputs = [ pkgs.hyprland steam-run-url ];
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.noctalia
+      steam-run-url
+    ];
     # `hyprctl reload` re-runs hypernix.lua's hl.monitor for HDMI-A-1 without
     # `disabled = false`, so the prep's `disabled = true` would otherwise stick.
     # Explicitly re-enable before reload restores DP-3's HDR settings.
     text = ''
       hyprctl eval 'hl.monitor({ output = "HDMI-A-1", disabled = false })'
       hyprctl reload
+      noctalia msg caffeine-disable || true
       steam-run-url -shutdown
+      # Re-lock what sunshine-prep unlocked.
+      noctalia msg session lock
     '';
   };
   sunshine-prep = pkgs.writeShellApplication {
     name = "sunshine-prep";
-    runtimeInputs = [ pkgs.hyprland ];
+    runtimeInputs = [
+      pkgs.hyprland
+      pkgs.noctalia
+      pkgs.systemd
+    ];
     # Hyprland 0.55+ ships a Lua config: `hyprctl keyword` is gone, and IPC
     # mutations go through `hyprctl eval` (runs raw Lua) or `hyprctl dispatch`
     # (shorthand for `eval 'hl.dispatch(...)'`).
@@ -38,7 +49,14 @@ let
     # so without explicit overrides here the streamed surface stays HDR-dim
     # and Moonlight sees what looks like an empty desktop.
     text = ''
-      pkill -USR1 hyprlock || true
+      # Noctalia's lock screen exits on logind's Unlock signal. Sunshine runs as
+      # a user service outside the graphical session, so target it by id; the
+      # owner can unlock their own session without polkit auth.
+      loginctl unlock-session "$(loginctl show-user "$USER" -p Display --value)"
+      # Keep the idle lock from coming back mid-stream (controller input does
+      # not reset the idle timer). Cleared again in sunshine-undo.
+      noctalia msg caffeine-enable || true
+      pkill -USR1 hyprlock || true # classic shell
 
       # HDR variant disabled for now since moonlight isn't picking it up:
       #hyprctl eval 'hl.monitor({ output = "DP-3", mode = "2560x1440@180", position = "0x0", scale = 1, vrr = 1, bitdepth = 10, cm = "hdr", sdrbrightness = 1.33, sdrsaturation = 1.12 })'
@@ -140,7 +158,10 @@ in
 
   # https://github.com/NixOS/nixpkgs/issues/455737
   users.users.craig = {
-    extraGroups = [ "uinput" "input" ];
+    extraGroups = [
+      "uinput"
+      "input"
+    ];
   };
   hardware.uinput.enable = true;
 }
