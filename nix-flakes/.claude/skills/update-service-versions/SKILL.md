@@ -15,7 +15,7 @@ If the user did not name a specific service, list the services defined in both h
 
 For each target service, locate the pinned version. There are three patterns — handle all of them:
 
-- **Host-config version**: `local.services.<name>.version = "..."` in `nixos/virtnix.nix` or `nixos/hosts/beelink/configuration.nix`. The `.nix` file in `home-manager/programs/local_services/` reads it via `osConfig.local.services.<name>.version`. Examples: `immich`, `syncthing`.
+- **Host-config version**: `local.services.<name>.version = "..."` in `nixos/virtnix.nix` or `nixos/hosts/beelink/configuration.nix`. The `.nix` file in `home-manager/programs/local_services/` reads it via `osConfig.local.services.<name>.version`. Examples: `immich`, `syncthing`, `notes` (pins the zensical build image).
 - **Top-of-file `let` binding**: `version = "..."` at the top of the service's `.nix` file, interpolated into the `image` string. Examples: `actualbudget`, `forgejo`, `ghostfolio`, `paperless`, `sparkyfitness`, `tandoor`.
 - **Inline image tag**: the version is hardcoded directly in an `image = "registry/org/name:TAG"` line with no variable. Examples: `frigate`, `donetick`, and sidecar images (`postgres`, `redis`, `valkey`, `nginx`).
 
@@ -43,6 +43,7 @@ Known mappings in this repo:
 | sparkyfitness | `docker.io/codewithcj/sparkyfitness` | github.com/CodeWithCJ/SparkyFitness |
 | frigate | `ghcr.io/blakeblackshear/frigate` | github.com/blakeblackshear/frigate |
 | donetick | `docker.io/donetick/donetick` | github.com/donetick/donetick |
+| notes | `docker.io/zensical/zensical` | github.com/zensical/zensical |
 
 For sidecar images (`postgres`, `redis`, `valkey`, `nginx`, etc.) only bump them if the user explicitly asks — they are usually pinned to a major tag on purpose.
 

@@ -104,6 +104,12 @@ in
       owner = "conrun";
     };
 
+    # Read-only Forgejo deploy key for the notes repo.
+    notes-deploy-key = {
+      format = "yaml";
+      owner = "conrun";
+    };
+
     bz-universal-key = {
       format = "yaml";
     };
@@ -447,6 +453,14 @@ in
       version = "v0.20.1";
       backup.enable = true;
       backup.pgDumps = [ { container = "endurainpostgres"; } ];
+    };
+    notes = {
+      port = 3007;
+      # zensical/zensical image used for builds; nginx is pinned in notes.nix.
+      version = "0.0.72";
+      # The Forgejo repo is the source of truth and is backed up with forgejo;
+      # the local clone and built site are rebuilt from it.
+      backup.enable = false;
     };
     photon = {
       port = 2322;

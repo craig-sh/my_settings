@@ -21,6 +21,7 @@
     # Desktop shell: keep exactly one of these uncommented.
     #./programs/window_manager/hypernix-classic.nix # waybar + dunst + hyprlock + hypridle
     ./programs/window_manager/hypernix-noctalia.nix # noctalia v5
+    ./programs/claude-skills.nix
     #./programs/claude.nix
     #./x11gui.nix
   ];
