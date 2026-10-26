@@ -31,4 +31,14 @@
   };
   # environment.systemPackages = [ ];
   services.displayManager.defaultSession = lib.mkForce "hyprland";
+
+  # Fingerprint reader (Synaptics 06cb:00fc). Enroll with `fprintd-enroll`.
+  services.fprintd.enable = true;
+  security.pam.services = {
+    # Noctalia's lock screen checks the password via the `login` service and
+    # reads the fingerprint itself over D-Bus; pam_fprintd here would block it.
+    login.fprintAuth = false;
+    # Cold-boot login stays password-only (no disk encryption on this host).
+    sddm.fprintAuth = false;
+  };
 }
